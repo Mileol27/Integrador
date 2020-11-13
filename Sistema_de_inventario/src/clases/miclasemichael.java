@@ -11,4 +11,5 @@ package clases;
  */
 public class miclasemichael {
     private String prueba;
+    private String prueba2;
 }
