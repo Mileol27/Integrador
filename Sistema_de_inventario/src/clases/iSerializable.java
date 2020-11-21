@@ -9,7 +9,7 @@ package clases;
  *
  * @author micha
  */
-public interface iSerializable {
+interface iSerializable {
 
     public void eliminar();
 

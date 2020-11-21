@@ -1,6 +1,6 @@
 package clases;
 
-public class usuario {
+public class usuario implements iSerializable{
 
     private int id;
     private String nombre;
