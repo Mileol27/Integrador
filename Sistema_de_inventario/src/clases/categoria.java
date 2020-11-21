@@ -9,7 +9,6 @@ public class categoria {
     private Date creado_el;
     private usuario creado_por;
 
-    
     //Constructor
     public categoria(int id, String nombre, Date creado_el, usuario creado_por) {
         this.id = id;
@@ -17,9 +16,23 @@ public class categoria {
         this.creado_el = creado_el;
         this.creado_por = creado_por;
     }
-    
-    
-    
+
+    //Metodos
+    public int contar_articulos_total() {
+        return 0;
+    }
+
+    public int contar_x_estado() {
+        return 0;
+    }
+
+    public void eliminar() {
+    }
+
+    public void guardar() {
+
+    }
+
     //Encapsulamiento
     public int getId() {
         return id;
