@@ -1,0 +1,77 @@
+package clases;
+
+import java.util.Date;
+
+public class categoria {
+
+    private int id;
+    private String nombre;
+    private Date creado_el;
+    private usuario creado_por;
+
+    
+    //Constructor
+    public categoria(int id, String nombre, Date creado_el, usuario creado_por) {
+        this.id = id;
+        this.nombre = nombre;
+        this.creado_el = creado_el;
+        this.creado_por = creado_por;
+    }
+    
+    
+    
+    //Encapsulamiento
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * @return the nombre
+     */
+    public String getNombre() {
+        return nombre;
+    }
+
+    /**
+     * @param nombre the nombre to set
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    /**
+     * @return the creado_el
+     */
+    public Date getCreado_el() {
+        return creado_el;
+    }
+
+    /**
+     * @param creado_el the creado_el to set
+     */
+    public void setCreado_el(Date creado_el) {
+        this.creado_el = creado_el;
+    }
+
+    /**
+     * @return the creado_por
+     */
+    public usuario getCreado_por() {
+        return creado_por;
+    }
+
+    /**
+     * @param creado_por the creado_por to set
+     */
+    public void setCreado_por(usuario creado_por) {
+        this.creado_por = creado_por;
+    }
+
+}
