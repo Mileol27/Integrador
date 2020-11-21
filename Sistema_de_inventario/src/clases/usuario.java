@@ -15,6 +15,14 @@ public class usuario {
         this.username = username;
     }
 
+    //
+    public void eliminar() {
+    }
+
+    public void guardar() {
+
+    }
+
     //Encapsulamiento
     public int getId() {
         return id;
