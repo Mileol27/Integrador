@@ -56,6 +56,11 @@ public class agregar extends javax.swing.JFrame {
         jLabel4.setText("Número de serie");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar", "Cat 1", "Cat 2", "Cat 3" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Observaciones");
 
@@ -165,6 +170,10 @@ public class agregar extends javax.swing.JFrame {
         In.setVisible(true);
         dispose();
     }//GEN-LAST:event_btn_add_artiActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments

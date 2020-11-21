@@ -2,13 +2,10 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
         <group>
-            <file>file:/D:/UTP/INTEGRADOR1/Integrador/Sistema_de_inventario/src/clases/miclasemichael.java</file>
-            <file>file:/D:/UTP/INTEGRADOR1/Integrador/Sistema_de_inventario/src/Gui/interfaz.java</file>
+            <file>file:/D:/UTP/INTEGRADOR1/Integrador/Sistema_de_inventario/src/Gui/Interfaz.java</file>
+            <file>file:/D:/UTP/INTEGRADOR1/Integrador/Sistema_de_inventario/src/Gui/login.java</file>
+            <file>file:/D:/UTP/INTEGRADOR1/Integrador/Sistema_de_inventario/src/Gui/agregar.java</file>
         </group>
-=======
-        <group/>
->>>>>>> master
     </open-files>
 </project-private>
