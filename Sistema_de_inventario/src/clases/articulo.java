@@ -37,7 +37,11 @@ public class Articulo implements iSerializable{
         return 0;
     }
     
-    public int contar_por_status(String status){
+    public int contar_por_status(Estado status){
+        return 0;
+    }
+    
+    public int contar_por_categoria(Categoria status){
         return 0;
     }
     
