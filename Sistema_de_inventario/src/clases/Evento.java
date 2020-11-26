@@ -2,7 +2,7 @@ package clases;
 
 import java.util.Date;
 
-public class Evento implements iSerializable{
+public class Evento {
 
     private Date creado_el;
     private Usuario creado_por;

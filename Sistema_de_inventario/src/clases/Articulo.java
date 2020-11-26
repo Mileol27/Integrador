@@ -2,7 +2,7 @@ package clases;
 
 import java.util.Date;
 
-public class Articulo implements iSerializable{
+public class Articulo {
     private int id;
     private String descripcion;
     private Date creado_el;

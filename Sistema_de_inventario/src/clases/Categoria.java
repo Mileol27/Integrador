@@ -2,7 +2,7 @@ package clases;
 
 import java.util.Date;
 
-public class Categoria implements iSerializable{
+public class Categoria {
 
     private int id;
     private String nombre;
