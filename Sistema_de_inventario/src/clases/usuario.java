@@ -1,6 +1,6 @@
 package clases;
 
-public class usuario implements iSerializable{
+public class Usuario implements iSerializable{
 
     private int id;
     private String nombre;
@@ -8,7 +8,7 @@ public class usuario implements iSerializable{
     private String username;
 
     //Constructores
-    public usuario(int id, String nombre, String apellido, String username) {
+    public Usuario(int id, String nombre, String apellido, String username) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;

@@ -2,15 +2,15 @@ package clases;
 
 import java.util.Date;
 
-public class categoria implements iSerializable{
+public class Categoria implements iSerializable{
 
     private int id;
     private String nombre;
     private Date creado_el;
-    private usuario creado_por;
+    private Usuario creado_por;
 
     //Constructor
-    public categoria(int id, String nombre, Date creado_el, usuario creado_por) {
+    public Categoria(int id, String nombre, Date creado_el, Usuario creado_por) {
         this.id = id;
         this.nombre = nombre;
         this.creado_el = creado_el;
@@ -76,14 +76,14 @@ public class categoria implements iSerializable{
     /**
      * @return the creado_por
      */
-    public usuario getCreado_por() {
+    public Usuario getCreado_por() {
         return creado_por;
     }
 
     /**
      * @param creado_por the creado_por to set
      */
-    public void setCreado_por(usuario creado_por) {
+    public void setCreado_por(Usuario creado_por) {
         this.creado_por = creado_por;
     }
 

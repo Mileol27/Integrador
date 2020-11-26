@@ -1,5 +1,5 @@
 package clases;
 
-public class ev_creacion {
+public class EvActualizacion {
     String detalle;
 }

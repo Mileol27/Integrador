@@ -1,12 +1,12 @@
 package clases;
 
-public class estado implements iSerializable{
+public class Estado implements iSerializable{
 
     private int id;
     private String nombre;
     private String descripcion;
 
-    public estado(int id, String nombre, String descripcion) {
+    public Estado(int id, String nombre, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;

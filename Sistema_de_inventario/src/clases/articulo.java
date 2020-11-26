@@ -2,22 +2,22 @@ package clases;
 
 import java.util.Date;
 
-public class articulo implements iSerializable{
+public class Articulo implements iSerializable{
     private int id;
     private String descripcion;
     private Date creado_el;
-    private usuario creado_por;
+    private Usuario creado_por;
     private String marca;
     private String modelo;
     private String num_serie;
-    private categoria categoria;
+    private Categoria categoria;
     private Date f_modiciacion;
     private String observaciones;
-    private estado estado;
+    private Estado estado;
  
     
     //Constructor
-    public articulo(int id, String descripcion, Date creado_el, usuario creado_por, String marca, String modelo, String num_serie, categoria categoria, Date f_modiciacion, String observaciones, estado estado) {
+    public Articulo(int id, String descripcion, Date creado_el, Usuario creado_por, String marca, String modelo, String num_serie, Categoria categoria, Date f_modiciacion, String observaciones, Estado estado) {
         this.id = id;
         this.descripcion = descripcion;
         this.creado_el = creado_el;
@@ -96,14 +96,14 @@ public class articulo implements iSerializable{
     /**
      * @return the creado_por
      */
-    public usuario getCreado_por() {
+    public Usuario getCreado_por() {
         return creado_por;
     }
 
     /**
      * @param creado_por the creado_por to set
      */
-    public void setCreado_por(usuario creado_por) {
+    public void setCreado_por(Usuario creado_por) {
         this.creado_por = creado_por;
     }
 
@@ -150,16 +150,16 @@ public class articulo implements iSerializable{
     }
 
     /**
-     * @return the categoria
+     * @return the Categoria
      */
-    public categoria getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
 
     /**
-     * @param categoria the categoria to set
+     * @param categoria the Categoria to set
      */
-    public void setCategoria(categoria categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
@@ -192,16 +192,16 @@ public class articulo implements iSerializable{
     }
 
     /**
-     * @return the estado
+     * @return the Estado
      */
-    public estado getEstado() {
+    public Estado getEstado() {
         return estado;
     }
 
     /**
-     * @param estado the estado to set
+     * @param estado the Estado to set
      */
-    public void setEstado(estado estado) {
+    public void setEstado(Estado estado) {
         this.estado = estado;
     }
     

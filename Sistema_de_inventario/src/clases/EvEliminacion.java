@@ -1,5 +1,5 @@
 package clases;
 
-public class ev_eliminacion {   
+public class EvEliminacion {   
     String motivo;
 }

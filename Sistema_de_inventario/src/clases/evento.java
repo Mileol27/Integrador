@@ -2,14 +2,14 @@ package clases;
 
 import java.util.Date;
 
-public class evento implements iSerializable{
+public class Evento implements iSerializable{
 
     private Date creado_el;
-    private usuario creado_por;
-    private articulo articulo;
+    private Usuario creado_por;
+    private Articulo articulo;
 
     //Constructor
-    public evento(Date creado_el, usuario creado_por, articulo articulo) {
+    public Evento(Date creado_el, Usuario creado_por, Articulo articulo) {
         this.creado_el = creado_el;
         this.creado_por = creado_por;
         this.articulo = articulo;
@@ -38,28 +38,28 @@ public class evento implements iSerializable{
     /**
      * @return the creado_por
      */
-    public usuario getCreado_por() {
+    public Usuario getCreado_por() {
         return creado_por;
     }
 
     /**
      * @param creado_por the creado_por to set
      */
-    public void setCreado_por(usuario creado_por) {
+    public void setCreado_por(Usuario creado_por) {
         this.creado_por = creado_por;
     }
 
     /**
-     * @return the articulo
+     * @return the Articulo
      */
-    public articulo getArticulo() {
+    public Articulo getArticulo() {
         return articulo;
     }
 
     /**
-     * @param articulo the articulo to set
+     * @param articulo the Articulo to set
      */
-    public void setArticulo(articulo articulo) {
+    public void setArticulo(Articulo articulo) {
         this.articulo = articulo;
     }
 
