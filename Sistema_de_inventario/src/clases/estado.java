@@ -1,6 +1,8 @@
 package clases;
 
-public class Estado implements iSerializable{
+import Interfaces.ISerrializable;
+
+public class Estado implements ISerrializable{
 
     private int id;
     private String nombre;

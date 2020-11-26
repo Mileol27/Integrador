@@ -1,8 +1,8 @@
 package clases;
 
+import Interfaces.ISerrializable;
 import java.util.Date;
-
-public class Articulo implements iSerializable{
+public class Articulo implements ISerrializable{
     private int id;
     private String descripcion;
     private Date creado_el;

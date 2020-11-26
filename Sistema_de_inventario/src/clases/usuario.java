@@ -1,6 +1,8 @@
 package clases;
 
-public class Usuario implements iSerializable{
+import Interfaces.ISerrializable;
+
+public class Usuario implements ISerrializable{
 
     private int id;
     private String nombre;
