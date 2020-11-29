@@ -32,6 +32,8 @@ public class Articulo implements ISerrializable{
     }
 
     
+
+    
     //Metodos
     public int contar_articulos_total(){
         return 0;
@@ -49,7 +51,7 @@ public class Articulo implements ISerrializable{
     }
 
     public void guardar() {
-
+            
     }
     
     
