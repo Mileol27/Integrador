@@ -1,8 +1,9 @@
 package clases;
 
+import Interfaces.ISerrializable;
 import java.util.Date;
 
-public class Evento {
+public class Evento implements ISerrializable{
 
     private Date creado_el;
     private Usuario creado_por;

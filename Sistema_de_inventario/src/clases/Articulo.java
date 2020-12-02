@@ -1,8 +1,8 @@
 package clases;
 
+import Interfaces.ISerrializable;
 import java.util.Date;
-
-public class Articulo {
+public class Articulo implements ISerrializable{
     private int id;
     private String descripcion;
     private Date creado_el;
@@ -32,6 +32,8 @@ public class Articulo {
     }
 
     
+
+    
     //Metodos
     public int contar_articulos_total(){
         return 0;
@@ -49,7 +51,7 @@ public class Articulo {
     }
 
     public void guardar() {
-
+            
     }
     
     

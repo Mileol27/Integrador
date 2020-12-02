@@ -1,8 +1,9 @@
 package clases;
 
+import Interfaces.ISerrializable;
 import java.util.Date;
 
-public class Categoria {
+public class Categoria implements ISerrializable{
 
     private int id;
     private String nombre;
