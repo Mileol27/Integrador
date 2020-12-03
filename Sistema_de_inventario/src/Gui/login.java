@@ -164,16 +164,9 @@ public class login extends javax.swing.JFrame {
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("Nombre"));
-        panel.add(new JTextField(12));
-        panel.add(new JLabel("Apellido"));
-        panel.add(new JTextField(12));
-        panel.add(new JLabel("Usuario"));
-        panel.add(new JTextField(12));
-        panel.add(new JLabel("Contraseña"));
-        panel.add(new JTextField(12));
-        JOptionPane.showConfirmDialog(panel, panel);
+       NuevoUsuario nu = new NuevoUsuario();
+       nu.setVisible(true);
+       dispose();
         
         
     }//GEN-LAST:event_jLabel4MouseClicked

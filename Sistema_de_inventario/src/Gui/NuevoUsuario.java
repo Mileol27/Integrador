@@ -5,20 +5,25 @@
  */
 package Gui;
 
-/**
- *
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.Mongo;
+
+
+
+/*
  * @author el_du
  */
 public class NuevoUsuario extends javax.swing.JFrame {
 
-    /**
-     * Creates new form NuevoUsuario
-     */
-    
-    
+    DB db;
+    DBCollection usuarioss;
     
     public NuevoUsuario() {
-        
+        Mongo mongo = new Mongo();
+        db = mongo.getDB("Users");
+        usuarioss= db.getCollection("usuarioss");
         initComponents();
     }
 
@@ -66,6 +71,11 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(153, 153, 153));
         jButton1.setText("GUARDAR");
         jButton1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(153, 153, 153));
         jButton2.setText("CANCELAR");
@@ -143,6 +153,18 @@ public class NuevoUsuario extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    BasicDBObject documento = new BasicDBObject();
+    documento.put("nombre"," "+txtnombre.getText()+" ");
+    documento.put("apellido"," "+txtapellido.getText()+" ");
+    documento.put("usuario"," "+txtuser.getText()+" ");
+    documento.put("password"," "+txtpass.getText()+" ");
+    
+    usuarioss.insert(documento);
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
