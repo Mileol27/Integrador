@@ -36,9 +36,9 @@ public class Agregar extends javax.swing.JFrame {
         Date fech = new Date();
         Usuario user=new Usuario("sfaeqwt4","pedro","diaz","pdiaz");
         ArrayList<Categoria> categorias=new ArrayList<Categoria>();
-        categorias.add(new Categoria(1,"Computadoras",fech,user));
-        categorias.add(new Categoria(2,"Perifericos",fech,user));
-        categorias.add(new Categoria(3,"Muebles",fech,user));
+        categorias.add(new Categoria("1","Computadoras",fech,user));
+        categorias.add(new Categoria("2","Perifericos",fech,user));
+        categorias.add(new Categoria("3","Muebles",fech,user));
         initComponents();
         
         
@@ -239,7 +239,7 @@ public class Agregar extends javax.swing.JFrame {
     private void btn_add_artiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_add_artiActionPerformed
           Date fechactual = new Date();
           Usuario user=new Usuario("sfaeqwt4","pedro","diaz","pdiaz");
-          Categoria categoria=new Categoria(1,scategoria,fechactual,user);
+          Categoria categoria=new Categoria("1",scategoria,fechactual,user);
           Estado estado=new Estado(1,sestado,"nnn");
          Articulo  arti=new Articulo(1,edtdescrp.getText(),
                  fechactual,user,edtmarca.getText(),

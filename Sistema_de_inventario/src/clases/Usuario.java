@@ -1,8 +1,11 @@
 package clases;
 
 import Interfaces.ISerrializable;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -21,6 +24,23 @@ public class Usuario implements ISerrializable{
     // private boolean activo;
 
     //Constructores
+    public Usuario(){
+        
+    }
+
+    public Usuario(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public Usuario(String nombre,String username,String password) {
+        this.nombre = nombre;
+        this.username = username;
+        this.password = password;
+
+    }
+    
+    
+    
     public Usuario(String _id, String nombre, String apellido, String username) {
         this._id = _id;
         this.nombre = nombre;
@@ -95,12 +115,31 @@ public class Usuario implements ISerrializable{
         MongoCollection<Document> col = database.getCollection("users");
         FindIterable users_in_db = col.find(new Document("username", username));
         Document o_db = (Document) users_in_db.first();
+
         if (o_db != null) {
             Usuario u_db = new Usuario(o_db);
             return u_db.getPassword().equals(password) ? u_db : null;
+            
         } else {
             return null;
         }
     }
+    
+    public Usuario getNombreUsuarioIngresado() {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase database = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = database.getCollection("users");
+        FindIterable users_in_db = col.find(new Document("nombre", nombre));
+        Document o_db = (Document) users_in_db.first();
 
+        if (o_db != null) {
+            Usuario u_db = new Usuario(o_db);
+            return u_db.getNombre().equals(nombre) ? u_db : null;
+            
+        } else {
+            return null;
+        }
+        
+    }
 }
+

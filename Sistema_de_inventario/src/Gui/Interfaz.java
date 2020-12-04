@@ -6,6 +6,7 @@
 package Gui;
 
 import clases.Articulo;
+import clases.Categoria;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -55,6 +56,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtarea = new javax.swing.JTextArea();
+        btn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -130,7 +135,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_open_add)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Listado", jPanel2);
@@ -192,6 +197,43 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         jTabbedPane1.addTab("Resumen general", jPanel1);
 
+        txtarea.setColumns(20);
+        txtarea.setRows(5);
+        jScrollPane3.setViewportView(txtarea);
+
+        btn.setText("jButton1");
+        btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(239, 239, 239)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(290, 290, 290)
+                        .addComponent(btn)))
+                .addContainerGap(345, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(65, 65, 65)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(btn)
+                .addContainerGap(68, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("tab3", jPanel4);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -217,6 +259,16 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         ag.setVisible(true);
         dispose();
     }//GEN-LAST:event_btn_open_addActionPerformed
+
+    private void btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActionPerformed
+        
+        Categorias categori = new Categorias();
+        categori.setVisible(true);
+        dispose();
+      //  Categoria cat = new Categoria();
+      //  cat.AddCat();
+        
+    }//GEN-LAST:event_btnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,6 +314,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn;
     private javax.swing.JButton btn_open_add;
     private javax.swing.JComboBox<String> cb_cat4;
     private javax.swing.JComboBox<String> cb_cat5;
@@ -275,10 +328,13 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     public static javax.swing.JTable jTable2;
+    private javax.swing.JTextArea txtarea;
     // End of variables declaration//GEN-END:variables
 }
