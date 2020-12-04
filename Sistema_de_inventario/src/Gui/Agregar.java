@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Agregar extends javax.swing.JFrame {
     String scategoria;
-        String sestado;
+    String sestado;
     /**
      * Creates new form agregar
      */
@@ -40,6 +40,7 @@ public class Agregar extends javax.swing.JFrame {
         categorias.add(new Categoria("2","Perifericos",fech,user));
         categorias.add(new Categoria("3","Muebles",fech,user));
         initComponents();
+        setLocationRelativeTo(null);
         
         
         for (Estado estado : estados) {

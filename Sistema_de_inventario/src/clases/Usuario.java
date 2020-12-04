@@ -141,5 +141,19 @@ public class Usuario implements ISerrializable{
         }
         
     }
+    
+    public void AddUser(String name,  String ape, String usu, String pass){
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase documento = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = documento.getCollection("users");
+        
+        Document doc = new Document();
+        doc.put("nombre", name);
+        doc.put("apellido", ape);
+        doc.put("username", usu);
+        doc.put("password", pass);
+        col.insertOne(doc);
+    }
+    
 }
 

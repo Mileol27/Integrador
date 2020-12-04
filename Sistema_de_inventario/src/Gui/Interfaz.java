@@ -22,10 +22,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     public Interfaz() {
          
         initComponents();
-        
-       
-        
-     
+        setLocationRelativeTo(null);
 
     }
 
@@ -59,7 +56,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtarea = new javax.swing.JTextArea();
-        btn = new javax.swing.JButton();
+        btnagregar = new javax.swing.JButton();
+        btnrefresh = new javax.swing.JButton();
+        btnclose = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -201,10 +200,17 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         txtarea.setRows(5);
         jScrollPane3.setViewportView(txtarea);
 
-        btn.setText("jButton1");
-        btn.addActionListener(new java.awt.event.ActionListener() {
+        btnagregar.setText("agregar categoria");
+        btnagregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActionPerformed(evt);
+                btnagregarActionPerformed(evt);
+            }
+        });
+
+        btnrefresh.setText("Refresh");
+        btnrefresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnrefreshActionPerformed(evt);
             }
         });
 
@@ -219,8 +225,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(290, 290, 290)
-                        .addComponent(btn)))
-                .addContainerGap(345, Short.MAX_VALUE))
+                        .addComponent(btnagregar)
+                        .addGap(93, 93, 93)
+                        .addComponent(btnrefresh)))
+                .addContainerGap(155, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,11 +236,23 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 .addGap(65, 65, 65)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
-                .addComponent(btn)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnagregar)
+                    .addComponent(btnrefresh))
                 .addContainerGap(68, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("tab3", jPanel4);
+
+        btnclose.setBackground(new java.awt.Color(217, 47, 61));
+        btnclose.setFont(new java.awt.Font("Wide Latin", 0, 36)); // NOI18N
+        btnclose.setText("Cerrar Sesion");
+        btnclose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncloseActionPerformed(evt);
+            }
+        });
+        jTabbedPane1.addTab("Cerrar Sesion", btnclose);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -260,7 +280,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         dispose();
     }//GEN-LAST:event_btn_open_addActionPerformed
 
-    private void btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActionPerformed
+    private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
         
         Categorias categori = new Categorias();
         categori.setVisible(true);
@@ -268,7 +288,23 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
       //  Categoria cat = new Categoria();
       //  cat.AddCat();
         
-    }//GEN-LAST:event_btnActionPerformed
+    }//GEN-LAST:event_btnagregarActionPerformed
+
+    private void btncloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncloseActionPerformed
+        
+        Login login = new Login();
+        login.setVisible(true);
+        dispose();
+        
+        
+    }//GEN-LAST:event_btncloseActionPerformed
+
+    private void btnrefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrefreshActionPerformed
+      
+        Categoria cate = new Categoria();
+        cate.Refresh();
+        
+    }//GEN-LAST:event_btnrefreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -314,8 +350,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn;
     private javax.swing.JButton btn_open_add;
+    private javax.swing.JButton btnagregar;
+    private javax.swing.JButton btnclose;
+    private javax.swing.JButton btnrefresh;
     private javax.swing.JComboBox<String> cb_cat4;
     private javax.swing.JComboBox<String> cb_cat5;
     private javax.swing.JComboBox<String> cb_cat6;

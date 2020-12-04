@@ -23,6 +23,7 @@ public class Categorias extends javax.swing.JFrame {
 
 
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -121,17 +122,26 @@ public class Categorias extends javax.swing.JFrame {
         Usuario busqueda = new Usuario(txtnom.getText());
         busqueda = busqueda.getNombreUsuarioIngresado();
         Categoria cat = new Categoria();
-        if (busqueda.getNombre().equals(txtnom.getText())) {
+        try{
+            if (busqueda.getNombre().equals(txtnom.getText())) {
             cat.AddCat(txtcat.getText(), fecha, txtnom.getText());
             JOptionPane.showMessageDialog(null, "creado exitosamente");
         } else {
             JOptionPane.showMessageDialog(null, "No es su cuenta");
         }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Vuelva a intentarlo");
+        }
+        
         
     }//GEN-LAST:event_btnguardarActionPerformed
 
     private void btncancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelActionPerformed
-        // TODO add your handling code here:
+      
+        Interfaz in = new Interfaz();
+        in.setVisible(true);
+        dispose();
+        
     }//GEN-LAST:event_btncancelActionPerformed
 
     /**

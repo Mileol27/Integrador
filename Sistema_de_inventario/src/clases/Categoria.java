@@ -119,8 +119,23 @@ public class Categoria implements ISerrializable{
         doc.put("creado_el", horalocal);
         doc.put("creado_por", user);
         col.insertOne(doc);
-        
-       
-    }
 
+    }
+    
+    public void Refresh(){
+        
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase database = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = database.getCollection("category");
+        FindIterable users_in_db = col.find();
+        Document o_db = (Document) users_in_db.first();
+
+        if (users_in_db.iterator().hasNext()) {
+            Categoria u_db = new Categoria(o_db);
+            u_db.getNombre();
+            u_db.getCreado_el();
+            u_db.getCreado_por();
+        }
+
+    }
 }
