@@ -10,6 +10,8 @@ import com.mongodb.client.MongoDatabase;
 import java.util.Date;
 import java.util.Iterator;
 import org.bson.Document;
+import conn.Conn;
+import org.bson.types.ObjectId;
 
 public class Categoria implements ISerrializable{
 
@@ -19,17 +21,21 @@ public class Categoria implements ISerrializable{
     private Usuario creado_por;
 
     //Constructor
-    public Categoria(){
-        
+    public Categoria(){ 
     }   
+
+    public Categoria(String nombre) {
+        this.nombre = nombre;
+    }
     
-    
-    public Categoria(String id, String nombre, Date creado_el, Usuario creado_por) {
-        this._id = id;
+    // temporal...
+    public Categoria(String _id, String nombre, Date creado_el, Usuario creado_por) {
+        this._id = _id;
         this.nombre = nombre;
         this.creado_el = creado_el;
         this.creado_por = creado_por;
     }
+    
     
     public Categoria(Document ob){
         this._id = (String) ob.get("_id").toString();
@@ -50,8 +56,16 @@ public class Categoria implements ISerrializable{
     public void eliminar() {
     }
 
+    @Override
     public void guardar() {
-
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase documento = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = documento.getCollection("categorias");
+        Document doc = new Document();
+        doc.put("nombre", nombre);
+        doc.put("creado_el", new Date());
+        doc.put("creado_por", new ObjectId(Conn.user_logged.getId()));
+        col.insertOne(doc);
     }
 
     //Encapsulamiento
@@ -108,25 +122,11 @@ public class Categoria implements ISerrializable{
         this.creado_por = creado_por;
     }
     
-    public void AddCat(String name, Date horalocal, String user) {
-        
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase documento = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = documento.getCollection("category");
-        
-        Document doc = new Document();
-        doc.put("nombre", name);
-        doc.put("creado_el", horalocal);
-        doc.put("creado_por", user);
-        col.insertOne(doc);
-
-    }
-    
-    public void Refresh(){
+    /* public void Refresh(){
         
         MongoClient mongoClient = new MongoClient();
         MongoDatabase database = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = database.getCollection("category");
+        MongoCollection<Document> col = database.getCollection("categorias");
         FindIterable users_in_db = col.find();
         Document o_db = (Document) users_in_db.first();
 
@@ -137,5 +137,5 @@ public class Categoria implements ISerrializable{
             u_db.getCreado_por();
         }
 
-    }
+    } */
 }

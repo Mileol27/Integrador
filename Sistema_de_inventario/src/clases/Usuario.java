@@ -10,6 +10,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import conn.Conn;
 import java.util.Iterator;
 import org.bson.Document;
 import org.bson.codecs.Decoder;
@@ -115,17 +116,22 @@ public class Usuario implements ISerrializable{
         MongoCollection<Document> col = database.getCollection("users");
         FindIterable users_in_db = col.find(new Document("username", username));
         Document o_db = (Document) users_in_db.first();
-
+        
         if (o_db != null) {
             Usuario u_db = new Usuario(o_db);
-            return u_db.getPassword().equals(password) ? u_db : null;
+            if (u_db.getPassword().equals(password)) {
+                Conn.user_logged = u_db;
+                return u_db;
+            } else {
+                return null;
+            }
             
         } else {
             return null;
         }
     }
     
-    public Usuario getNombreUsuarioIngresado() {
+    /*  public Usuario getNombreUsuarioIngresado() {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase database = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = database.getCollection("users");
@@ -140,7 +146,7 @@ public class Usuario implements ISerrializable{
             return null;
         }
         
-    }
+    }  */
     
     public void AddUser(String name,  String ape, String usu, String pass){
         MongoClient mongoClient = new MongoClient();
