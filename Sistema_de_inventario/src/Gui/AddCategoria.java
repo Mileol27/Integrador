@@ -12,14 +12,14 @@ import javax.swing.JOptionPane;
  *
  * @author EQUIPO
  */
-public class Categorias extends javax.swing.JFrame {
+public class AddCategoria extends javax.swing.JFrame {
     
     Date fecha = new Date();
     
     /**
      * Creates new form Categorias
      */
-    public Categorias() {
+    public AddCategoria() {
 
 
         initComponents();
@@ -40,8 +40,6 @@ public class Categorias extends javax.swing.JFrame {
         txtcat = new javax.swing.JTextField();
         btnguardar = new javax.swing.JToggleButton();
         btncancel = new javax.swing.JToggleButton();
-        jLabel4 = new javax.swing.JLabel();
-        txtnom = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -65,8 +63,6 @@ public class Categorias extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("CREADO POR");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,13 +81,9 @@ public class Categorias extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtnom, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtcat, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtcat, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(141, 141, 141))))
         );
         layout.setVerticalGroup(
@@ -99,40 +91,30 @@ public class Categorias extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtcat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtnom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btncancel)
                     .addComponent(btnguardar))
-                .addGap(45, 45, 45))
+                .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
-        
-        Usuario busqueda = new Usuario(txtnom.getText());
-        busqueda = busqueda.getNombreUsuarioIngresado();
-        Categoria cat = new Categoria();
-        try{
-            if (busqueda.getNombre().equals(txtnom.getText())) {
-            cat.AddCat(txtcat.getText(), fecha, txtnom.getText());
+        String new_category_name = txtcat.getText();
+        if (new_category_name != null && !new_category_name.equals("")) {
+            Categoria cat = new Categoria(txtcat.getText());
+            cat.guardar();
             JOptionPane.showMessageDialog(null, "creado exitosamente");
         } else {
-            JOptionPane.showMessageDialog(null, "No es su cuenta");
-        }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Vuelva a intentarlo");
-        }
-        
+            // mostrar mensaje de error, preferiblemente en un label
+            JOptionPane.showMessageDialog(null, "Ingrese el nombre");
+        }        
         
     }//GEN-LAST:event_btnguardarActionPerformed
 
@@ -161,20 +143,21 @@ public class Categorias extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Categorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Categorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Categorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Categorias.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddCategoria.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Categorias().setVisible(true);
+                new AddCategoria().setVisible(true);
             }
         });
     }
@@ -184,8 +167,6 @@ public class Categorias extends javax.swing.JFrame {
     private javax.swing.JToggleButton btnguardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField txtcat;
-    private javax.swing.JTextField txtnom;
     // End of variables declaration//GEN-END:variables
 }

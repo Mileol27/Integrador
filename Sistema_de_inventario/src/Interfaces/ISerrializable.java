@@ -21,18 +21,4 @@ public interface ISerrializable<T> {
     public void guardar();
     public void eliminar();
 
-    /* public static <T> ArrayList<T> leer_todo(Class<T> type) {
-        String simpleName = type.getClass().getSimpleName();
-        ArrayList<T> listado;
-        try {
-            FileInputStream file = new FileInputStream(simpleName + ".ser");
-            try (ObjectInputStream stream = new ObjectInputStream(file)) {
-                listado = (ArrayList<T>) stream.readObject();
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            listado = null;
-        }        
-        return (listado!=null) ? listado : new ArrayList<>();
-    } */
-
 }
