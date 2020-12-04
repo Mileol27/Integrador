@@ -19,26 +19,26 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author micha
  */
-public class agregar extends javax.swing.JFrame {
+public class Agregar extends javax.swing.JFrame {
     String scategoria;
         String sestado;
     /**
      * Creates new form agregar
      */
-    public agregar() {
+    public Agregar() {
         
         
-         ArrayList<Estado> estados=new ArrayList<Estado>();
-         estados.add(new Estado(1,"Funcional","articulos funcionales"));
-         estados.add(new Estado(2,"Malogrado","articulos malogrados"));
-         estados.add(new Estado(3,"Perdido","articulos perdido"));
+        ArrayList<Estado> estados=new ArrayList<Estado>();
+        estados.add(new Estado(1,"Funcional","articulos funcionales"));
+        estados.add(new Estado(2,"Malogrado","articulos malogrados"));
+        estados.add(new Estado(3,"Perdido","articulos perdido"));
           
-          Date fech = new Date();
-          Usuario user=new Usuario(1,"pedro","diaz","pdiaz");
-          ArrayList<Categoria> categorias=new ArrayList<Categoria>();
-         categorias.add(new Categoria(1,"Computadoras",fech,user));
-         categorias.add(new Categoria(2,"Perifericos",fech,user));
-         categorias.add(new Categoria(3,"Muebles",fech,user));
+        Date fech = new Date();
+        Usuario user=new Usuario("sfaeqwt4","pedro","diaz","pdiaz");
+        ArrayList<Categoria> categorias=new ArrayList<Categoria>();
+        categorias.add(new Categoria(1,"Computadoras",fech,user));
+        categorias.add(new Categoria(2,"Perifericos",fech,user));
+        categorias.add(new Categoria(3,"Muebles",fech,user));
         initComponents();
         
         
@@ -238,7 +238,7 @@ public class agregar extends javax.swing.JFrame {
     
     private void btn_add_artiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_add_artiActionPerformed
           Date fechactual = new Date();
-          Usuario user=new Usuario(1,"pedro","diaz","pdiaz");
+          Usuario user=new Usuario("sfaeqwt4","pedro","diaz","pdiaz");
           Categoria categoria=new Categoria(1,scategoria,fechactual,user);
           Estado estado=new Estado(1,sestado,"nnn");
          Articulo  arti=new Articulo(1,edtdescrp.getText(),
@@ -306,7 +306,7 @@ public class agregar extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new agregar().setVisible(true);
+                new Agregar().setVisible(true);
                  
           
             }

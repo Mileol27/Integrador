@@ -21,7 +21,7 @@ public interface ISerrializable<T> {
     public void guardar();
     public void eliminar();
 
-    public static <T> ArrayList<T> leer_todo(Class<T> type) {
+    /* public static <T> ArrayList<T> leer_todo(Class<T> type) {
         String simpleName = type.getClass().getSimpleName();
         ArrayList<T> listado;
         try {
@@ -33,6 +33,6 @@ public interface ISerrializable<T> {
             listado = null;
         }        
         return (listado!=null) ? listado : new ArrayList<>();
-    }
+    } */
 
 }
