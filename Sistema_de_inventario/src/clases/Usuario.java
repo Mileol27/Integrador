@@ -1,23 +1,46 @@
 package clases;
 
 import Interfaces.ISerrializable;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import java.util.Iterator;
+import org.bson.Document;
+import org.bson.codecs.Decoder;
 
 public class Usuario implements ISerrializable{
 
-    private int id;
+    private String _id;
     private String nombre;
     private String apellido;
     private String username;
+    private String password;
+    // private boolean activo;
 
     //Constructores
-    public Usuario(int id, String nombre, String apellido, String username) {
-        this.id = id;
+    public Usuario(String _id, String nombre, String apellido, String username) {
+        this._id = _id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.username = username;
     }
 
-    //
+    public Usuario(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    
+    public Usuario(Document ob) {
+        this._id = (String) ob.get("_id").toString();
+        this.nombre = (String) ob.get("nombre");
+        this.apellido = (String) ob.get("apellido");
+        this.username = (String) ob.get("username");
+        this.password = (String) ob.get("password");
+    }
+
     public void eliminar() {
     }
 
@@ -25,58 +48,59 @@ public class Usuario implements ISerrializable{
 
     }
 
-    //Encapsulamiento
-    public int getId() {
-        return id;
+    public String getId() {
+        return _id;
     }
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
+    public void setId(String _id) {
+        this._id = _id;
     }
 
-    /**
-     * @return the nombre
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     * @param nombre the nombre to set
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     * @return the apellido
-     */
     public String getApellido() {
         return apellido;
     }
 
-    /**
-     * @param apellido the apellido to set
-     */
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
 
-    /**
-     * @return the username
-     */
     public String getUsername() {
         return username;
     }
 
-    /**
-     * @param username the username to set
-     */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    
+    public Usuario autenticar() {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase database = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = database.getCollection("users");
+        FindIterable users_in_db = col.find(new Document("username", username));
+        Document o_db = (Document) users_in_db.first();
+        if (o_db != null) {
+            Usuario u_db = new Usuario(o_db);
+            return u_db.getPassword().equals(password) ? u_db : null;
+        } else {
+            return null;
+        }
     }
 
 }
