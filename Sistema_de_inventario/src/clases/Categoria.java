@@ -41,7 +41,7 @@ public class Categoria implements ISerrializable{
         this._id = (String) ob.get("_id").toString();
         this.nombre = (String) ob.get("nombre");
         this.creado_el = (Date) ob.get("creado_el");
-        this.creado_por = (Usuario) ob.get("creado_por");
+        // this.creado_por = (Usuario) ob.get("creado_por");
     }
 
     //Metodos

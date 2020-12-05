@@ -110,6 +110,7 @@ public class AddCategoria extends javax.swing.JFrame {
         if (new_category_name != null && !new_category_name.equals("")) {
             Categoria cat = new Categoria(txtcat.getText());
             cat.guardar();
+            dispose();
             JOptionPane.showMessageDialog(null, "creado exitosamente");
         } else {
             // mostrar mensaje de error, preferiblemente en un label
