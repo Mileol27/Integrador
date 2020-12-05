@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public interface ISerrializable<T> {
 
-    public void guardar();
+    public void guardar ();
     public void eliminar();
 
     public static <T> ArrayList<T> leer_todo(Class<T> type) {

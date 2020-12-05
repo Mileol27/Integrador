@@ -14,6 +14,8 @@ public class Estado implements ISerrializable{
         this.descripcion = descripcion;
     }
 
+   
+
     //Metodos
     
     public int contar_articulos_total(){

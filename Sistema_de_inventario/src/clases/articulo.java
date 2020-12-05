@@ -1,7 +1,13 @@
 package clases;
 
 import Interfaces.ISerrializable;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+ 
 import java.util.Date;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 public class Articulo implements ISerrializable{
     private int id;
     private String descripcion;
@@ -50,10 +56,7 @@ public class Articulo implements ISerrializable{
     public void eliminar() {
     }
 
-    public void guardar() {
-            
-    }
-    
+  
     
     
     
@@ -210,6 +213,26 @@ public class Articulo implements ISerrializable{
     public void setEstado(Estado estado) {
         this.estado = estado;
     }
+
+  
+   public void guardarra(Articulo type) {
+    
+    MongoDatabase database;
+   MongoClient mongoclient;
+   mongoclient=new MongoClient(); 
+   database=mongoclient.getDatabase("almacen");
+   Document articulodoc=new Document("_id",new ObjectId());
+   articulodoc.append("descripcion", type.getDescripcion()).append("marca", type.getMarca()).
+           append("modelo", type.getModelo()).append("numserie", type.getNum_serie());
+   MongoCollection<Document> collection = database.getCollection("Articulos");
+   collection.insertOne(articulodoc);
+    }
+
+    @Override
+    public void guardar() {
+    
+    }
+ 
     
     
     
