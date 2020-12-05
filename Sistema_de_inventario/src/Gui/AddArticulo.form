@@ -24,9 +24,10 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
@@ -40,34 +41,32 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="20" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="jCheckBox2" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel3" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel3" alignment="0" pref="121" max="32767" attributes="0"/>
                           <Component id="jLabel7" alignment="0" min="-2" pref="46" max="-2" attributes="0"/>
                           <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="combo_categorias" pref="102" max="32767" attributes="0"/>
                           <Component id="edtdescrp" alignment="0" pref="102" max="32767" attributes="0"/>
                           <Component id="edtmarca" alignment="0" pref="102" max="32767" attributes="0"/>
                           <Component id="edtmodelo" alignment="0" pref="102" max="32767" attributes="0"/>
                           <Component id="edtnumeroserie" alignment="0" pref="102" max="32767" attributes="0"/>
-                          <Component id="jTextField5" alignment="0" max="32767" attributes="0"/>
                           <Component id="combo_estado" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="107" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -98,16 +97,11 @@
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                   <Component id="edtnumeroserie" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="6" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jTextField5" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jCheckBox1" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="separate" pref="19" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="combo_categorias" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jCheckBox2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -233,20 +227,10 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_add_artiActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField5">
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+    <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Nueva Categoria"/>
+        <Property name="text" type="java.lang.String" value="Categor&#xed;a"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="jCheckBox2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Selecionar Catergor&#xed;a"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox2ActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

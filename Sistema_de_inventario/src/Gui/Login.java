@@ -10,7 +10,6 @@ import clases.Usuario;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JOptionPane;
-import org.bson.types.ObjectId;
 
 /**
  *
@@ -22,7 +21,7 @@ public class Login extends javax.swing.JFrame {
      * Creates new form loginn
      */
     public Login() {
-       //System.out.println("CATS: " + conn.Conn.listar_categorias().toString());
+        System.out.println("CATS: " + conn.Conn.listar_categorias().toString());
         initComponents();
         setLocationRelativeTo(null);
         

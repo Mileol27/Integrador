@@ -101,10 +101,6 @@ public class Usuario implements ISerrializable{
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -119,7 +115,7 @@ public class Usuario implements ISerrializable{
         
         if (o_db != null) {
             Usuario u_db = new Usuario(o_db);
-            if (u_db.getPassword().equals(password)) {
+            if (u_db.password.equals(password)) {
                 Conn.user_logged = u_db;
                 return u_db;
             } else {

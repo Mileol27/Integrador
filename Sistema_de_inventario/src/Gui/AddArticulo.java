@@ -19,13 +19,13 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author micha
  */
-public class Agregar extends javax.swing.JFrame {
+public class AddArticulo extends javax.swing.JFrame {
     String scategoria;
     String sestado;
     /**
      * Creates new form agregar
      */
-    public Agregar() {
+    public AddArticulo() {
         
         
         ArrayList<Estado> estados=new ArrayList<Estado>();
@@ -35,10 +35,7 @@ public class Agregar extends javax.swing.JFrame {
           
         Date fech = new Date();
         Usuario user=new Usuario("sfaeqwt4","pedro","diaz","pdiaz");
-        ArrayList<Categoria> categorias=new ArrayList<Categoria>();
-        categorias.add(new Categoria("1","Computadoras",fech,user));
-        categorias.add(new Categoria("2","Perifericos",fech,user));
-        categorias.add(new Categoria("3","Muebles",fech,user));
+        ArrayList<Categoria> categorias = conn.Conn.listar_categorias();
         initComponents();
         setLocationRelativeTo(null);
         
@@ -78,9 +75,7 @@ public class Agregar extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         btn_add_arti = new javax.swing.JButton();
-        jTextField5 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -140,23 +135,17 @@ public class Agregar extends javax.swing.JFrame {
             }
         });
 
-        jCheckBox1.setText("Nueva Categoria");
-
-        jCheckBox2.setText("Selecionar Catergoría");
-        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox2ActionPerformed(evt);
-            }
-        });
+        jLabel9.setText("Categoría");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(48, 48, 48)
@@ -166,30 +155,28 @@ public class Agregar extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btn_add_arti))))
-                        .addGap(0, 20, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jCheckBox2)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel9)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel6))
                             .addComponent(jLabel1)
                             .addComponent(jLabel4)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jCheckBox1)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
-                        .addGap(51, 51, 51)
+                        .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(combo_categorias, 0, 102, Short.MAX_VALUE)
                             .addComponent(edtdescrp, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                             .addComponent(edtmarca, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                             .addComponent(edtmodelo, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                             .addComponent(edtnumeroserie, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                            .addComponent(jTextField5)
                             .addComponent(combo_estado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(107, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,15 +199,11 @@ public class Agregar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
                     .addComponent(edtnumeroserie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox1))
-                .addGap(18, 18, 18)
+                .addGap(18, 19, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(combo_categorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox2))
+                    .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(combo_estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -253,8 +236,8 @@ public class Agregar extends javax.swing.JFrame {
         //  System.out.print(add);
         
    
-        Interfaz In = new Interfaz();
-        In.setVisible(true);
+        // Interfaz In = new Interfaz();
+        // In.setVisible(true);
         dispose();
         Interfaz.listarticulo.add(arti);
         DefaultTableModel model = (DefaultTableModel) Interfaz.jTable2.getModel();
@@ -272,10 +255,6 @@ public class Agregar extends javax.swing.JFrame {
         //});   
                    // TODO add your handling code here:
     }//GEN-LAST:event_btn_add_artiActionPerformed
-
-    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void combo_estadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_estadoActionPerformed
            
@@ -307,7 +286,7 @@ public class Agregar extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Agregar().setVisible(true);
+                new AddArticulo().setVisible(true);
                  
           
             }
@@ -323,8 +302,6 @@ public class Agregar extends javax.swing.JFrame {
     private javax.swing.JTextField edtmodelo;
     private javax.swing.JTextField edtnumeroserie;
     private javax.swing.JTextArea edtobs;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -333,7 +310,7 @@ public class Agregar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }

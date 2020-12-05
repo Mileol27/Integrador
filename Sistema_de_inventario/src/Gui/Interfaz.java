@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class Interfaz extends javax.swing.JFrame implements ActionListener {
     
-  public static ArrayList<Articulo> listarticulo=new ArrayList<Articulo>();;
+  public static ArrayList<Articulo> listarticulo = new ArrayList<Articulo>();;
 
     public Interfaz() {
          
@@ -131,6 +131,18 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             }
         ));
         jScrollPane2.setViewportView(jTable2);
+        if (jTable2.getColumnModel().getColumnCount() > 0) {
+            jTable2.getColumnModel().getColumn(0).setHeaderValue("ID");
+            jTable2.getColumnModel().getColumn(1).setHeaderValue("Descripción");
+            jTable2.getColumnModel().getColumn(2).setHeaderValue("Marca");
+            jTable2.getColumnModel().getColumn(3).setHeaderValue("Modelo");
+            jTable2.getColumnModel().getColumn(4).setHeaderValue("# de serie");
+            jTable2.getColumnModel().getColumn(5).setHeaderValue("Estado");
+            jTable2.getColumnModel().getColumn(6).setHeaderValue("F.Registro");
+            jTable2.getColumnModel().getColumn(7).setHeaderValue("F.Mod");
+            jTable2.getColumnModel().getColumn(8).setHeaderValue("Observaciones");
+            jTable2.getColumnModel().getColumn(9).setHeaderValue("Opciones");
+        }
 
         btn_open_add.setText("Agregar artículo");
         btn_open_add.addActionListener(new java.awt.event.ActionListener() {
@@ -275,16 +287,16 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_open_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_open_addActionPerformed
-        Agregar ag = new Agregar();
+        AddArticulo ag = new AddArticulo();
         ag.setVisible(true);
-        dispose();
+        // dispose();
     }//GEN-LAST:event_btn_open_addActionPerformed
 
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
         
         AddCategoria categori = new AddCategoria();
         categori.setVisible(true);
-        dispose();
+        // dispose();
       //  Categoria cat = new Categoria();
       //  cat.AddCat();
         
