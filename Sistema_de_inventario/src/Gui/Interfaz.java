@@ -9,10 +9,15 @@ import clases.Articulo;
 import clases.Categoria;
 import clases.Estado;
 import clases.Usuario;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.eq;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -39,6 +44,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         ArrayList<Categoria> categorias = Conn.listar_categorias();
         DefaultComboBoxModel model_cats = new DefaultComboBoxModel();
         categorias.forEach(categoria -> {
+            
             model_cats.addElement(categoria);
         });
         cb_cat.setModel(model_cats);
@@ -85,7 +91,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         cb_cat = new javax.swing.JComboBox<>();
-        cb_cat5 = new javax.swing.JComboBox<>();
+        cb_estados = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         btn_open_add = new javax.swing.JButton();
@@ -153,13 +159,23 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         jLabel9.setText("Listar por Estado");
 
         cb_cat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", " " }));
+        cb_cat.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cb_catItemStateChanged(evt);
+            }
+        });
         cb_cat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cb_catActionPerformed(evt);
             }
         });
 
-        cb_cat5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", " " }));
+        cb_estados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", " " }));
+        cb_estados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_estadosActionPerformed(evt);
+            }
+        });
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -210,7 +226,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))
                         .addGap(29, 29, 29)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cb_cat5, 0, 140, Short.MAX_VALUE)
+                            .addComponent(cb_estados, 0, 140, Short.MAX_VALUE)
                             .addComponent(cb_cat, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(137, 675, Short.MAX_VALUE))))
         );
@@ -224,7 +240,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_cat5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cb_estados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -348,18 +364,12 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_btnrefreshActionPerformed
 
     private void cb_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_catActionPerformed
-        //arreglar todo esto!
-        ArrayList<Articulo> lista_articulo_x_categoria = Conn.listar_articulos_cat();;
-        Articulo combo_articulo = (Articulo) cb_cat.getSelectedItem(); //Este es un objeto (categoria) que elejimos al presionar en el combobox
         
-        Articulo objecto_articulo = new Articulo();
-        objecto_articulo.Filtro_Categorias_in_articulo();
-        
-        
-        Conn.articulo_categoria = combo_articulo;
-        System.out.println(combo_articulo);
+        Categoria categoria = (Categoria) cb_cat.getSelectedItem();
+        listado_articulos=Conn.listar_articulos_por_categoria(categoria);
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        lista_articulo_x_categoria.forEach(a -> {
+        model.setRowCount(0);
+        Interfaz.listado_articulos.forEach(a -> {
             model.addRow(new Object[]{
                 a.getId(),
                 a.getDescripcion(),
@@ -372,12 +382,22 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getObservaciones()
             });
         });
-        
-        
+       
         
         
         
     }//GEN-LAST:event_cb_catActionPerformed
+
+    private void cb_estadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_estadosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cb_estadosActionPerformed
+
+    private void cb_catItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_catItemStateChanged
+         
+ 
+        
+        
+    }//GEN-LAST:event_cb_catItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -428,7 +448,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btnclose;
     private javax.swing.JButton btnrefresh;
     private javax.swing.JComboBox<String> cb_cat;
-    private javax.swing.JComboBox<String> cb_cat5;
+    private javax.swing.JComboBox<String> cb_estados;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

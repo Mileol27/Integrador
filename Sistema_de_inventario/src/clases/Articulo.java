@@ -4,7 +4,9 @@ import Interfaces.ISerrializable;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.eq;
 import java.util.Date;
 import conn.Conn;
 import java.util.ArrayList;
@@ -79,7 +81,7 @@ public class Articulo implements ISerrializable{
        MongoClient mongoClient = new MongoClient();
         MongoDatabase database = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = database.getCollection("articulos");
-        FindIterable categorias_in_bd = col.find(new Document("categoria", Conn.articulo_categoria));
+        FindIterable categorias_in_bd = col.find(new Document("categorias", Conn.articulo_categoria));
         Document o_db = (Document) categorias_in_bd.first();
         
         if (o_db != null) {
@@ -90,14 +92,14 @@ public class Articulo implements ISerrializable{
             return null;
         }
     }
-
+   
     @Override
     public void guardar() {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase documento = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = documento.getCollection("articulos");
         Document doc = new Document();
-        doc.put("descripción", descripcion);
+        doc.put("descripcion", descripcion);
         doc.put("creado_el", new Date());
         doc.put("creado_por", Conn.user_logged.getId());
         doc.put("marca", marca);
