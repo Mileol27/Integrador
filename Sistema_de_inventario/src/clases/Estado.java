@@ -1,21 +1,35 @@
 package clases;
 
 import Interfaces.ISerrializable;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import conn.Conn;
+import java.util.Date;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 
 public class Estado implements ISerrializable{
 
-    private int id;
+    private ObjectId _id;
     private String nombre;
     private String descripcion;
+    
+    public Estado(ObjectId _id) {
+        this._id = _id;
+    }
 
-    public Estado(int id, String nombre, String descripcion) {
-        this.id = id;
+    public Estado(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
-
-    //Metodos
     
+    public Estado(Document ob) {
+        this._id = ob.getObjectId("_id");
+        this.nombre = ob.getString("nombre");
+        this.descripcion = ob.getString("descripcion");
+    }
+
     public int contar_articulos_total(){
         return  0;
     }
@@ -24,54 +38,40 @@ public class Estado implements ISerrializable{
         
     }
     
+    @Override
     public void guardar(){
-        
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase documento = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = documento.getCollection("estados");
+        Document doc = new Document();
+        doc.put("nombre", nombre);
+        doc.put("descripción", descripcion);
+        col.insertOne(doc);
     }
     
-    
-    
-    
-    
-    /**
-     //Encapsulacion
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
+    public ObjectId getId() {
+        return _id;
     }
 
-    /**
-     * @return the nombre
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     * @param nombre the nombre to set
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     * @return the descripcion
-     */
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     * @param descripcion the descripcion to set
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+    
+    @Override
+    public String toString() {
+        return nombre;
     }
 
 }

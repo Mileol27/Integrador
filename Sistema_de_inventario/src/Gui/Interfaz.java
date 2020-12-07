@@ -10,6 +10,8 @@ import clases.Categoria;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import conn.Conn;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,13 +19,31 @@ import java.util.ArrayList;
  */
 public class Interfaz extends javax.swing.JFrame implements ActionListener {
     
-  public static ArrayList<Articulo> listarticulo = new ArrayList<Articulo>();;
+  public static ArrayList<Articulo> listado_articulos = new ArrayList<Articulo>();;
 
     public Interfaz() {
-         
+        
         initComponents();
         setLocationRelativeTo(null);
-
+        actualizar_articulos();
+    }
+    
+    public static void actualizar_articulos() {
+        listado_articulos = Conn.listar_articulos();
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        Interfaz.listado_articulos.forEach(a -> {
+            model.addRow(new Object[]{
+                a.getId(),
+                a.getDescripcion(),
+                a.getMarca(),
+                a.getModelo(),
+                a.getNum_serie(),
+                a.getEstado().getNombre(),
+                a.getCreado_el().toString(),
+                a.getF_modiciacion().toString(),
+                a.getObservaciones()
+            });
+        });
     }
 
     /**
@@ -313,7 +333,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
     private void btnrefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrefreshActionPerformed
       
-        Categoria cate = new Categoria();
+        // Categoria cate = new Categoria();
         // cate.Refresh();
         
     }//GEN-LAST:event_btnrefreshActionPerformed

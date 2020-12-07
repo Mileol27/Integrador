@@ -1,9 +1,16 @@
 package clases;
 
 import Interfaces.ISerrializable;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import java.util.Date;
+import conn.Conn;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
 public class Articulo implements ISerrializable{
-    private int id;
+    private ObjectId _id;
     private String descripcion;
     private Date creado_el;
     private Usuario creado_por;
@@ -17,196 +24,145 @@ public class Articulo implements ISerrializable{
  
     
     //Constructor
-    public Articulo(int id, String descripcion, Date creado_el, Usuario creado_por, String marca, String modelo, String num_serie, Categoria categoria, Date f_modiciacion, String observaciones, Estado estado) {
-        this.id = id;
+    public Articulo(String descripcion, String marca, String modelo, String num_serie, Categoria categoria, String observaciones, Estado estado) {
         this.descripcion = descripcion;
-        this.creado_el = creado_el;
-        this.creado_por = creado_por;
+        this.creado_por = Conn.user_logged;
         this.marca = marca;
         this.modelo = modelo;
         this.num_serie = num_serie;
         this.categoria = categoria;
-        this.f_modiciacion = f_modiciacion;
         this.observaciones = observaciones;
         this.estado = estado;
     }
-
     
-
+    public Articulo(Document ob) {
+        this._id = ob.getObjectId("_id");
+        this.descripcion = ob.getString("descripcion");
+        this.creado_el = ob.getDate("creado_el");
+        this.creado_por = new Usuario(ob.getObjectId("creado_por"));
+        this.marca = ob.getString("marca");
+        this.modelo = ob.getString("modelo");
+        this.num_serie = ob.getString("num_serie");
+        this.categoria = new Categoria(ob.getObjectId("categoria"));
+        this.f_modiciacion = ob.getDate("f_modiciacion");
+        this.observaciones = ob.getString("observaciones");
+        this.estado = new Estado(ob.getObjectId("estado"));
+    }
     
-    //Metodos
-    public int contar_articulos_total(){
+    public static int contar_total() {
         return 0;
     }
     
-    public int contar_por_status(Estado status){
+    public static int contar_por_status(Estado status){
         return 0;
     }
     
-    public int contar_por_categoria(Categoria status){
+    public static int contar_por_categoria(Categoria status){
         return 0;
     }
     
     public void eliminar() {
     }
 
+    @Override
     public void guardar() {
-            
-    }
-    
-    
-    
-    
-    /**
-    //Encapsulamiento
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase documento = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = documento.getCollection("articulos");
+        Document doc = new Document();
+        doc.put("descripción", descripcion);
+        doc.put("creado_el", new Date());
+        doc.put("creado_por", Conn.user_logged.getId());
+        doc.put("marca", marca);
+        doc.put("modelo", modelo);
+        doc.put("num_serie", num_serie);
+        doc.put("categoria", categoria.getId());
+        doc.put("f_modiciacion", new Date());
+        doc.put("observaciones", observaciones);
+        doc.put("estado", estado.getId());
+        col.insertOne(doc);
     }
 
-    /**
-     * @return the descripcion
-     */
+    public ObjectId getId() {
+        return _id;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
 
-    /**
-     * @param descripcion the descripcion to set
-     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    /**
-     * @return the creado_el
-     */
     public Date getCreado_el() {
         return creado_el;
     }
 
-    /**
-     * @param creado_el the creado_el to set
-     */
     public void setCreado_el(Date creado_el) {
         this.creado_el = creado_el;
     }
 
-    /**
-     * @return the creado_por
-     */
     public Usuario getCreado_por() {
         return creado_por;
     }
 
-    /**
-     * @param creado_por the creado_por to set
-     */
     public void setCreado_por(Usuario creado_por) {
         this.creado_por = creado_por;
     }
 
-    /**
-     * @return the marca
-     */
     public String getMarca() {
         return marca;
     }
 
-    /**
-     * @param marca the marca to set
-     */
     public void setMarca(String marca) {
         this.marca = marca;
     }
 
-    /**
-     * @return the modelo
-     */
     public String getModelo() {
         return modelo;
     }
 
-    /**
-     * @param modelo the modelo to set
-     */
     public void setModelo(String modelo) {
         this.modelo = modelo;
     }
 
-    /**
-     * @return the num_serie
-     */
     public String getNum_serie() {
         return num_serie;
     }
 
-    /**
-     * @param num_serie the num_serie to set
-     */
     public void setNum_serie(String num_serie) {
         this.num_serie = num_serie;
     }
 
-    /**
-     * @return the Categoria
-     */
     public Categoria getCategoria() {
         return categoria;
     }
 
-    /**
-     * @param categoria the Categoria to set
-     */
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
-    /**
-     * @return the f_modiciacion
-     */
     public Date getF_modiciacion() {
         return f_modiciacion;
     }
 
-    /**
-     * @param f_modiciacion the f_modiciacion to set
-     */
     public void setF_modiciacion(Date f_modiciacion) {
         this.f_modiciacion = f_modiciacion;
     }
 
-    /**
-     * @return the observaciones
-     */
     public String getObservaciones() {
         return observaciones;
     }
 
-    /**
-     * @param observaciones the observaciones to set
-     */
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
 
-    /**
-     * @return the Estado
-     */
     public Estado getEstado() {
         return estado;
     }
 
-    /**
-     * @param estado the Estado to set
-     */
     public void setEstado(Estado estado) {
         this.estado = estado;
     }

@@ -14,7 +14,7 @@ import clases.Usuario;
  */
 public class NuevoUsuario extends javax.swing.JFrame {
 
-    Usuario usuario = new Usuario();
+    // Usuario usuario = new Usuario();
     
     public NuevoUsuario() {
         
@@ -156,7 +156,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
     
-        usuario.AddUser(txtnombre.getText(), txtapellido.getText(),txtuser.getText(), txtpass.getText());
+        // usuario.AddUser(txtnombre.getText(), txtapellido.getText(),txtuser.getText(), txtpass.getText());
         
     }//GEN-LAST:event_btnguardarActionPerformed
 
