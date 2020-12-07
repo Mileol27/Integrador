@@ -25,6 +25,7 @@ import org.bson.types.ObjectId;
  */
 public class Conn {
     public static Usuario user_logged;
+    public static Articulo articulo_categoria;
     
     public static ArrayList<Categoria> listar_categorias() {
         MongoClient mongoClient = new MongoClient();
@@ -69,4 +70,19 @@ public class Conn {
         }
         return articulos;
     }
+    
+    public static ArrayList<Articulo> listar_articulos_cat() {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase database = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = database.getCollection("articulos");
+        FindIterable categorias_in_bd = col.find(new Document("categoria",Conn.articulo_categoria));
+        ArrayList<Articulo> articulos = new ArrayList<>();
+        Iterator it = categorias_in_bd.iterator();
+        while (it.hasNext()) {
+            articulos.add(new Articulo((Document) it.next()));
+        }
+        return articulos;
+    }
+
+    
 }

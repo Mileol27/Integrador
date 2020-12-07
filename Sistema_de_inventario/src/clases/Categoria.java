@@ -60,6 +60,8 @@ public class Categoria implements ISerrializable{
         doc.put("creado_por", Conn.user_logged.getId());
         col.insertOne(doc);
     }
+    
+    
 
     public ObjectId getId() {
         return _id;
