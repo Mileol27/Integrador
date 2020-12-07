@@ -11,37 +11,30 @@ import java.util.Date;
 import java.util.Iterator;
 import org.bson.Document;
 import conn.Conn;
+import java.util.ArrayList;
 import org.bson.types.ObjectId;
 
 public class Categoria implements ISerrializable{
 
-    private String _id;
+    private ObjectId _id;
     private String nombre;
     private Date creado_el;
     private Usuario creado_por;
 
     //Constructor
-    public Categoria(){ 
+    public Categoria(ObjectId _id){
+        this._id = _id;
     }   
 
     public Categoria(String nombre) {
         this.nombre = nombre;
-    }
-    
-    // temporal...
-    public Categoria(String _id, String nombre, Date creado_el, Usuario creado_por) {
-        this._id = _id;
-        this.nombre = nombre;
-        this.creado_el = creado_el;
-        this.creado_por = creado_por;
-    }
-    
+    }    
     
     public Categoria(Document ob){
-        this._id = (String) ob.get("_id").toString();
+        this._id = ob.getObjectId("_id");
         this.nombre = (String) ob.get("nombre");
         this.creado_el = (Date) ob.get("creado_el");
-        // this.creado_por = (Usuario) ob.get("creado_por");
+        this.creado_por = new Usuario(ob.getObjectId("creado_por"));
     }
 
     //Metodos
@@ -64,63 +57,44 @@ public class Categoria implements ISerrializable{
         Document doc = new Document();
         doc.put("nombre", nombre);
         doc.put("creado_el", new Date());
-        doc.put("creado_por", new ObjectId(Conn.user_logged.getId()));
+        doc.put("creado_por", Conn.user_logged.getId());
         col.insertOne(doc);
     }
+    
+    
 
-    //Encapsulamiento
-    public String getId() {
+    public ObjectId getId() {
         return _id;
     }
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this._id = id;
     }
 
-    /**
-     * @return the nombre
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     * @param nombre the nombre to set
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     * @return the creado_el
-     */
     public Date getCreado_el() {
         return creado_el;
     }
 
-    /**
-     * @param creado_el the creado_el to set
-     */
     public void setCreado_el(Date creado_el) {
         this.creado_el = creado_el;
     }
 
-    /**
-     * @return the creado_por
-     */
     public Usuario getCreado_por() {
         return creado_por;
     }
 
-    /**
-     * @param creado_por the creado_por to set
-     */
     public void setCreado_por(Usuario creado_por) {
         this.creado_por = creado_por;
     }
+    
     
     /* public void Refresh(){
         
@@ -138,4 +112,9 @@ public class Categoria implements ISerrializable{
         }
 
     } */
+    
+    @Override
+    public String toString() {
+        return nombre;
+    }
 }

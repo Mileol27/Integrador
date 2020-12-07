@@ -60,11 +60,11 @@
                       <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="combo_categorias" pref="102" max="32767" attributes="0"/>
-                          <Component id="edtdescrp" alignment="0" pref="102" max="32767" attributes="0"/>
-                          <Component id="edtmarca" alignment="0" pref="102" max="32767" attributes="0"/>
-                          <Component id="edtmodelo" alignment="0" pref="102" max="32767" attributes="0"/>
-                          <Component id="edtnumeroserie" alignment="0" pref="102" max="32767" attributes="0"/>
-                          <Component id="combo_estado" alignment="0" max="32767" attributes="0"/>
+                          <Component id="txt_descripcion" alignment="0" pref="102" max="32767" attributes="0"/>
+                          <Component id="txt_marca" alignment="0" pref="102" max="32767" attributes="0"/>
+                          <Component id="txt_modelo" alignment="0" pref="102" max="32767" attributes="0"/>
+                          <Component id="txt_nro_serie" alignment="0" pref="102" max="32767" attributes="0"/>
+                          <Component id="combo_estados" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace pref="107" max="32767" attributes="0"/>
                   </Group>
@@ -80,22 +80,22 @@
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="edtdescrp" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_descripcion" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                  <Component id="edtmarca" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_marca" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                  <Component id="edtmodelo" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_modelo" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                  <Component id="edtnumeroserie" min="-2" max="-2" attributes="0"/>
+                  <Component id="txt_nro_serie" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" pref="19" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -105,7 +105,7 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="combo_estado" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="combo_estados" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -162,7 +162,7 @@
         <Property name="text" type="java.lang.String" value="Observaciones"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="combo_estado">
+    <Component class="javax.swing.JComboBox" name="combo_estados">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="1">
@@ -171,23 +171,23 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="combo_estadoItemStateChanged"/>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="combo_estadoActionPerformed"/>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="combo_estadosItemStateChanged"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="combo_estadosActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JTextField" name="edtdescrp">
+    <Component class="javax.swing.JTextField" name="txt_descripcion">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="edtdescrpActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_descripcionActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="edtmarca">
+    <Component class="javax.swing.JTextField" name="txt_marca">
     </Component>
-    <Component class="javax.swing.JTextField" name="edtmodelo">
+    <Component class="javax.swing.JTextField" name="txt_modelo">
     </Component>
-    <Component class="javax.swing.JTextField" name="edtnumeroserie">
+    <Component class="javax.swing.JTextField" name="txt_nro_serie">
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -196,7 +196,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="edtobs">
+        <Component class="javax.swing.JTextArea" name="txt_obs">
           <Properties>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>

@@ -5,7 +5,6 @@
  */
 package Gui;
 
-import static Gui.Interfaz.listarticulo;
 import clases.Estado;
 import clases.Articulo;
 import clases.Categoria;
@@ -13,7 +12,8 @@ import clases.Usuario;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.table.DefaultTableModel;
-
+import conn.*;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -26,27 +26,24 @@ public class AddArticulo extends javax.swing.JFrame {
      * Creates new form agregar
      */
     public AddArticulo() {
-        
-        
-        ArrayList<Estado> estados=new ArrayList<Estado>();
-        estados.add(new Estado(1,"Funcional","articulos funcionales"));
-        estados.add(new Estado(2,"Malogrado","articulos malogrados"));
-        estados.add(new Estado(3,"Perdido","articulos perdido"));
-          
-        Date fech = new Date();
-        Usuario user=new Usuario("sfaeqwt4","pedro","diaz","pdiaz");
-        ArrayList<Categoria> categorias = conn.Conn.listar_categorias();
+
+        ArrayList<Estado> estados = Conn.listar_estados();
+        ArrayList<Categoria> categorias = Conn.listar_categorias();
+
         initComponents();
         setLocationRelativeTo(null);
         
+        DefaultComboBoxModel model_estados = new DefaultComboBoxModel();
+        estados.forEach(estado -> {
+            model_estados.addElement(estado);
+        });
+        combo_estados.setModel(model_estados);
         
-        for (Estado estado : estados) {
-          combo_estado.addItem(estado.getNombre());
-          
-        }
-        for (Categoria categoria : categorias) {
-            combo_categorias.addItem(categoria.getNombre());
-        }
+        DefaultComboBoxModel model_cats = new DefaultComboBoxModel();
+        categorias.forEach(categoria -> {
+            model_cats.addElement(categoria);
+        });
+        combo_categorias.setModel(model_cats);
     }
 
     /**
@@ -64,13 +61,13 @@ public class AddArticulo extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         combo_categorias = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        combo_estado = new javax.swing.JComboBox<>();
-        edtdescrp = new javax.swing.JTextField();
-        edtmarca = new javax.swing.JTextField();
-        edtmodelo = new javax.swing.JTextField();
-        edtnumeroserie = new javax.swing.JTextField();
+        combo_estados = new javax.swing.JComboBox<>();
+        txt_descripcion = new javax.swing.JTextField();
+        txt_marca = new javax.swing.JTextField();
+        txt_modelo = new javax.swing.JTextField();
+        txt_nro_serie = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        edtobs = new javax.swing.JTextArea();
+        txt_obs = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -101,27 +98,27 @@ public class AddArticulo extends javax.swing.JFrame {
 
         jLabel5.setText("Observaciones");
 
-        combo_estado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar" }));
-        combo_estado.addItemListener(new java.awt.event.ItemListener() {
+        combo_estados.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar" }));
+        combo_estados.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                combo_estadoItemStateChanged(evt);
+                combo_estadosItemStateChanged(evt);
             }
         });
-        combo_estado.addActionListener(new java.awt.event.ActionListener() {
+        combo_estados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_estadoActionPerformed(evt);
+                combo_estadosActionPerformed(evt);
             }
         });
 
-        edtdescrp.addActionListener(new java.awt.event.ActionListener() {
+        txt_descripcion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                edtdescrpActionPerformed(evt);
+                txt_descripcionActionPerformed(evt);
             }
         });
 
-        edtobs.setColumns(20);
-        edtobs.setRows(5);
-        jScrollPane1.setViewportView(edtobs);
+        txt_obs.setColumns(20);
+        txt_obs.setRows(5);
+        jScrollPane1.setViewportView(txt_obs);
 
         jLabel7.setText("Estado");
 
@@ -171,11 +168,11 @@ public class AddArticulo extends javax.swing.JFrame {
                         .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(combo_categorias, 0, 102, Short.MAX_VALUE)
-                            .addComponent(edtdescrp, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                            .addComponent(edtmarca, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                            .addComponent(edtmodelo, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                            .addComponent(edtnumeroserie, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                            .addComponent(combo_estado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txt_descripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                            .addComponent(txt_marca, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                            .addComponent(txt_modelo, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                            .addComponent(txt_nro_serie, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                            .addComponent(combo_estados, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap(107, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -186,19 +183,19 @@ public class AddArticulo extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(edtdescrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(edtmarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_marca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(edtmodelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_modelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(edtnumeroserie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_nro_serie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 19, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -206,7 +203,7 @@ public class AddArticulo extends javax.swing.JFrame {
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(combo_estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(combo_estados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,48 +218,35 @@ public class AddArticulo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void btn_add_artiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_add_artiActionPerformed
-          Date fechactual = new Date();
-          Usuario user=new Usuario("sfaeqwt4","pedro","diaz","pdiaz");
-          Categoria categoria=new Categoria("1",scategoria,fechactual,user);
-          Estado estado=new Estado(1,sestado,"nnn");
-         Articulo  arti=new Articulo(1,edtdescrp.getText(),
-                 fechactual,user,edtmarca.getText(),
-                 edtmodelo.getText(),
-                 edtnumeroserie.getText() ,
-                 categoria ,fechactual,
-                 edtobs.getText(),estado);
+
+        Categoria categoria = (Categoria) combo_categorias.getSelectedItem();
+        Estado estado = (Estado) combo_estados.getSelectedItem();
         
-        //arti.add(new Articulo(1,"" ,myObj ,user,"" ,"" ,"" ,cate ,myObj,"",est));
-        //  System.out.print(add);
+        Articulo articulo = new Articulo(
+            txt_descripcion.getText(),
+            txt_marca.getText(),
+            txt_modelo.getText(),
+            txt_nro_serie.getText() ,
+            categoria,
+            txt_obs.getText(),
+            estado
+        );
         
-   
-        // Interfaz In = new Interfaz();
-        // In.setVisible(true);
+        articulo.guardar();
+        Interfaz.actualizar_articulos();
+        
         dispose();
-        Interfaz.listarticulo.add(arti);
-        DefaultTableModel model = (DefaultTableModel) Interfaz.jTable2.getModel();
-        Integer numid=0;
-        for (Articulo articulo : listarticulo) {
-            numid++;
-            model.addRow(new Object[]{numid,articulo.getDescripcion().toString(),articulo.getMarca().toString(),articulo.getModelo().toString(),
-            articulo.getNum_serie().toString(),articulo.getEstado().getNombre(),articulo.getCreado_el().toString(),articulo.getF_modiciacion().toString(),
-            articulo.getObservaciones().toString()});
-        }
-        
-        //model.addRow(new Object[]{1, arti.getDescripcion().toString(),arti.getMarca().toString(),arti.getModelo().toString(),
-           // arti.getNum_serie().toString(),arti.getEstado().toString(),arti.getCreado_el().toString(),arti.getF_modiciacion().toString(),
-           // arti.getObservaciones().toString()
-        //});   
+
                    // TODO add your handling code here:
     }//GEN-LAST:event_btn_add_artiActionPerformed
 
-    private void combo_estadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_estadoActionPerformed
+    private void combo_estadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_estadosActionPerformed
            
-    }//GEN-LAST:event_combo_estadoActionPerformed
+    }//GEN-LAST:event_combo_estadosActionPerformed
 
-    private void edtdescrpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtdescrpActionPerformed
+    private void txt_descripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_descripcionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_edtdescrpActionPerformed
+    }//GEN-LAST:event_txt_descripcionActionPerformed
 
     private void combo_categoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_categoriasActionPerformed
        
@@ -275,12 +259,12 @@ public class AddArticulo extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_combo_categoriasItemStateChanged
 
-    private void combo_estadoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_estadoItemStateChanged
+    private void combo_estadosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_combo_estadosItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
               sestado=evt.getItem().toString();
             
         }
-    }//GEN-LAST:event_combo_estadoItemStateChanged
+    }//GEN-LAST:event_combo_estadosItemStateChanged
   
     public static void main(String args[]) {
 
@@ -296,12 +280,7 @@ public class AddArticulo extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add_arti;
     private javax.swing.JComboBox<String> combo_categorias;
-    private javax.swing.JComboBox<String> combo_estado;
-    private javax.swing.JTextField edtdescrp;
-    private javax.swing.JTextField edtmarca;
-    private javax.swing.JTextField edtmodelo;
-    private javax.swing.JTextField edtnumeroserie;
-    private javax.swing.JTextArea edtobs;
+    private javax.swing.JComboBox<String> combo_estados;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -312,5 +291,10 @@ public class AddArticulo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField txt_descripcion;
+    private javax.swing.JTextField txt_marca;
+    private javax.swing.JTextField txt_modelo;
+    private javax.swing.JTextField txt_nro_serie;
+    private javax.swing.JTextArea txt_obs;
     // End of variables declaration//GEN-END:variables
 }

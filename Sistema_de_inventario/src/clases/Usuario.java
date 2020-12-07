@@ -14,39 +14,19 @@ import conn.Conn;
 import java.util.Iterator;
 import org.bson.Document;
 import org.bson.codecs.Decoder;
+import org.bson.types.ObjectId;
 
 public class Usuario implements ISerrializable{
 
-    private String _id;
+    private ObjectId _id;
     private String nombre;
     private String apellido;
     private String username;
     private String password;
-    // private boolean activo;
 
     //Constructores
-    public Usuario(){
-        
-    }
-
-    public Usuario(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Usuario(String nombre,String username,String password) {
-        this.nombre = nombre;
-        this.username = username;
-        this.password = password;
-
-    }
-    
-    
-    
-    public Usuario(String _id, String nombre, String apellido, String username) {
+    public Usuario(ObjectId _id){
         this._id = _id;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.username = username;
     }
 
     public Usuario(String username, String password) {
@@ -55,7 +35,7 @@ public class Usuario implements ISerrializable{
     }
     
     public Usuario(Document ob) {
-        this._id = (String) ob.get("_id").toString();
+        this._id = ob.getObjectId("_id");
         this.nombre = (String) ob.get("nombre");
         this.apellido = (String) ob.get("apellido");
         this.username = (String) ob.get("username");
@@ -69,12 +49,8 @@ public class Usuario implements ISerrializable{
 
     }
 
-    public String getId() {
+    public ObjectId getId() {
         return _id;
-    }
-
-    public void setId(String _id) {
-        this._id = _id;
     }
 
     public String getNombre() {
@@ -144,7 +120,7 @@ public class Usuario implements ISerrializable{
         
     }  */
     
-    public void AddUser(String name,  String ape, String usu, String pass){
+    /* public void AddUser(String name,  String ape, String usu, String pass){
         MongoClient mongoClient = new MongoClient();
         MongoDatabase documento = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = documento.getCollection("users");
@@ -155,7 +131,7 @@ public class Usuario implements ISerrializable{
         doc.put("username", usu);
         doc.put("password", pass);
         col.insertOne(doc);
-    }
+    } */
     
 }
 
