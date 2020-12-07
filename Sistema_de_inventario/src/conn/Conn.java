@@ -12,10 +12,13 @@ import clases.Usuario;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.eq;
 import java.util.ArrayList;
 import org.bson.Document;
 import java.util.Iterator;
+import org.bson.types.ObjectId;
 
 
 /**
@@ -24,6 +27,7 @@ import java.util.Iterator;
  */
 public class Conn {
     public static Usuario user_logged;
+    public static Articulo articulo_categoria;
     
     public static ArrayList<Categoria> listar_categorias() {
         MongoClient mongoClient = new MongoClient();
@@ -68,4 +72,36 @@ public class Conn {
         }
         return articulos;
     }
+    
+    public static ArrayList<Articulo> listar_articulos_cat() {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase database = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = database.getCollection("articulos");
+        FindIterable categorias_in_bd = col.find(new Document("categoria",Conn.articulo_categoria));
+        ArrayList<Articulo> articulos = new ArrayList<>();
+        Iterator it = categorias_in_bd.iterator();
+        while (it.hasNext()) {
+            articulos.add(new Articulo((Document) it.next()));
+        }
+        return articulos;
+    }
+    
+    public static ArrayList<Articulo> listar_articulos_por_categoria(Categoria categoria) {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase database = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = database.getCollection("articulos");
+        MongoCursor<Document> cursor = col.find(eq("categoria", categoria.getId())).iterator();
+         ArrayList<Articulo> articulos = new ArrayList<>();
+        try{
+        while (cursor.hasNext()) {
+             articulos.add(new Articulo((Document) cursor.next()));
+        //System.out.println(cursor.next().toJson());
+        }
+        } finally {
+        cursor.close();
+        return articulos;
+        }
+    }
+
+    
 }

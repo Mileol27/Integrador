@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Iterator;
 import org.bson.Document;
 import conn.Conn;
+import java.util.ArrayList;
 import org.bson.types.ObjectId;
 
 public class Categoria implements ISerrializable{
@@ -59,6 +60,8 @@ public class Categoria implements ISerrializable{
         doc.put("creado_por", Conn.user_logged.getId());
         col.insertOne(doc);
     }
+    
+    
 
     public ObjectId getId() {
         return _id;
@@ -91,6 +94,7 @@ public class Categoria implements ISerrializable{
     public void setCreado_por(Usuario creado_por) {
         this.creado_por = creado_por;
     }
+    
     
     /* public void Refresh(){
         
