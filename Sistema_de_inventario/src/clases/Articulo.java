@@ -12,7 +12,9 @@ import org.bson.types.ObjectId;
  
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.eq;
 import java.util.Date;
 import conn.Conn;
 import java.util.ArrayList;
@@ -50,11 +52,9 @@ public class Articulo implements ISerrializable{
     public Articulo() {
     }
 
-    public Articulo(Categoria categoria) {
-        this.categoria = categoria;
+    public Articulo(ObjectId _id) {
+        this._id = _id;
     }
-
-    
 
 
     public Articulo(Document ob) {
@@ -65,10 +65,10 @@ public class Articulo implements ISerrializable{
         this.marca = ob.getString("marca");
         this.modelo = ob.getString("modelo");
         this.num_serie = ob.getString("num_serie");
-        this.categoria = new Categoria(ob.getObjectId("categoria"));
+        // this.categoria = new Categoria(ob.getObjectId("categoria"));
         this.f_modiciacion = ob.getDate("f_modiciacion");
         this.observaciones = ob.getString("observaciones");
-        this.estado = new Estado(ob.getObjectId("estado"));
+        // this.estado = new Estado(ob.getObjectId("estado"));
     }
     
     public static int contar_total() {
@@ -85,18 +85,14 @@ public class Articulo implements ISerrializable{
     
     public void eliminar() {
     }
-
-
    
-    
-
     @Override
     public void guardar() {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase documento = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = documento.getCollection("articulos");
         Document doc = new Document();
-        doc.put("descripción", descripcion);
+        doc.put("descripcion", descripcion);
         doc.put("creado_el", new Date());
         doc.put("creado_por", Conn.user_logged.getId());
         doc.put("marca", marca);
