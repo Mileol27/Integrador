@@ -12,7 +12,9 @@ import clases.Usuario;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.eq;
 import java.util.ArrayList;
 import org.bson.Document;
 import java.util.Iterator;
@@ -82,6 +84,23 @@ public class Conn {
             articulos.add(new Articulo((Document) it.next()));
         }
         return articulos;
+    }
+    
+    public static ArrayList<Articulo> listar_articulos_por_categoria(Categoria categoria) {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase database = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = database.getCollection("articulos");
+        MongoCursor<Document> cursor = col.find(eq("categoria", categoria.getId())).iterator();
+         ArrayList<Articulo> articulos = new ArrayList<>();
+        try{
+        while (cursor.hasNext()) {
+             articulos.add(new Articulo((Document) cursor.next()));
+        //System.out.println(cursor.next().toJson());
+        }
+        } finally {
+        cursor.close();
+        return articulos;
+        }
     }
 
     
