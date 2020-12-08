@@ -43,11 +43,19 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         
         ArrayList<Categoria> categorias = Conn.listar_categorias();
         DefaultComboBoxModel model_cats = new DefaultComboBoxModel();
+        model_cats.addElement(new Categoria("Todos"));
         categorias.forEach(categoria -> {
-            
             model_cats.addElement(categoria);
         });
         cb_cat.setModel(model_cats);
+        
+        ArrayList<Estado> estados = Conn.listar_estados();
+        DefaultComboBoxModel model_estados = new DefaultComboBoxModel();
+        model_estados.addElement(new Estado("Todos", ""));
+        estados.forEach(estado -> {
+            model_estados.addElement(estado);
+        });
+        cb_estados.setModel(model_estados);
         
         actualizar_articulos();
     }
@@ -55,8 +63,13 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     
     
     public static void actualizar_articulos() {
-        listado_articulos = Conn.listar_articulos();
+        Categoria cat = (Categoria) cb_cat.getSelectedItem();
+        cat = cat.getId() == null ? null : cat;
+        Estado st = (Estado) cb_estados.getSelectedItem();
+        st = st.getId() == null ? null : st;
+        listado_articulos = Conn.listar_articulos(cat, st);
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0);
         Interfaz.listado_articulos.forEach(a -> {
             model.addRow(new Object[]{
                 a.getId(),
@@ -64,7 +77,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getMarca(),
                 a.getModelo(),
                 a.getNum_serie(),
-                a.getEstado().getNombre(),
+                "", // a.getEstado().getNombre(),
                 a.getCreado_el().toString(),
                 a.getF_modiciacion().toString(),
                 a.getObservaciones()
@@ -365,31 +378,14 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
     private void cb_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_catActionPerformed
         
-        Categoria categoria = (Categoria) cb_cat.getSelectedItem();
-        listado_articulos=Conn.listar_articulos_por_categoria(categoria);
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        model.setRowCount(0);
-        Interfaz.listado_articulos.forEach(a -> {
-            model.addRow(new Object[]{
-                a.getId(),
-                a.getDescripcion(),
-                a.getMarca(),
-                a.getModelo(),
-                a.getNum_serie(),
-                a.getEstado().getNombre(),
-                a.getCreado_el().toString(),
-                a.getF_modiciacion().toString(),
-                a.getObservaciones()
-            });
-        });
-       
-        
-        
+        actualizar_articulos();
         
     }//GEN-LAST:event_cb_catActionPerformed
 
     private void cb_estadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_estadosActionPerformed
-        // TODO add your handling code here:
+        
+        actualizar_articulos();
+
     }//GEN-LAST:event_cb_estadosActionPerformed
 
     private void cb_catItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_catItemStateChanged
@@ -447,8 +443,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btnagregar;
     private javax.swing.JButton btnclose;
     private javax.swing.JButton btnrefresh;
-    private javax.swing.JComboBox<String> cb_cat;
-    private javax.swing.JComboBox<String> cb_estados;
+    private static javax.swing.JComboBox<String> cb_cat;
+    private static javax.swing.JComboBox<String> cb_estados;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

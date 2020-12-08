@@ -10,15 +10,18 @@ import clases.Categoria;
 import clases.Estado;
 import clases.Usuario;
 import com.mongodb.MongoClient;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import static com.mongodb.client.model.Filters.eq;
+import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Filters;
 import java.util.ArrayList;
 import org.bson.Document;
 import java.util.Iterator;
-import org.bson.types.ObjectId;
+import org.bson.conversions.Bson;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -60,11 +63,34 @@ public class Conn {
         return estados;
     }
     
-    public static ArrayList<Articulo> listar_articulos() {
+    public static ArrayList<Articulo> listar_articulos(Categoria cat, Estado st) {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase database = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = database.getCollection("articulos");
-        FindIterable categorias_in_bd = col.find();
+        Bson filtros = new Document();
+        if (cat != null) {
+            System.out.println("cat: " + cat.getId() );
+            filtros = Filters.and(filtros, new Document("categoria", cat.getId()));
+        }
+        if (st != null) {
+            filtros = Filters.and(filtros, new Document("estado", st.getId()));
+        }
+        List aggregate = Arrays.asList(
+            new Document(
+                "$lookup", new Document("from", "estados")
+                        .append("localField", "estado")
+                        .append("foreignField", "_id")
+                        .append("as", "estado")
+            ),
+            new Document(
+                "$lookup", new Document("from", "categorias")
+                        .append("localField", "categoria")
+                        .append("foreignField", "_id")
+                        .append("as", "categoria")
+            ),
+            Aggregates.match(filtros)
+        );
+        AggregateIterable categorias_in_bd = col.aggregate(aggregate);
         ArrayList<Articulo> articulos = new ArrayList<>();
         Iterator it = categorias_in_bd.iterator();
         while (it.hasNext()) {
@@ -72,36 +98,5 @@ public class Conn {
         }
         return articulos;
     }
-    
-    public static ArrayList<Articulo> listar_articulos_cat() {
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase database = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = database.getCollection("articulos");
-        FindIterable categorias_in_bd = col.find(new Document("categoria",Conn.articulo_categoria));
-        ArrayList<Articulo> articulos = new ArrayList<>();
-        Iterator it = categorias_in_bd.iterator();
-        while (it.hasNext()) {
-            articulos.add(new Articulo((Document) it.next()));
-        }
-        return articulos;
-    }
-    
-    public static ArrayList<Articulo> listar_articulos_por_categoria(Categoria categoria) {
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase database = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = database.getCollection("articulos");
-        MongoCursor<Document> cursor = col.find(eq("categoria", categoria.getId())).iterator();
-         ArrayList<Articulo> articulos = new ArrayList<>();
-        try{
-        while (cursor.hasNext()) {
-             articulos.add(new Articulo((Document) cursor.next()));
-        //System.out.println(cursor.next().toJson());
-        }
-        } finally {
-        cursor.close();
-        return articulos;
-        }
-    }
-
-    
+   
 }
