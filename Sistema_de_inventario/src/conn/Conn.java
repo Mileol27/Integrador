@@ -80,13 +80,13 @@ public class Conn {
                 "$lookup", new Document("from", "estados")
                         .append("localField", "estado")
                         .append("foreignField", "_id")
-                        .append("as", "estado")
+                        .append("as", "estado_obj")
             ),
             new Document(
                 "$lookup", new Document("from", "categorias")
                         .append("localField", "categoria")
                         .append("foreignField", "_id")
-                        .append("as", "categoria")
+                        .append("as", "categoria_obj")
             ),
             Aggregates.match(filtros)
         );
