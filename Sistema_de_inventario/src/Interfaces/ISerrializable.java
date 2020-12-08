@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public interface ISerrializable<T> {
 
-    public void guardar();
+    public void guardar ();
     public void eliminar();
 
 }

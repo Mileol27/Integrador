@@ -2,6 +2,14 @@ package clases;
 
 import Interfaces.ISerrializable;
 import com.mongodb.MongoClient;
+ 
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+ 
+import java.util.Date;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+ 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -12,6 +20,7 @@ import java.util.Iterator;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+ 
 public class Articulo implements ISerrializable{
     private ObjectId _id;
     private String descripcion;
@@ -76,6 +85,9 @@ public class Articulo implements ISerrializable{
     
     public void eliminar() {
     }
+
+
+   
     
 
     @Override
@@ -97,7 +109,7 @@ public class Articulo implements ISerrializable{
         col.insertOne(doc);
     }
     
-    
+ 
 
     public ObjectId getId() {
         return _id;
@@ -182,9 +194,6 @@ public class Articulo implements ISerrializable{
     public void setEstado(Estado estado) {
         this.estado = estado;
     }
-    
-
-   
-    
+ 
     
 }
