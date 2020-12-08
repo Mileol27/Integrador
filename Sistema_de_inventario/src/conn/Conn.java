@@ -71,11 +71,11 @@ public class Conn {
         return articulos;
     }
     
-    public static ArrayList<Articulo> listar_articulos_cat() {
+    public static ArrayList<Articulo> listar_articulos_cat(Categoria categoria) {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase database = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = database.getCollection("articulos");
-        FindIterable categorias_in_bd = col.find(new Document("categoria",Conn.articulo_categoria));
+        FindIterable categorias_in_bd = col.find(new Document("categoria",categoria.getId()));
         ArrayList<Articulo> articulos = new ArrayList<>();
         Iterator it = categorias_in_bd.iterator();
         while (it.hasNext()) {

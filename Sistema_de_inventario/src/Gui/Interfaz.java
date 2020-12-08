@@ -348,34 +348,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_btnrefreshActionPerformed
 
     private void cb_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_catActionPerformed
-        //arreglar todo esto!
-        ArrayList<Articulo> lista_articulo_x_categoria = Conn.listar_articulos_cat();;
-        Articulo combo_articulo = (Articulo) cb_cat.getSelectedItem(); //Este es un objeto (categoria) que elejimos al presionar en el combobox
-        
-        Articulo objecto_articulo = new Articulo();
-        objecto_articulo.Filtro_Categorias_in_articulo();
-        
-        
-        Conn.articulo_categoria = combo_articulo;
-        System.out.println(combo_articulo);
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        lista_articulo_x_categoria.forEach(a -> {
-            model.addRow(new Object[]{
-                a.getId(),
-                a.getDescripcion(),
-                a.getMarca(),
-                a.getModelo(),
-                a.getNum_serie(),
-                a.getEstado().getNombre(),
-                a.getCreado_el().toString(),
-                a.getF_modiciacion().toString(),
-                a.getObservaciones()
-            });
-        });
-        
-        
-        
-        
+     
         
     }//GEN-LAST:event_cb_catActionPerformed
 
