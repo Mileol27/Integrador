@@ -68,7 +68,7 @@ public class Articulo implements ISerrializable{
         // this.categoria = new Categoria(ob.getObjectId("categoria"));
         this.f_modiciacion = ob.getDate("f_modiciacion");
         this.observaciones = ob.getString("observaciones");
-        // this.estado = new Estado(ob.getObjectId("estado"));
+        this.estado = new Estado(ob.getObjectId("estado"));
     }
     
     public static int contar_total() {

@@ -33,14 +33,14 @@ import org.bson.Document;
 public class Interfaz extends javax.swing.JFrame implements ActionListener {
     
   public static ArrayList<Articulo> listado_articulos = new ArrayList<Articulo>();;
-  
+  public static ArrayList<Categoria> listado_categoria = new ArrayList<Categoria>();;
   
 
     public Interfaz() {
         
         initComponents();
         setLocationRelativeTo(null);
-        
+        actualizar_categorias();
         ArrayList<Categoria> categorias = Conn.listar_categorias();
         DefaultComboBoxModel model_cats = new DefaultComboBoxModel();
         model_cats.addElement(new Categoria("Todos"));
@@ -58,6 +58,22 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         cb_estados.setModel(model_estados);
         
         actualizar_articulos();
+        
+    }
+    
+    public static void actualizar_categorias(){
+        listado_categoria = Conn.listar_categorias();
+        DefaultTableModel model_cat = (DefaultTableModel) tbl_categorias.getModel();
+        model_cat.setRowCount(0);
+        System.out.println();
+        Interfaz.listado_categoria.forEach(a -> {
+            model_cat.addRow(new Object[]{
+                a.getId(),
+                a.getNombre(),
+                a.getCreado_el(),
+                a.getCreado_por()
+            });
+        });
     }
     
     
@@ -77,7 +93,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getMarca(),
                 a.getModelo(),
                 a.getNum_serie(),
-                "", // a.getEstado().getNombre(),
+                a.getEstado().getId(),
                 a.getCreado_el().toString(),
                 a.getF_modiciacion().toString(),
                 a.getObservaciones()
@@ -96,10 +112,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txtarea = new javax.swing.JTextArea();
         btnagregar = new javax.swing.JButton();
-        btnrefresh = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbl_categorias = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -119,10 +134,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        txtarea.setColumns(20);
-        txtarea.setRows(5);
-        jScrollPane3.setViewportView(txtarea);
-
         btnagregar.setText("agregar categoria");
         btnagregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,12 +141,18 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             }
         });
 
-        btnrefresh.setText("Refresh");
-        btnrefresh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnrefreshActionPerformed(evt);
+        tbl_categorias.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nombre", "Fecha", "Usuario"
             }
-        });
+        ));
+        jScrollPane3.setViewportView(tbl_categorias);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -144,25 +161,21 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(239, 239, 239)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(63, 63, 63)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 788, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(290, 290, 290)
-                        .addComponent(btnagregar)
-                        .addGap(93, 93, 93)
-                        .addComponent(btnrefresh)))
-                .addContainerGap(393, Short.MAX_VALUE))
+                        .addGap(388, 388, 388)
+                        .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(137, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnagregar)
-                    .addComponent(btnrefresh))
-                .addContainerGap(300, Short.MAX_VALUE))
+                .addGap(43, 43, 43)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66)
+                .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Categorías", jPanel4);
@@ -255,7 +268,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cb_estados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_open_add)
                 .addContainerGap())
@@ -315,7 +328,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jLabel5)
                     .addComponent(jLabel6)
                     .addComponent(jLabel7))
-                .addContainerGap(292, Short.MAX_VALUE))
+                .addContainerGap(299, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Resumen general", jPanel1);
@@ -368,13 +381,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         
         
     }//GEN-LAST:event_btncloseActionPerformed
-
-    private void btnrefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrefreshActionPerformed
-      
-        // Categoria cate = new Categoria();
-        // cate.Refresh();
-        
-    }//GEN-LAST:event_btnrefreshActionPerformed
 
     private void cb_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_catActionPerformed
         
@@ -442,7 +448,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btn_open_add;
     private javax.swing.JButton btnagregar;
     private javax.swing.JButton btnclose;
-    private javax.swing.JButton btnrefresh;
     private static javax.swing.JComboBox<String> cb_cat;
     private static javax.swing.JComboBox<String> cb_estados;
     private javax.swing.JLabel jLabel4;
@@ -460,6 +465,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     public static javax.swing.JTable jTable2;
-    private javax.swing.JTextArea txtarea;
+    private static javax.swing.JTable tbl_categorias;
     // End of variables declaration//GEN-END:variables
 }

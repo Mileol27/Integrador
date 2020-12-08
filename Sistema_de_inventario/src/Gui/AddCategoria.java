@@ -112,6 +112,7 @@ public class AddCategoria extends javax.swing.JFrame {
             cat.guardar();
             dispose();
             JOptionPane.showMessageDialog(null, "creado exitosamente");
+            Interfaz.actualizar_categorias();
         } else {
             // mostrar mensaje de error, preferiblemente en un label
             JOptionPane.showMessageDialog(null, "Ingrese el nombre");

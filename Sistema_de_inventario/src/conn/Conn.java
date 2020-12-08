@@ -36,7 +36,15 @@ public class Conn {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase database = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = database.getCollection("categorias");
-        FindIterable categorias_in_bd = col.find();
+        List aggregate = Arrays.asList(
+            new Document(
+                "$lookup", new Document("from", "categorias")
+                        .append("localField", "categoria")
+                        .append("foreignField", "_id")
+                        .append("as", "categoria_obj")
+            )
+        );
+        AggregateIterable categorias_in_bd = col.aggregate(aggregate);
         ArrayList<Categoria> categorias = new ArrayList<>();
         Iterator it = categorias_in_bd.iterator();
         while (it.hasNext()) {
