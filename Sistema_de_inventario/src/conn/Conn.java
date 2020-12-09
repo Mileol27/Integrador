@@ -107,7 +107,7 @@ public class Conn {
         return articulos;
     }
 
-    public static ArrayList<Estado> listar_users() {
+    public static ArrayList<Usuario> listar_users() {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase database = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = database.getCollection("users");
@@ -118,14 +118,12 @@ public class Conn {
             admin.guardar();
         }
         FindIterable categorias_in_bd = col.find();
-        ArrayList<Estado> estados = new ArrayList<>();
+        ArrayList<Usuario> usuario = new ArrayList<>();
         Iterator it = categorias_in_bd.iterator();
         while (it.hasNext()) {
-            estados.add(new Estado((Document) it.next()));
+            usuario.add(new Usuario((Document) it.next()));
         }
-        return estados;
+        return usuario;
     }
-    
-    
    
 }

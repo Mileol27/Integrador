@@ -7,6 +7,7 @@ package Gui;
 
 import clases.Categoria;
 import clases.Usuario;
+import conn.Conn;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JOptionPane;
@@ -15,10 +16,10 @@ import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
  
     public Login() {
-        System.out.println("USER's: " + conn.Conn.listar_users().toString());
+        
         initComponents();
         setLocationRelativeTo(null);
-        
+        Usuario.Admin_Adduser();
         
     }
  

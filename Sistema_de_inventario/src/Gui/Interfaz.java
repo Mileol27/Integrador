@@ -38,24 +38,22 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
     public static ArrayList<Articulo> listado_articulos = new ArrayList<Articulo>();
     ;
-  public static ArrayList<Categoria> listado_categoria = new ArrayList<Categoria>();
-
+    public static ArrayList<Categoria> listado_categoria = new ArrayList<Categoria>();
     ;
+    public static ArrayList<Usuario> listado_users = new ArrayList<Usuario>();
   
 
     public Interfaz() {
 
         initComponents();
         setLocationRelativeTo(null);
+        
         actualizar_categorias();
-        ArrayList<Categoria> categorias = Conn.listar_categorias();
-        DefaultComboBoxModel model_cats = new DefaultComboBoxModel();
-        model_cats.addElement(new Categoria("Todos"));
-        categorias.forEach(categoria -> {
-            model_cats.addElement(categoria);
-        });
-        cb_cat.setModel(model_cats);
-
+        
+        actualizar_users();
+        
+        actualizar_cmbo_categorias();
+        
         ArrayList<Estado> estados = Conn.listar_estados();
         DefaultComboBoxModel model_estados = new DefaultComboBoxModel();
         model_estados.addElement(new Estado("Todos", ""));
@@ -66,6 +64,16 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         actualizar_articulos();
 
+    }
+    
+    public static void actualizar_cmbo_categorias(){
+        ArrayList<Categoria> categorias = Conn.listar_categorias();
+        DefaultComboBoxModel model_cats = new DefaultComboBoxModel();
+        model_cats.addElement(new Categoria("Todos"));
+        categorias.forEach(categoria -> {
+            model_cats.addElement(categoria);
+        });
+        cb_cat.setModel(model_cats);
     }
 
     public static void actualizar_categorias() {
@@ -79,6 +87,24 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getNombre(),
                 a.getCreado_el(),
                 a.getCreado_por().getUsername()
+            });
+        });
+    }
+    
+    public static void actualizar_users() {
+        listado_users = Conn.listar_users();
+        DefaultTableModel model_user = (DefaultTableModel) tbl_users.getModel();
+        model_user.setRowCount(0);
+        System.out.println();
+        Interfaz.listado_users.forEach(a -> {
+            model_user.addRow(new Object[]{
+                a.getId(),
+                a.getNombre(),
+                a.getApellido(),
+                a.getUsername(),
+                a.getPassword(),
+                a.isEs_admin(),
+                a.isActivo()         
             });
         });
     }
@@ -126,7 +152,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        Pan_usuario = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         btnagregar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -148,12 +174,15 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         btnclose = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tbl_users = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
+        Pan_usuario.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -225,10 +254,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addComponent(btneditar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(36, 36, 36)
                 .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Categorías", jPanel4);
+        Pan_usuario.addTab("Categorías", jPanel4);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -321,13 +350,13 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cb_estados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_open_add)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Listado", jPanel2);
+        Pan_usuario.addTab("Listado", jPanel2);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -383,10 +412,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jLabel5)
                     .addComponent(jLabel6)
                     .addComponent(jLabel7))
-                .addContainerGap(250, Short.MAX_VALUE))
+                .addContainerGap(264, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Resumen general", jPanel1);
+        Pan_usuario.addTab("Resumen general", jPanel1);
 
         btnclose.setBackground(new java.awt.Color(217, 47, 61));
         btnclose.setFont(new java.awt.Font("Wide Latin", 0, 36)); // NOI18N
@@ -396,17 +425,61 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 btncloseActionPerformed(evt);
             }
         });
-        jTabbedPane1.addTab("Cerrar Sesion", btnclose);
+        Pan_usuario.addTab("Cerrar Sesion", btnclose);
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
+        tbl_users.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Apellido", "Nombre", "Usuario", "Contraseña", "Activo", "Administrador"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_users.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_usersMouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(tbl_users);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 989, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                .addGap(110, 110, 110))
+        );
+
+        Pan_usuario.addTab("Listado", jPanel5);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(Pan_usuario)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(Pan_usuario)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -425,63 +498,19 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_open_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_open_addActionPerformed
-        AddArticulo ag = new AddArticulo();
-        ag.setVisible(true);
-        // dispose();
-    }//GEN-LAST:event_btn_open_addActionPerformed
-
-    private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
-
-        AddCategoria categori = new AddCategoria();
-        categori.setVisible(true);
-        // dispose();
-        //  Categoria cat = new Categoria();
-        //  cat.AddCat();
-
-    }//GEN-LAST:event_btnagregarActionPerformed
-
     private void btncloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncloseActionPerformed
 
         Login login = new Login();
         login.setVisible(true);
         dispose();
 
-
     }//GEN-LAST:event_btncloseActionPerformed
 
-    private void cb_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_catActionPerformed
-
-        actualizar_articulos();
-
-    }//GEN-LAST:event_cb_catActionPerformed
-
-    private void cb_estadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_estadosActionPerformed
-
-        actualizar_articulos();
-
-    }//GEN-LAST:event_cb_estadosActionPerformed
-
-    private void cb_catItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_catItemStateChanged
-
-
-    }//GEN-LAST:event_cb_catItemStateChanged
-
-    private void btneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarActionPerformed
-
-        int row = tbl_categorias.getSelectedRow();
-        if (row != -1) {
-            String nombre = (String) tbl_categorias.getValueAt(row, 1);
-            Object id = (Object) tbl_categorias.getValueAt(row, 0);
-            AddCategoria categoria = new AddCategoria();
-            categoria.txtcat.setText(nombre);
-            categoria.txttitulo.setText("MODIFICAR CATEGORIA");
-            categoria.modcategoria = new Categoria((ObjectId) id);
-            categoria.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "Seleccione una categoria para editar");
-        }
-    }//GEN-LAST:event_btneditarActionPerformed
+    private void btn_open_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_open_addActionPerformed
+        AddArticulo ag = new AddArticulo();
+        ag.setVisible(true);
+        // dispose();
+    }//GEN-LAST:event_btn_open_addActionPerformed
 
     private void tabla_listadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_listadoMouseClicked
         int column = tabla_listado.getColumnModel().getColumnIndexAtX(evt.getX());
@@ -504,6 +533,49 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             }
         }
     }//GEN-LAST:event_tabla_listadoMouseClicked
+
+    private void cb_estadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_estadosActionPerformed
+
+        actualizar_articulos();
+    }//GEN-LAST:event_cb_estadosActionPerformed
+
+    private void cb_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_catActionPerformed
+
+        actualizar_articulos();
+    }//GEN-LAST:event_cb_catActionPerformed
+
+    private void cb_catItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_catItemStateChanged
+
+    }//GEN-LAST:event_cb_catItemStateChanged
+
+    private void btneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarActionPerformed
+
+        int row = tbl_categorias.getSelectedRow();
+        if (row != -1) {
+            String nombre = (String) tbl_categorias.getValueAt(row, 1);
+            Object id = (Object) tbl_categorias.getValueAt(row, 0);
+            AddCategoria categoria = new AddCategoria();
+            categoria.txtcat.setText(nombre);
+            categoria.txttitulo.setText("MODIFICAR CATEGORIA");
+            categoria.modcategoria = new Categoria((ObjectId) id);
+            categoria.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione una categoria para editar");
+        }
+    }//GEN-LAST:event_btneditarActionPerformed
+
+    private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
+
+        AddCategoria categori = new AddCategoria();
+        categori.setVisible(true);
+        // dispose();
+        //  Categoria cat = new Categoria();
+        //  cat.AddCat();
+    }//GEN-LAST:event_btnagregarActionPerformed
+
+    private void tbl_usersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_usersMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbl_usersMouseClicked
 
     /**
      * @param args the command line arguments
@@ -534,6 +606,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JTabbedPane Pan_usuario;
     private javax.swing.JButton btn_open_add;
     private javax.swing.JButton btnagregar;
     private javax.swing.JButton btnclose;
@@ -550,12 +623,14 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    public javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTable jTable1;
     public static javax.swing.JTable tabla_listado;
     private static javax.swing.JTable tbl_categorias;
+    public static javax.swing.JTable tbl_users;
     // End of variables declaration//GEN-END:variables
 }

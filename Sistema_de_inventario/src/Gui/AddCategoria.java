@@ -130,6 +130,7 @@ public class AddCategoria extends javax.swing.JFrame {
             dispose();
             Interfaz.actualizar_categorias();
             JOptionPane.showMessageDialog(null, "Guardado exitosamente");
+            Interfaz.actualizar_cmbo_categorias();
         }
     }//GEN-LAST:event_btnguardarActionPerformed
 

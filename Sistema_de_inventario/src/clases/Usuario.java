@@ -12,6 +12,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import conn.Conn;
 import java.util.Iterator;
+import javax.swing.JOptionPane;
 import org.bson.Document;
 import org.bson.codecs.Decoder;
 import org.bson.types.ObjectId;
@@ -27,11 +28,20 @@ public class Usuario implements ISerrializable{
     private boolean activo;
 
     //Constructores
+    
+    public Usuario(){}
     public Usuario(ObjectId _id){
         this._id = _id;
     }
 
     public Usuario(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public Usuario(String nombre, String apellido, String username, String password) {
+        this.nombre = nombre;
+        this.apellido = apellido;
         this.username = username;
         this.password = password;
     }
@@ -42,6 +52,8 @@ public class Usuario implements ISerrializable{
         this.apellido = (String) ob.get("apellido");
         this.username = (String) ob.get("username");
         this.password = (String) ob.get("password");
+        //this.es_admin = (boolean) ob.get("es_admin");
+        //this.activo = (boolean) ob.get("activo");
     }
 
     public void eliminar() {
@@ -83,6 +95,10 @@ public class Usuario implements ISerrializable{
         this.password = password;
     }
 
+    public String getPassword() {
+        return password;
+    }
+    
     public boolean isEs_admin() {
         return es_admin;
     }
@@ -137,18 +153,45 @@ public class Usuario implements ISerrializable{
         
     }  */
     
-    /* public void AddUser(String name,  String ape, String usu, String pass){
+    public static void Admin_Adduser(){
         MongoClient mongoClient = new MongoClient();
         MongoDatabase documento = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = documento.getCollection("users");
+        FindIterable users_in_db = col.find(new Document("nombre", "admin"));
+        Document o_db = (Document) users_in_db.first();
         
         Document doc = new Document();
-        doc.put("nombre", name);
-        doc.put("apellido", ape);
-        doc.put("username", usu);
-        doc.put("password", pass);
-        col.insertOne(doc);
-    } */
+        if(o_db == null){
+            doc.put("nombre", "admin");
+            doc.put("apellido", "admin");
+            doc.put("username", "admin");
+            doc.put("password", "admin");
+            doc.put("es_admin", true);
+            doc.put("activo", true);
+            col.insertOne(doc);
+        }else{
+            
+        }
+    }
+    
+    public void AddUser(String nombre,String apellido,String username, String password){
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase documento = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = documento.getCollection("users");
+        FindIterable users_in_db = col.find(new Document("es_admin", true));
+        Document o_db = (Document) users_in_db.first();
+        
+        Document doc = new Document();
+        if(o_db != null){
+            doc.put("nombre", nombre);
+            doc.put("apellido", apellido);
+            doc.put("username", username);
+            doc.put("password", password);
+            col.insertOne(doc);
+        }else{
+            JOptionPane.showMessageDialog(null, "Usted no es un administrador");
+        }
+    }
     
 }
 
