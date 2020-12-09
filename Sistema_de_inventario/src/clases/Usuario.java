@@ -23,6 +23,8 @@ public class Usuario implements ISerrializable{
     private String apellido;
     private String username;
     private String password;
+    private boolean es_admin;
+    private boolean activo;
 
     //Constructores
     public Usuario(ObjectId _id){
@@ -80,7 +82,22 @@ public class Usuario implements ISerrializable{
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
+    public boolean isEs_admin() {
+        return es_admin;
+    }
+
+    public void setEs_admin(boolean es_admin) {
+        this.es_admin = es_admin;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
     
     public Usuario autenticar() {
         MongoClient mongoClient = new MongoClient();

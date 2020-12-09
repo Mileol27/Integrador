@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
  
     public Login() {
-        System.out.println("CATS: " + conn.Conn.listar_categorias().toString());
+        System.out.println("USER's: " + conn.Conn.listar_users().toString());
         initComponents();
         setLocationRelativeTo(null);
         

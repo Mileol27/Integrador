@@ -106,5 +106,26 @@ public class Conn {
         }
         return articulos;
     }
+
+    public static ArrayList<Estado> listar_users() {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase database = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = database.getCollection("users");
+        if (col.countDocuments() == 0) {
+            Usuario admin = new Usuario("admin", "admin");
+            admin.setActivo(true);
+            admin.setEs_admin(true);
+            admin.guardar();
+        }
+        FindIterable categorias_in_bd = col.find();
+        ArrayList<Estado> estados = new ArrayList<>();
+        Iterator it = categorias_in_bd.iterator();
+        while (it.hasNext()) {
+            estados.add(new Estado((Document) it.next()));
+        }
+        return estados;
+    }
+    
+    
    
 }
