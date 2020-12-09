@@ -44,7 +44,7 @@ public class Login extends javax.swing.JFrame {
         txtuser.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         txtuser.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        btn_ingresar.setBackground(new java.awt.Color(102, 102, 102));
+        btn_ingresar.setBackground(new java.awt.Color(0, 204, 102));
         btn_ingresar.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         btn_ingresar.setText("INGRESAR");
         btn_ingresar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -54,7 +54,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        btn_limpiar.setBackground(new java.awt.Color(102, 102, 102));
+        btn_limpiar.setBackground(new java.awt.Color(255, 102, 102));
         btn_limpiar.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         btn_limpiar.setText("LIMPIAR");
         btn_limpiar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -65,7 +65,7 @@ public class Login extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 153));
+        jLabel1.setForeground(new java.awt.Color(0, 102, 255));
         jLabel1.setText("L  O  G  I  N");
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
@@ -103,17 +103,19 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(jLabel12)
                 .addGap(169, 169, 169))
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(88, 88, 88)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(88, 88, 88)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtpass, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                            .addComponent(txtuser))))
+                            .addComponent(txtuser)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(117, 117, 117)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(

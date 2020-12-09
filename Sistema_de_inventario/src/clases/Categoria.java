@@ -1,6 +1,7 @@
 package clases;
 
 import Interfaces.ISerrializable;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
@@ -28,7 +29,11 @@ public class Categoria implements ISerrializable{
 
     public Categoria(String nombre) {
         this.nombre = nombre;
-    }    
+    } 
+    public Categoria(ObjectId _id,String nombre) {
+        this._id = _id;
+        this.nombre = nombre;
+    } 
     
     public Categoria(Document ob){
         this._id = ob.getObjectId("_id");
@@ -47,6 +52,19 @@ public class Categoria implements ISerrializable{
     }
 
     public void eliminar() {
+    }
+    
+    public void modificar(Categoria categoria){
+            MongoClient mongoClient = new MongoClient();
+            MongoDatabase documento = mongoClient.getDatabase("inventario");
+            MongoCollection<Document> col = documento.getCollection("categorias");
+            BasicDBObject query = new BasicDBObject();
+            query.put("_id", categoria.getId()); // (1)
+            BasicDBObject newDocument = new BasicDBObject();
+            newDocument.put("nombre", categoria.getNombre()); // (2)
+            BasicDBObject updateObject = new BasicDBObject();
+            updateObject.put("$set", newDocument); // (3)
+            col.updateOne(query, updateObject);
     }
 
     @Override
