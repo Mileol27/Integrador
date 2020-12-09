@@ -19,6 +19,7 @@ import java.util.Date;
 import conn.Conn;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -65,10 +66,20 @@ public class Articulo implements ISerrializable{
         this.marca = ob.getString("marca");
         this.modelo = ob.getString("modelo");
         this.num_serie = ob.getString("num_serie");
-        // this.categoria = new Categoria(ob.getObjectId("categoria"));
+        if (ob.get("categoria_obj") == null) {
+            this.categoria = new Categoria(ob.getObjectId("categoria"));
+        } else {
+            this.categoria = new Categoria((Document) ((List) ob.get("categoria_obj")).get(0));
+        }
         this.f_modiciacion = ob.getDate("f_modiciacion");
         this.observaciones = ob.getString("observaciones");
-        this.estado = new Estado(ob.getObjectId("estado"));
+        if (ob.get("estado_obj") == null) {
+            this.estado = new Estado(ob.getObjectId("estado"));
+        } else {
+            this.estado = new Estado((Document) ((List) ob.get("estado_obj")).get(0));
+        }
+                
+        
     }
     
     public static int contar_total() {

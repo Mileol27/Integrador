@@ -8,11 +8,14 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import java.util.Date;
 import java.util.Iterator;
 import org.bson.Document;
 import conn.Conn;
 import java.util.ArrayList;
+import java.util.List;
 import org.bson.types.ObjectId;
 
 public class Categoria implements ISerrializable{
@@ -20,6 +23,7 @@ public class Categoria implements ISerrializable{
     private ObjectId _id;
     private String nombre;
     private Date creado_el;
+    private Date modificado_el;
     private Usuario creado_por;
 
     //Constructor
@@ -39,7 +43,13 @@ public class Categoria implements ISerrializable{
         this._id = ob.getObjectId("_id");
         this.nombre = (String) ob.get("nombre");
         this.creado_el = (Date) ob.get("creado_el");
-        this.creado_por = new Usuario(ob.getObjectId("creado_por"));
+        this.modificado_el = (Date) ob.get("modificado_el");
+        if (ob.get("creado_por_obj") == null) {
+            this.creado_por = new Usuario(ob.getObjectId("creado_por"));
+        } else {
+            this.creado_por = new Usuario((Document) ((List) ob.get("creado_por_obj")).get(0));
+        }
+        
     }
 
     //Metodos
@@ -53,19 +63,6 @@ public class Categoria implements ISerrializable{
 
     public void eliminar() {
     }
-    
-    public void modificar(Categoria categoria){
-            MongoClient mongoClient = new MongoClient();
-            MongoDatabase documento = mongoClient.getDatabase("inventario");
-            MongoCollection<Document> col = documento.getCollection("categorias");
-            BasicDBObject query = new BasicDBObject();
-            query.put("_id", categoria.getId()); // (1)
-            BasicDBObject newDocument = new BasicDBObject();
-            newDocument.put("nombre", categoria.getNombre()); // (2)
-            BasicDBObject updateObject = new BasicDBObject();
-            updateObject.put("$set", newDocument); // (3)
-            col.updateOne(query, updateObject);
-    }
 
     @Override
     public void guardar() {
@@ -74,12 +71,15 @@ public class Categoria implements ISerrializable{
         MongoCollection<Document> col = documento.getCollection("categorias");
         Document doc = new Document();
         doc.put("nombre", nombre);
-        doc.put("creado_el", new Date());
-        doc.put("creado_por", Conn.user_logged.getId());
-        col.insertOne(doc);
+        doc.put("modificado_el", new Date());
+        if (_id == null) {
+            doc.put("creado_el", new Date());
+            doc.put("creado_por", Conn.user_logged.getId());
+            col.insertOne(doc);
+        } else {
+            col.updateOne(new BasicDBObject("_id", _id), new BasicDBObject("$set", doc));
+        }
     }
-    
-    
 
     public ObjectId getId() {
         return _id;

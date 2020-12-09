@@ -73,7 +73,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getId(),
                 a.getNombre(),
                 a.getCreado_el(),
-                a.getCreado_por()
+                a.getCreado_por().getUsername()
             });
         });
     }
@@ -95,7 +95,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getMarca(),
                 a.getModelo(),
                 a.getNum_serie(),
-                a.getEstado().getId(),
+                a.getEstado().getNombre(),
                 a.getCreado_el().toString(),
                 a.getF_modiciacion().toString(),
                 a.getObservaciones()
@@ -454,17 +454,17 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
     private void btneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarActionPerformed
         
-        int row=tbl_categorias.getSelectedRow();
-        if(row!=-1){
-        String nombre=(String) tbl_categorias.getValueAt(row, 1); 
-        Object id=(Object) tbl_categorias.getValueAt(row, 0);
+        int row = tbl_categorias.getSelectedRow();
+        if (row != -1) {
+        String nombre = (String) tbl_categorias.getValueAt(row, 1); 
+        Object id = (Object) tbl_categorias.getValueAt(row, 0);
         AddCategoria categoria = new AddCategoria();
         categoria.txtcat.setText(nombre);
         categoria.txttitulo.setText("MODIFICAR CATEGORIA");
-        categoria.modcategoria=new Categoria((ObjectId) id);
+        categoria.modcategoria = new Categoria((ObjectId) id);
         categoria.setVisible(true);
-        }else{
-            JOptionPane.showMessageDialog(null, "Seleccione una categoria");
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione una categoria para editar");
         }
     }//GEN-LAST:event_btneditarActionPerformed
 

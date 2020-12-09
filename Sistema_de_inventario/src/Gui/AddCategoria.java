@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  * @author EQUIPO
  */
 public class AddCategoria extends javax.swing.JFrame {
-    Categoria modcategoria=null;
+    Categoria modcategoria = null;
     Date fecha = new Date();
     
     /**
@@ -121,32 +121,16 @@ public class AddCategoria extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
-        if (modcategoria==null){   
         String new_category_name = txtcat.getText();
-        if (new_category_name != null && !new_category_name.equals("")) {
-            Categoria cat = new Categoria(txtcat.getText());
+        if (new_category_name == null || new_category_name.equals("")) {
+            JOptionPane.showMessageDialog(null, "Nombre no válido");
+        } else {
+            Categoria cat = modcategoria == null ? new Categoria(txtcat.getText()) : new Categoria(modcategoria.getId(),txtcat.getText());
             cat.guardar();
             dispose();
-            JOptionPane.showMessageDialog(null, "creado exitosamente");
             Interfaz.actualizar_categorias();
-        } else {
-            // mostrar mensaje de error, preferiblemente en un label
-            JOptionPane.showMessageDialog(null, "Ingrese el nombre");
-        }       
-        }else{
-           Categoria categoria=new Categoria(modcategoria.getId(),txtcat.getText());
-           categoria.modificar(categoria);
-           dispose();
-           JOptionPane.showMessageDialog(null, "Modificado exitosamente");
-            Interfaz.actualizar_categorias();
-           
-            
-            
-            
+            JOptionPane.showMessageDialog(null, "Guardado exitosamente");
         }
-        
-        
-        
     }//GEN-LAST:event_btnguardarActionPerformed
 
     private void btncancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelActionPerformed

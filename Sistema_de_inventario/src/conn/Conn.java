@@ -38,10 +38,10 @@ public class Conn {
         MongoCollection<Document> col = database.getCollection("categorias");
         List aggregate = Arrays.asList(
             new Document(
-                "$lookup", new Document("from", "categorias")
-                        .append("localField", "categoria")
+                "$lookup", new Document("from", "users")
+                        .append("localField", "creado_por")
                         .append("foreignField", "_id")
-                        .append("as", "categoria_obj")
+                        .append("as", "creado_por_obj")
             )
         );
         AggregateIterable categorias_in_bd = col.aggregate(aggregate);
