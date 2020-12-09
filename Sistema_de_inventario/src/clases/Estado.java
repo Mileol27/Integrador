@@ -23,10 +23,7 @@ public class Estado implements ISerrializable{
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
- 
 
- 
-    
     public Estado(Document ob) {
         this._id = ob.getObjectId("_id");
         this.nombre = ob.getString("nombre");

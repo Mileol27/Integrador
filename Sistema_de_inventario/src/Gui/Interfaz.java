@@ -23,8 +23,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import conn.Conn;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -33,30 +35,59 @@ import org.bson.Document;
 public class Interfaz extends javax.swing.JFrame implements ActionListener {
     
   public static ArrayList<Articulo> listado_articulos = new ArrayList<Articulo>();;
-  
+  public static ArrayList<Categoria> listado_categoria = new ArrayList<Categoria>();;
   
 
     public Interfaz() {
         
         initComponents();
         setLocationRelativeTo(null);
-        
+        actualizar_categorias();
         ArrayList<Categoria> categorias = Conn.listar_categorias();
         DefaultComboBoxModel model_cats = new DefaultComboBoxModel();
+        model_cats.addElement(new Categoria("Todos"));
         categorias.forEach(categoria -> {
-            
             model_cats.addElement(categoria);
         });
         cb_cat.setModel(model_cats);
         
+        ArrayList<Estado> estados = Conn.listar_estados();
+        DefaultComboBoxModel model_estados = new DefaultComboBoxModel();
+        model_estados.addElement(new Estado("Todos", ""));
+        estados.forEach(estado -> {
+            model_estados.addElement(estado);
+        });
+        cb_estados.setModel(model_estados);
+        
         actualizar_articulos();
+        
+    }
+    
+    public static void actualizar_categorias(){
+        listado_categoria = Conn.listar_categorias();
+        DefaultTableModel model_cat = (DefaultTableModel) tbl_categorias.getModel();
+        model_cat.setRowCount(0);
+        System.out.println();
+        Interfaz.listado_categoria.forEach(a -> {
+            model_cat.addRow(new Object[]{
+                a.getId(),
+                a.getNombre(),
+                a.getCreado_el(),
+                a.getCreado_por()
+            });
+        });
     }
     
     
     
     public static void actualizar_articulos() {
-        listado_articulos = Conn.listar_articulos();
+        Categoria cat = (Categoria) cb_cat.getSelectedItem();
+        cat = cat.getId() == null ? null : cat;
+        Estado st = (Estado) cb_estados.getSelectedItem();
+        st = st.getId() == null ? null : st;
+        listado_articulos = Conn.listar_articulos(cat, st);
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0);
         Interfaz.listado_articulos.forEach(a -> {
             model.addRow(new Object[]{
                 a.getId(),
@@ -64,7 +95,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getMarca(),
                 a.getModelo(),
                 a.getNum_serie(),
-                a.getEstado().getNombre(),
+                a.getEstado().getId(),
                 a.getCreado_el().toString(),
                 a.getF_modiciacion().toString(),
                 a.getObservaciones()
@@ -81,12 +112,13 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel3 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txtarea = new javax.swing.JTextArea();
         btnagregar = new javax.swing.JButton();
-        btnrefresh = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbl_categorias = new javax.swing.JTable();
+        btneditar = new javax.swing.JToggleButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -106,10 +138,14 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        txtarea.setColumns(20);
-        txtarea.setRows(5);
-        jScrollPane3.setViewportView(txtarea);
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
+        jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        btnagregar.setBackground(new java.awt.Color(0, 204, 102));
+        btnagregar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnagregar.setText("agregar categoria");
         btnagregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,10 +153,38 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             }
         });
 
-        btnrefresh.setText("Refresh");
-        btnrefresh.addActionListener(new java.awt.event.ActionListener() {
+        tbl_categorias.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nombre", "Fecha", "Usuario"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tbl_categorias);
+        if (tbl_categorias.getColumnModel().getColumnCount() > 0) {
+            tbl_categorias.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        btneditar.setBackground(new java.awt.Color(255, 255, 255));
+        btneditar.setForeground(new java.awt.Color(255, 255, 255));
+        btneditar.setIcon(new javax.swing.ImageIcon("C:\\Users\\EQUIPO\\Downloads\\lapiz (1).png")); // NOI18N
+        btneditar.setBorder(null);
+        btneditar.setContentAreaFilled(false);
+        btneditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnrefreshActionPerformed(evt);
+                btneditarActionPerformed(evt);
             }
         });
 
@@ -131,28 +195,30 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(239, 239, 239)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(57, 57, 57)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 788, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btneditar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(290, 290, 290)
-                        .addComponent(btnagregar)
-                        .addGap(93, 93, 93)
-                        .addComponent(btnrefresh)))
-                .addContainerGap(393, Short.MAX_VALUE))
+                        .addGap(391, 391, 391)
+                        .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(121, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnagregar)
-                    .addComponent(btnrefresh))
-                .addContainerGap(300, Short.MAX_VALUE))
+                .addGap(43, 43, 43)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btneditar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Categorías", jPanel4);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel8.setText("Listar por Categorias");
 
@@ -184,20 +250,16 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             new String [] {
                 "ID", "Descripción", "Marca", "Modelo", "# de serie", "Estado", "F.Registro", "F.Mod", "Observaciones", "Opciones"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setHeaderValue("ID");
-            jTable2.getColumnModel().getColumn(1).setHeaderValue("Descripción");
-            jTable2.getColumnModel().getColumn(2).setHeaderValue("Marca");
-            jTable2.getColumnModel().getColumn(3).setHeaderValue("Modelo");
-            jTable2.getColumnModel().getColumn(4).setHeaderValue("# de serie");
-            jTable2.getColumnModel().getColumn(5).setHeaderValue("Estado");
-            jTable2.getColumnModel().getColumn(6).setHeaderValue("F.Registro");
-            jTable2.getColumnModel().getColumn(7).setHeaderValue("F.Mod");
-            jTable2.getColumnModel().getColumn(8).setHeaderValue("Observaciones");
-            jTable2.getColumnModel().getColumn(9).setHeaderValue("Opciones");
-        }
 
         btn_open_add.setText("Agregar artículo");
         btn_open_add.addActionListener(new java.awt.event.ActionListener() {
@@ -228,7 +290,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cb_estados, 0, 140, Short.MAX_VALUE)
                             .addComponent(cb_cat, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(137, 675, Short.MAX_VALUE))))
+                        .addGap(137, 700, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,13 +304,15 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cb_estados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_open_add)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Listado", jPanel2);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -289,7 +353,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 621, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(348, Short.MAX_VALUE))
+                .addContainerGap(371, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -302,7 +366,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jLabel5)
                     .addComponent(jLabel6)
                     .addComponent(jLabel7))
-                .addContainerGap(292, Short.MAX_VALUE))
+                .addContainerGap(250, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Resumen general", jPanel1);
@@ -317,15 +381,28 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         });
         jTabbedPane1.addTab("Cerrar Sesion", btnclose);
 
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -356,40 +433,16 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         
     }//GEN-LAST:event_btncloseActionPerformed
 
-    private void btnrefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrefreshActionPerformed
-      
-        // Categoria cate = new Categoria();
-        // cate.Refresh();
-        
-    }//GEN-LAST:event_btnrefreshActionPerformed
-
     private void cb_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_catActionPerformed
         
-        Categoria categoria = (Categoria) cb_cat.getSelectedItem();
-        listado_articulos=Conn.listar_articulos_por_categoria(categoria);
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        model.setRowCount(0);
-        Interfaz.listado_articulos.forEach(a -> {
-            model.addRow(new Object[]{
-                a.getId(),
-                a.getDescripcion(),
-                a.getMarca(),
-                a.getModelo(),
-                a.getNum_serie(),
-                a.getEstado().getNombre(),
-                a.getCreado_el().toString(),
-                a.getF_modiciacion().toString(),
-                a.getObservaciones()
-            });
-        });
-       
-        
-        
+        actualizar_articulos();
         
     }//GEN-LAST:event_cb_catActionPerformed
 
     private void cb_estadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_estadosActionPerformed
-        // TODO add your handling code here:
+        
+        actualizar_articulos();
+
     }//GEN-LAST:event_cb_estadosActionPerformed
 
     private void cb_catItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_catItemStateChanged
@@ -398,6 +451,22 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         
         
     }//GEN-LAST:event_cb_catItemStateChanged
+
+    private void btneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarActionPerformed
+        
+        int row=tbl_categorias.getSelectedRow();
+        if(row!=-1){
+        String nombre=(String) tbl_categorias.getValueAt(row, 1); 
+        Object id=(Object) tbl_categorias.getValueAt(row, 0);
+        AddCategoria categoria = new AddCategoria();
+        categoria.txtcat.setText(nombre);
+        categoria.txttitulo.setText("MODIFICAR CATEGORIA");
+        categoria.modcategoria=new Categoria((ObjectId) id);
+        categoria.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione una categoria");
+        }
+    }//GEN-LAST:event_btneditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -408,22 +477,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+        
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -446,9 +500,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btn_open_add;
     private javax.swing.JButton btnagregar;
     private javax.swing.JButton btnclose;
-    private javax.swing.JButton btnrefresh;
-    private javax.swing.JComboBox<String> cb_cat;
-    private javax.swing.JComboBox<String> cb_estados;
+    private javax.swing.JToggleButton btneditar;
+    private static javax.swing.JComboBox<String> cb_cat;
+    private static javax.swing.JComboBox<String> cb_estados;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -457,13 +511,14 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    public javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     public static javax.swing.JTable jTable2;
-    private javax.swing.JTextArea txtarea;
+    private static javax.swing.JTable tbl_categorias;
     // End of variables declaration//GEN-END:variables
 }

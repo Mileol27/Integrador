@@ -65,7 +65,7 @@ public class Articulo implements ISerrializable{
         this.marca = ob.getString("marca");
         this.modelo = ob.getString("modelo");
         this.num_serie = ob.getString("num_serie");
-        this.categoria = new Categoria(ob.getObjectId("categoria"));
+        // this.categoria = new Categoria(ob.getObjectId("categoria"));
         this.f_modiciacion = ob.getDate("f_modiciacion");
         this.observaciones = ob.getString("observaciones");
         this.estado = new Estado(ob.getObjectId("estado"));
@@ -84,25 +84,6 @@ public class Articulo implements ISerrializable{
     }
     
     public void eliminar() {
-    }
-
-
-   
-    
-    public Articulo Filtro_Categorias_in_articulo(){
-       MongoClient mongoClient = new MongoClient();
-        MongoDatabase database = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = database.getCollection("articulos");
-        FindIterable categorias_in_bd = col.find(new Document("categorias", Conn.articulo_categoria));
-        Document o_db = (Document) categorias_in_bd.first();
-        
-        if (o_db != null) {
-            Articulo u_db = new Articulo(o_db);
-            Conn.articulo_categoria = u_db;
-            return u_db;  
-        }else{
-            return null;
-        }
     }
    
     @Override
