@@ -460,7 +460,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         Object id=(Object) tbl_categorias.getValueAt(row, 0);
         AddCategoria categoria = new AddCategoria();
         categoria.txtcat.setText(nombre);
-        categoria.txttitulo.setText("Modificar categoria");
+        categoria.txttitulo.setText("MODIFICAR CATEGORIA");
         categoria.modcategoria=new Categoria((ObjectId) id);
         categoria.setVisible(true);
         }else{
