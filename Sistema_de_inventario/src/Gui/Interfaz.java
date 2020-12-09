@@ -565,7 +565,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_btneditarActionPerformed
 
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
-
+        
+        //Conn.user_logged.getEs_Admin(true);
         AddCategoria categori = new AddCategoria();
         categori.setVisible(true);
         // dispose();
