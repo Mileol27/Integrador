@@ -8,6 +8,7 @@ package Gui;
 import clases.Articulo;
 import clases.Categoria;
 import clases.Estado;
+import clases.Render;
 import clases.Usuario;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -23,21 +24,26 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import conn.Conn;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
+import jdk.internal.org.jline.terminal.MouseEvent;
 import org.bson.Document;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
  * @author micha
  */
 public class Interfaz extends javax.swing.JFrame implements ActionListener {
-    
-  public static ArrayList<Articulo> listado_articulos = new ArrayList<Articulo>();;
-  public static ArrayList<Categoria> listado_categoria = new ArrayList<Categoria>();;
-  
+
+    public static ArrayList<Articulo> listado_articulos = new ArrayList<Articulo>();
+    ;
+  public static ArrayList<Categoria> listado_categoria = new ArrayList<Categoria>();
+
+    ;
 
     public Interfaz() {
-        
+
         initComponents();
         setLocationRelativeTo(null);
         actualizar_categorias();
@@ -48,7 +54,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             model_cats.addElement(categoria);
         });
         cb_cat.setModel(model_cats);
-        
+
         ArrayList<Estado> estados = Conn.listar_estados();
         DefaultComboBoxModel model_estados = new DefaultComboBoxModel();
         model_estados.addElement(new Estado("Todos", ""));
@@ -56,12 +62,12 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             model_estados.addElement(estado);
         });
         cb_estados.setModel(model_estados);
-        
+
         actualizar_articulos();
-        
+
     }
-    
-    public static void actualizar_categorias(){
+
+    public static void actualizar_categorias() {
         listado_categoria = Conn.listar_categorias();
         DefaultTableModel model_cat = (DefaultTableModel) tbl_categorias.getModel();
         model_cat.setRowCount(0);
@@ -75,17 +81,22 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             });
         });
     }
-    
-    
-    
+
     public static void actualizar_articulos() {
+        tabla_listado.setDefaultRenderer(Object.class, new Render());
+        JButton btn_editar = new JButton("Editar");
+        JButton btn_eliminar = new JButton("Eliminar");
+
         Categoria cat = (Categoria) cb_cat.getSelectedItem();
         cat = cat.getId() == null ? null : cat;
         Estado st = (Estado) cb_estados.getSelectedItem();
         st = st.getId() == null ? null : st;
         listado_articulos = Conn.listar_articulos(cat, st);
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel model = (DefaultTableModel) tabla_listado.getModel();
         model.setRowCount(0);
+
+        tabla_listado.setDefaultEditor(Object.class, null);
+
         Interfaz.listado_articulos.forEach(a -> {
             model.addRow(new Object[]{
                 a.getId(),
@@ -96,11 +107,13 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getEstado().getId(),
                 a.getCreado_el().toString(),
                 a.getF_modiciacion().toString(),
-                a.getObservaciones()
-            });
+                a.getObservaciones(),
+                btn_editar,});
         });
+
+        tabla_listado.setRowHeight(30);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -121,7 +134,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         cb_cat = new javax.swing.JComboBox<>();
         cb_estados = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tabla_listado = new javax.swing.JTable();
         btn_open_add = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -203,7 +216,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             }
         });
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tabla_listado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -211,19 +224,12 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 "ID", "Descripción", "Marca", "Modelo", "# de serie", "Estado", "F.Registro", "F.Mod", "Observaciones", "Opciones"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setHeaderValue("ID");
-            jTable2.getColumnModel().getColumn(1).setHeaderValue("Descripción");
-            jTable2.getColumnModel().getColumn(2).setHeaderValue("Marca");
-            jTable2.getColumnModel().getColumn(3).setHeaderValue("Modelo");
-            jTable2.getColumnModel().getColumn(4).setHeaderValue("# de serie");
-            jTable2.getColumnModel().getColumn(5).setHeaderValue("Estado");
-            jTable2.getColumnModel().getColumn(6).setHeaderValue("F.Registro");
-            jTable2.getColumnModel().getColumn(7).setHeaderValue("F.Mod");
-            jTable2.getColumnModel().getColumn(8).setHeaderValue("Observaciones");
-            jTable2.getColumnModel().getColumn(9).setHeaderValue("Opciones");
-        }
+        tabla_listado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabla_listadoMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tabla_listado);
 
         btn_open_add.setText("Agregar artículo");
         btn_open_add.addActionListener(new java.awt.event.ActionListener() {
@@ -364,42 +370,66 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_btn_open_addActionPerformed
 
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
-        
+
         AddCategoria categori = new AddCategoria();
         categori.setVisible(true);
         // dispose();
-      //  Categoria cat = new Categoria();
-      //  cat.AddCat();
-        
+        //  Categoria cat = new Categoria();
+        //  cat.AddCat();
+
     }//GEN-LAST:event_btnagregarActionPerformed
 
     private void btncloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncloseActionPerformed
-        
+
         Login login = new Login();
         login.setVisible(true);
         dispose();
-        
-        
+
+
     }//GEN-LAST:event_btncloseActionPerformed
 
     private void cb_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_catActionPerformed
-        
+
         actualizar_articulos();
-        
+
     }//GEN-LAST:event_cb_catActionPerformed
 
     private void cb_estadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_estadosActionPerformed
-        
+
         actualizar_articulos();
 
     }//GEN-LAST:event_cb_estadosActionPerformed
 
     private void cb_catItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cb_catItemStateChanged
-         
- 
-        
-        
+
+
     }//GEN-LAST:event_cb_catItemStateChanged
+
+    private void tabla_listadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_listadoMouseClicked
+        int column = tabla_listado.getColumnModel().getColumnIndexAtX(evt.getX());
+        int row = evt.getY() / tabla_listado.getRowHeight();
+
+        String descripcion = tabla_listado.getValueAt(row, 1).toString();
+        String marca = tabla_listado.getValueAt(row, 2).toString();
+        String modelo = tabla_listado.getValueAt(row, 3).toString();
+        String num_ser = tabla_listado.getValueAt(row, 4).toString();
+        String observaciones = tabla_listado.getValueAt(row, 8).toString();
+
+        if (row < tabla_listado.getRowCount() && row >= 0 && column < tabla_listado.getColumnCount() && column >= 0) {
+            Object value = tabla_listado.getValueAt(row, column);
+            if (value instanceof JButton) {
+                ((JButton) value).doClick();
+                JButton boton = (JButton) value;
+                EditArticulo ea = new EditArticulo();
+                ea.setVisible(true);
+                ea.llenar(descripcion, marca, modelo, num_ser, observaciones);
+            }
+        }
+    }//GEN-LAST:event_tabla_listadoMouseClicked
+
+    public static String editdatos() {
+        return "hola";
+    }
 
     /**
      * @param args the command line arguments
@@ -464,7 +494,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    public static javax.swing.JTable jTable2;
+    public static javax.swing.JTable tabla_listado;
     private static javax.swing.JTable tbl_categorias;
     // End of variables declaration//GEN-END:variables
 }
