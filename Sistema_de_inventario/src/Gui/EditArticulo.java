@@ -10,9 +10,7 @@ import clases.Categoria;
 import clases.Estado;
 import conn.Conn;
 import java.util.ArrayList;
-import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
-import org.bson.types.ObjectId;
 
 /**
  *
@@ -22,7 +20,6 @@ public class EditArticulo extends javax.swing.JFrame {
 
     String scategoria;
     String sestado;
-    ObjectId id;
 
     /**
      * Creates new form EditArticulo
@@ -33,42 +30,31 @@ public class EditArticulo extends javax.swing.JFrame {
 
         initComponents();
         setLocationRelativeTo(null);
-
+          
         DefaultComboBoxModel model_estados = new DefaultComboBoxModel();
         estados.forEach(estado -> {
             model_estados.addElement(estado);
         });
         combo_estados.setModel(model_estados);
-
+        
         DefaultComboBoxModel model_cats = new DefaultComboBoxModel();
         categorias.forEach(categoria -> {
             model_cats.addElement(categoria);
         });
         combo_categorias.setModel(model_cats);
-
+        
+        
+        
     }
 
-    public void llenar(ObjectId id, String descripcion, String marca, String modelo, String num_ser, String observaciones, Object estado) {
-
+    public void llenar(String descripcion, String marca, String modelo, String num_ser, String observaciones){
         txt_descripcion.setText(descripcion);
         txt_marca.setText(marca);
         txt_modelo.setText(modelo);
         txt_nro_serie.setText(num_ser);
         txt_obs.setText(observaciones);
-        this.id = id;
-        String esta = estado.toString();
-
-        
-        System.out.println(combo_estados.getItemCount());
-        for (int i = 0; i < combo_estados.getItemCount(); i++) {
-            combo_estados.setSelectedIndex(i);
-            if (combo_estados.getSelectedItem().toString().equals(esta)) {
-                break;
-            }
-        }
-
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -260,8 +246,7 @@ public class EditArticulo extends javax.swing.JFrame {
                 estado
         );
 
-        articulo.ediArti(id, txt_descripcion.getText(), txt_marca.getText(), txt_modelo.getText(), txt_nro_serie.getText(), categoria, new Date(), txt_obs.getText(),
-                estado);
+        articulo.guardar();
         Interfaz.actualizar_articulos();
 
         dispose();

@@ -576,26 +576,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private void tbl_usersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_usersMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_tbl_usersMouseClicked
-        String descripcion = tabla_listado.getValueAt(row, 1).toString();
-      //  Object id = (Object) tabla_listado.getValueAt(row, 0);
-        ObjectId id = (ObjectId) tabla_listado.getValueAt(row, 0);
-        String marca = tabla_listado.getValueAt(row, 2).toString();
-        String modelo = tabla_listado.getValueAt(row, 3).toString();
-        String num_ser = tabla_listado.getValueAt(row, 4).toString();
-        Object estado = tabla_listado.getValueAt(row, 5);
-        String observaciones = tabla_listado.getValueAt(row, 8).toString();
-
-        if (row < tabla_listado.getRowCount() && row >= 0 && column < tabla_listado.getColumnCount() && column >= 0) {
-            Object value = tabla_listado.getValueAt(row, column);
-            if (value instanceof JButton) {
-                ((JButton) value).doClick();
-                JButton boton = (JButton) value;
-                EditArticulo ea = new EditArticulo();
-                ea.setVisible(true);
-                ea.llenar(id,descripcion, marca, modelo, num_ser, observaciones, estado);
-            }
-        }
-    }//GEN-LAST:event_tabla_listadoMouseClicked
 
     /**
      * @param args the command line arguments
