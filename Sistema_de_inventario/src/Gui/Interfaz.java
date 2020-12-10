@@ -133,7 +133,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getNum_serie(),
                 a.getEstado().getNombre(),
                 a.getCreado_el().toString(),
-                a.getF_modiciacion().toString(),
+                a.getModificado_el().toString(),
                 a.getObservaciones(),
                 btn_editar
             });
@@ -469,7 +469,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 .addGap(110, 110, 110))
         );
 
-        Pan_usuario.addTab("Listado", jPanel5);
+        Pan_usuario.addTab("Users", jPanel5);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -516,10 +516,12 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         int column = tabla_listado.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY() / tabla_listado.getRowHeight();
 
+        ObjectId id = (ObjectId) tabla_listado.getValueAt(row, 0);
         String descripcion = tabla_listado.getValueAt(row, 1).toString();
         String marca = tabla_listado.getValueAt(row, 2).toString();
         String modelo = tabla_listado.getValueAt(row, 3).toString();
         String num_ser = tabla_listado.getValueAt(row, 4).toString();
+        String estado = tabla_listado.getValueAt(row, 5).toString();
         String observaciones = tabla_listado.getValueAt(row, 8).toString();
 
         if (row < tabla_listado.getRowCount() && row >= 0 && column < tabla_listado.getColumnCount() && column >= 0) {
@@ -527,9 +529,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             if (value instanceof JButton) {
                 ((JButton) value).doClick();
                 JButton boton = (JButton) value;
-                EditArticulo ea = new EditArticulo();
-                ea.setVisible(true);
-                ea.llenar(descripcion, marca, modelo, num_ser, observaciones);
+                AddArticulo view_edit = new AddArticulo();
+                view_edit.lbl_titulo.setText("Editar Artículo");
+                view_edit.setVisible(true);
+                view_edit.llenar(id,descripcion, marca, modelo, num_ser, observaciones, estado);
             }
         }
     }//GEN-LAST:event_tabla_listadoMouseClicked
@@ -553,11 +556,11 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         int row = tbl_categorias.getSelectedRow();
         if (row != -1) {
             String nombre = (String) tbl_categorias.getValueAt(row, 1);
-            Object id = (Object) tbl_categorias.getValueAt(row, 0);
+            ObjectId id = (ObjectId) tbl_categorias.getValueAt(row, 0);
             AddCategoria categoria = new AddCategoria();
             categoria.txtcat.setText(nombre);
-            categoria.txttitulo.setText("MODIFICAR CATEGORIA");
-            categoria.modcategoria = new Categoria((ObjectId) id);
+            categoria.lbl_titulo.setText("MODIFICAR CATEGORIA");
+            categoria.id = id;
             categoria.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione una categoria para editar");

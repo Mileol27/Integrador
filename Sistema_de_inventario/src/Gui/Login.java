@@ -19,7 +19,7 @@ public class Login extends javax.swing.JFrame {
         
         initComponents();
         setLocationRelativeTo(null);
-        Usuario.Admin_Adduser();
+        System.out.println("USUARIOS: " + Conn.listar_users());
         
     }
  
