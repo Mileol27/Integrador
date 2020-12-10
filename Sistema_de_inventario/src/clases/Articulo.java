@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-
+import org.bson.conversions.Bson;
  
 public class Articulo implements ISerrializable{
     private ObjectId _id;
@@ -116,6 +116,24 @@ public class Articulo implements ISerrializable{
         col.insertOne(doc);
     }
     
+    public void ediArti(ObjectId id, String descripcion, String marca, String modelo, String num_serie, Categoria categoria, Date f_modiciacion, String observaciones, Estado estado) {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase documento = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = documento.getCollection("articulos");
+
+        Document found = (Document) col.find(new Document("_id", id)).first();
+        if (found != null) {
+            System.out.println("se encontró articulo");
+            //      Bson updatedvalue = new Document("descripcion", descripcion).append("marca", marca).append("modelo", modelo).append("num_serie", num_serie).append("categoria", categoria).append("f_modiciacion", f_modiciacion).append("observaciones", observaciones).append("estado", estado);
+            Bson updatedvalue = new Document("descripcion", descripcion).append("marca", marca).append("modelo", modelo).append("num_serie", num_serie).append("f_modiciacion", f_modiciacion).append("observaciones", observaciones).append("categoria", categoria.getId()).append("estado", estado.getId());
+            Bson updateoperation = new Document("$set", updatedvalue);
+            col.updateOne(found, updateoperation);
+            System.out.println("se actualizó UwU");
+
+        } else {
+            System.out.println("no hay naaa");
+        }
+    }
  
 
     public ObjectId getId() {

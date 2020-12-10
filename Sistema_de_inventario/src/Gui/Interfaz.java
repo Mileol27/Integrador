@@ -516,10 +516,12 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         int column = tabla_listado.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY() / tabla_listado.getRowHeight();
 
+        ObjectId id = (ObjectId) tabla_listado.getValueAt(row, 0);
         String descripcion = tabla_listado.getValueAt(row, 1).toString();
         String marca = tabla_listado.getValueAt(row, 2).toString();
         String modelo = tabla_listado.getValueAt(row, 3).toString();
         String num_ser = tabla_listado.getValueAt(row, 4).toString();
+        String estado = tabla_listado.getValueAt(row, 5).toString();
         String observaciones = tabla_listado.getValueAt(row, 8).toString();
 
         if (row < tabla_listado.getRowCount() && row >= 0 && column < tabla_listado.getColumnCount() && column >= 0) {
@@ -529,7 +531,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 JButton boton = (JButton) value;
                 EditArticulo ea = new EditArticulo();
                 ea.setVisible(true);
-                ea.llenar(descripcion, marca, modelo, num_ser, observaciones);
+                ea.llenar(id,descripcion, marca, modelo, num_ser, observaciones, estado);
             }
         }
     }//GEN-LAST:event_tabla_listadoMouseClicked
