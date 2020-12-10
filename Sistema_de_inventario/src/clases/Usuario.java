@@ -11,6 +11,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import conn.Conn;
+import java.util.Date;
 import java.util.Iterator;
 import javax.swing.JOptionPane;
 import org.bson.Document;
@@ -24,6 +25,7 @@ public class Usuario implements ISerrializable{
     private String apellido;
     private String username;
     private String password;
+    private Date f_registro;
     private boolean es_admin;
     private boolean activo;
 
@@ -39,28 +41,47 @@ public class Usuario implements ISerrializable{
         this.password = password;
     }
 
-    public Usuario(String nombre, String apellido, String username, String password) {
+    public Usuario(String nombre, String apellido, String username, String password, boolean es_admin, boolean activo) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.username = username;
         this.password = password;
+        this.es_admin = es_admin;
+        this.activo = activo;
     }
     
     public Usuario(Document ob) {
         this._id = ob.getObjectId("_id");
-        this.nombre = (String) ob.get("nombre");
-        this.apellido = (String) ob.get("apellido");
-        this.username = (String) ob.get("username");
-        this.password = (String) ob.get("password");
-        //this.es_admin = (boolean) ob.get("es_admin");
-        //this.activo = (boolean) ob.get("activo");
+        this.nombre = ob.getString("nombre");
+        this.apellido = ob.getString("apellido");
+        this.username = ob.getString("username");
+        this.password = ob.getString("password");
+        this.f_registro = ob.getDate("f_registro");
+        this.es_admin = ob.getBoolean("es_admin", false);
+        this.activo = ob.getBoolean("activo", false);
     }
 
     public void eliminar() {
     }
 
+    @Override
     public void guardar() {
-
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase documento = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = documento.getCollection("users");
+        Document doc = new Document();
+        doc.put("nombre", nombre);
+        doc.put("apellido", apellido);
+        doc.put("username", username);
+        doc.put("password", password);
+        doc.put("f_registro", f_registro);
+        doc.put("es_admin", es_admin);
+        doc.put("activo", activo);
+        if (_id == null) {
+            col.insertOne(doc);
+        } else {
+            col.updateOne(new BasicDBObject("_id", _id), new BasicDBObject("$set", doc));
+        }
     }
 
     public ObjectId getId() {
@@ -133,44 +154,6 @@ public class Usuario implements ISerrializable{
             
         } else {
             return null;
-        }
-    }
-    
-    /*  public Usuario getNombreUsuarioIngresado() {
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase database = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = database.getCollection("users");
-        FindIterable users_in_db = col.find(new Document("nombre", nombre));
-        Document o_db = (Document) users_in_db.first();
-
-        if (o_db != null) {
-            Usuario u_db = new Usuario(o_db);
-            return u_db.getNombre().equals(nombre) ? u_db : null;
-            
-        } else {
-            return null;
-        }
-        
-    }  */
-    
-    public static void Admin_Adduser(){
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase documento = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = documento.getCollection("users");
-        FindIterable users_in_db = col.find(new Document("nombre", "admin"));
-        Document o_db = (Document) users_in_db.first();
-        
-        Document doc = new Document();
-        if(o_db == null){
-            doc.put("nombre", "admin");
-            doc.put("apellido", "admin");
-            doc.put("username", "admin");
-            doc.put("password", "admin");
-            doc.put("es_admin", true);
-            doc.put("activo", true);
-            col.insertOne(doc);
-        }else{
-            
         }
     }
     

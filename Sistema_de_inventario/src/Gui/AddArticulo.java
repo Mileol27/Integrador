@@ -14,6 +14,7 @@ import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import conn.*;
 import javax.swing.DefaultComboBoxModel;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -22,6 +23,7 @@ import javax.swing.DefaultComboBoxModel;
 public class AddArticulo extends javax.swing.JFrame {
     String scategoria;
     String sestado;
+    ObjectId id = null;
     /**
      * Creates new form agregar
      */
@@ -45,7 +47,24 @@ public class AddArticulo extends javax.swing.JFrame {
         });
         combo_categorias.setModel(model_cats);
     }
+    
+    public void llenar(ObjectId id, String descripcion, String marca, String modelo, String num_ser, String observaciones, Object estado) {
+        txt_descripcion.setText(descripcion);
+        txt_marca.setText(marca);
+        txt_modelo.setText(modelo);
+        txt_nro_serie.setText(num_ser);
+        txt_obs.setText(observaciones);
+        this.id = id;
+        String esta = estado.toString();
 
+        System.out.println(combo_estados.getItemCount());
+        for (int i = 0; i < combo_estados.getItemCount(); i++) {
+            combo_estados.setSelectedIndex(i);
+            if (combo_estados.getSelectedItem().toString().equals(esta)) {
+                break;
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -70,9 +89,10 @@ public class AddArticulo extends javax.swing.JFrame {
         txt_obs = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        lbl_titulo = new javax.swing.JLabel();
         btn_add_arti = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -122,10 +142,10 @@ public class AddArticulo extends javax.swing.JFrame {
 
         jLabel7.setText("Estado");
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel8.setText("Agregar artículo");
+        lbl_titulo.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        lbl_titulo.setText("Agregar artículo");
 
-        btn_add_arti.setText("Agregar artículo");
+        btn_add_arti.setText("Guardar");
         btn_add_arti.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_add_artiActionPerformed(evt);
@@ -133,6 +153,13 @@ public class AddArticulo extends javax.swing.JFrame {
         });
 
         jLabel9.setText("Categoría");
+
+        jButton1.setText("Cancelar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -142,16 +169,13 @@ public class AddArticulo extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(48, 48, 48)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(55, 55, 55)
+                                .addComponent(lbl_titulo, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(109, 109, 109)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn_add_arti))))
+                                .addGap(116, 116, 116)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -174,12 +198,18 @@ public class AddArticulo extends javax.swing.JFrame {
                             .addComponent(txt_nro_serie, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                             .addComponent(combo_estados, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap(107, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(18, 18, 18)
+                .addComponent(btn_add_arti)
+                .addGap(122, 122, 122))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel8)
+                .addComponent(lbl_titulo)
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -210,7 +240,9 @@ public class AddArticulo extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
-                .addComponent(btn_add_arti)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_add_arti)
+                    .addComponent(jButton1))
                 .addGap(35, 35, 35))
         );
 
@@ -231,6 +263,10 @@ public class AddArticulo extends javax.swing.JFrame {
             txt_obs.getText(),
             estado
         );
+        
+        if (id != null) {
+            articulo.setId(id);
+        }
         
         articulo.guardar();
         Interfaz.actualizar_articulos();
@@ -265,6 +301,10 @@ public class AddArticulo extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_combo_estadosItemStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
   
     public static void main(String args[]) {
 
@@ -281,6 +321,7 @@ public class AddArticulo extends javax.swing.JFrame {
     private javax.swing.JButton btn_add_arti;
     private javax.swing.JComboBox<String> combo_categorias;
     private javax.swing.JComboBox<String> combo_estados;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -288,9 +329,9 @@ public class AddArticulo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JLabel lbl_titulo;
     private javax.swing.JTextField txt_descripcion;
     private javax.swing.JTextField txt_marca;
     private javax.swing.JTextField txt_modelo;

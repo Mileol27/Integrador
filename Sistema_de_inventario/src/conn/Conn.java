@@ -112,9 +112,7 @@ public class Conn {
         MongoDatabase database = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = database.getCollection("users");
         if (col.countDocuments() == 0) {
-            Usuario admin = new Usuario("admin", "admin");
-            admin.setActivo(true);
-            admin.setEs_admin(true);
+            Usuario admin = new Usuario("admin", "admin", "admin", "admin", true, true);
             admin.guardar();
         }
         FindIterable categorias_in_bd = col.find();
