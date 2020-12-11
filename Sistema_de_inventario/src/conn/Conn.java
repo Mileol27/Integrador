@@ -21,6 +21,7 @@ import org.bson.Document;
 import java.util.Iterator;
 import org.bson.conversions.Bson;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -30,7 +31,7 @@ import java.util.List;
  */
 public class Conn {
     public static Usuario user_logged;
-    public static Articulo articulo_categoria;
+    //public static Articulo articulo_categoria;
     
     public static ArrayList<Categoria> listar_categorias() {
         MongoClient mongoClient = new MongoClient();
@@ -112,7 +113,9 @@ public class Conn {
         MongoDatabase database = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = database.getCollection("users");
         if (col.countDocuments() == 0) {
-            Usuario admin = new Usuario("admin", "admin", "admin", "admin", true, true);
+            Usuario admin = new Usuario("admin", "admin", "admin", "admin",new Date());
+            admin.setActivo(true);
+            admin.setEs_admin(true);
             admin.guardar();
         }
         FindIterable categorias_in_bd = col.find();

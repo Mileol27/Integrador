@@ -32,6 +32,7 @@ public class Usuario implements ISerrializable{
     //Constructores
     
     public Usuario(){}
+    
     public Usuario(ObjectId _id){
         this._id = _id;
     }
@@ -41,14 +42,25 @@ public class Usuario implements ISerrializable{
         this.password = password;
     }
 
-    public Usuario(String nombre, String apellido, String username, String password, boolean es_admin, boolean activo) {
+    public Usuario(String nombre, String apellido, String username, String password,Date f_registro) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.username = username;
         this.password = password;
-        this.es_admin = es_admin;
-        this.activo = activo;
+        this.f_registro = f_registro;
+
     }
+
+    public Usuario(ObjectId _id, String nombre, String apellido, String username, String password, Date f_registro) {
+        this._id = _id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.username = username;
+        this.password = password;
+        this.f_registro = f_registro;
+    }
+    
+    
     
     public Usuario(Document ob) {
         this._id = ob.getObjectId("_id");
@@ -57,8 +69,8 @@ public class Usuario implements ISerrializable{
         this.username = ob.getString("username");
         this.password = ob.getString("password");
         this.f_registro = ob.getDate("f_registro");
-        this.es_admin = ob.getBoolean("es_admin", false);
-        this.activo = ob.getBoolean("activo", false);
+        this.es_admin = ob.getBoolean("es_admin", es_admin);
+        this.activo = ob.getBoolean("activo", activo);
     }
 
     public void eliminar() {
@@ -87,6 +99,10 @@ public class Usuario implements ISerrializable{
     public ObjectId getId() {
         return _id;
     }
+    
+    public void setId(ObjectId _id) {
+        this._id = _id;
+    }
 
     public String getNombre() {
         return nombre;
@@ -99,6 +115,7 @@ public class Usuario implements ISerrializable{
     public String getApellido() {
         return apellido;
     }
+    
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
@@ -145,7 +162,7 @@ public class Usuario implements ISerrializable{
         
         if (o_db != null) {
             Usuario u_db = new Usuario(o_db);
-            if (u_db.password.equals(password)) {
+            if (u_db.password.equals(password) && u_db.activo == true) {
                 Conn.user_logged = u_db;
                 return u_db;
             } else {
@@ -157,7 +174,7 @@ public class Usuario implements ISerrializable{
         }
     }
     
-    public void AddUser(String nombre,String apellido,String username, String password){
+   /* public void AddUser(String nombre,String apellido,String username, String password){
         MongoClient mongoClient = new MongoClient();
         MongoDatabase documento = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = documento.getCollection("users");
@@ -174,7 +191,7 @@ public class Usuario implements ISerrializable{
         }else{
             JOptionPane.showMessageDialog(null, "Usted no es un administrador");
         }
-    }
+    }/*/
     
 }
 
