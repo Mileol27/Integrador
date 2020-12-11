@@ -1,5 +1,7 @@
 package clases;
 
+import Gui.Interfaz;
+import static Gui.Interfaz.jLabel1;
 import Interfaces.ISerrializable;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -164,6 +166,9 @@ public class Usuario implements ISerrializable{
             Usuario u_db = new Usuario(o_db);
             if (u_db.password.equals(password) && u_db.activo == true) {
                 Conn.user_logged = u_db;
+                
+                            
+                
                 return u_db;
             } else {
                 return null;

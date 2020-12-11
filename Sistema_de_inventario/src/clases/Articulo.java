@@ -3,14 +3,14 @@ package clases;
 import Interfaces.ISerrializable;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
- 
+
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
- 
+
 import java.util.Date;
 import org.bson.Document;
 import org.bson.types.ObjectId;
- 
+
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -24,8 +24,9 @@ import java.util.List;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.bson.conversions.Bson;
- 
-public class Articulo implements ISerrializable{
+
+public class Articulo implements ISerrializable {
+
     private ObjectId _id;
     private String descripcion;
     private Date creado_el;
@@ -37,8 +38,7 @@ public class Articulo implements ISerrializable{
     private Date modificado_el;
     private String observaciones;
     private Estado estado;
- 
-    
+
     //Constructor
     public Articulo(String descripcion, String marca, String modelo, String num_serie, Categoria categoria, String observaciones, Estado estado) {
         this.descripcion = descripcion;
@@ -57,7 +57,6 @@ public class Articulo implements ISerrializable{
     public Articulo(ObjectId _id) {
         this._id = _id;
     }
-
 
     public Articulo(Document ob) {
         this._id = ob.getObjectId("_id");
@@ -80,22 +79,22 @@ public class Articulo implements ISerrializable{
             this.estado = new Estado((Document) ((List) ob.get("estado_obj")).get(0));
         }
     }
-    
+
     public static int contar_total() {
         return 0;
     }
-    
-    public static int contar_por_status(Estado status){
+
+    public static int contar_por_status(Estado status) {
         return 0;
     }
-    
-    public static int contar_por_categoria(Categoria status){
+
+    public static int contar_por_categoria(Categoria status) {
         return 0;
     }
-    
+
     public void eliminar() {
     }
-   
+
     @Override
     public void guardar() {
         MongoClient mongoClient = new MongoClient();
@@ -119,7 +118,7 @@ public class Articulo implements ISerrializable{
             col.updateOne(new BasicDBObject("_id", _id), new BasicDBObject("$set", doc));
         }
     }
- 
+
     public void setId(ObjectId _id) {
         this._id = _id;
     }
@@ -207,6 +206,5 @@ public class Articulo implements ISerrializable{
     public void setEstado(Estado estado) {
         this.estado = estado;
     }
- 
-    
+
 }

@@ -41,7 +41,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     public static ArrayList<Categoria> listado_categoria = new ArrayList<Categoria>();
     ;
     public static ArrayList<Usuario> listado_users = new ArrayList<Usuario>();
-  
 
     public Interfaz() {
 
@@ -49,11 +48,11 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         setLocationRelativeTo(null);
         lbl_nombre.setText(Conn.user_logged.getNombre());
         actualizar_categorias();
-        
+
         actualizar_users();
-        
+
         actualizar_cmbo_categorias();
-        
+
         ArrayList<Estado> estados = Conn.listar_estados();
         DefaultComboBoxModel model_estados = new DefaultComboBoxModel();
         model_estados.addElement(new Estado("Todos", ""));
@@ -63,18 +62,18 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         cb_estados.setModel(model_estados);
 
         actualizar_articulos();
-        
-        
+        autenticar_vista();
 
     }
-    
-    public static void autenticar_vista(){
-        if(Conn.user_logged.isEs_admin() == true){
-            
+
+    public static void autenticar_vista() {
+        if (Conn.user_logged.isEs_admin() != true) {
+            tbl_users.setVisible(false);
+            btn_add.setVisible(false);
         }
     }
-    
-    public static void actualizar_cmbo_categorias(){
+
+    public static void actualizar_cmbo_categorias() {
         ArrayList<Categoria> categorias = Conn.listar_categorias();
         DefaultComboBoxModel model_cats = new DefaultComboBoxModel();
         model_cats.addElement(new Categoria("Todos"));
@@ -98,14 +97,15 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             });
         });
     }
-    
+
     public static void actualizar_users() {
-        tabla_listado.setDefaultRenderer(Object.class, new Render());
+        tbl_users.setDefaultRenderer(Object.class, new Render());
         JButton btn_editar = new JButton("Editar");
         JButton btn_eliminar = new JButton("Eliminar");
         listado_users = Conn.listar_users();
         DefaultTableModel model_user = (DefaultTableModel) tbl_users.getModel();
         model_user.setRowCount(0);
+        tbl_users.setDefaultEditor(Object.class, null);
         System.out.println();
         Interfaz.listado_users.forEach(a -> {
             model_user.addRow(new Object[]{
@@ -115,10 +115,11 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getUsername(),
                 a.getPassword(),
                 a.isActivo(),
-                a.isEs_admin(),  
+                a.isEs_admin(),
                 btn_editar
             });
         });
+        tbl_users.setRowHeight(30);
     }
 
     public static void actualizar_articulos() {
@@ -550,19 +551,19 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
-        if(Conn.user_logged.isEs_admin()== true){
+        if (Conn.user_logged.isEs_admin() == true) {
             NuevoUsuario nu = new NuevoUsuario();
             nu.setVisible(true);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Usted no es un administrador");
         }
-        
+
         //dispose();
 
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void tbl_usersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_usersMouseClicked
-        
+
         int column = tbl_users.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY() / tbl_users.getRowHeight();
 
@@ -572,7 +573,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         String user = tbl_users.getValueAt(row, 3).toString();
         String password = tbl_users.getValueAt(row, 4).toString();
 
-
         if (row < tbl_users.getRowCount() && row >= 0 && column < tbl_users.getColumnCount() && column >= 0) {
             Object value = tbl_users.getValueAt(row, column);
             if (value instanceof JButton) {
@@ -581,10 +581,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 NuevoUsuario view_edit = new NuevoUsuario();
                 view_edit.lbl_usuario.setText("Editar Usuario");
                 view_edit.setVisible(true);
-                view_edit.llenar(id,nombre,apellido,user,password);
+                view_edit.llenar(id, nombre, apellido, user, password);
             }
         }
-        
+
     }//GEN-LAST:event_tbl_usersMouseClicked
 
     private void btn_open_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_open_addActionPerformed
@@ -592,9 +592,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase database = mongoClient.getDatabase("inventario");
         MongoCollection<Document> col = database.getCollection("categorias");
-        if(col.countDocuments() == 0){
+        if (col.countDocuments() == 0) {
             JOptionPane.showMessageDialog(null, "Primero agregue categorias");
-        }else{
+        } else {
             AddArticulo ag = new AddArticulo();
             ag.setVisible(true);
         }
@@ -622,7 +622,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 AddArticulo view_edit = new AddArticulo();
                 view_edit.lbl_titulo.setText("Editar Artículo");
                 view_edit.setVisible(true);
-                view_edit.llenar(id,descripcion, marca, modelo, num_ser, observaciones, estado);
+                view_edit.llenar(id, descripcion, marca, modelo, num_ser, observaciones, estado);
             }
         }
     }//GEN-LAST:event_tabla_listadoMouseClicked
@@ -658,23 +658,23 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_btneditarActionPerformed
 
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
-        if(Conn.user_logged.isEs_admin()== true){
+        if (Conn.user_logged.isEs_admin() == true) {
             AddCategoria categori = new AddCategoria();
             categori.setVisible(true);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Usted no es administrador");
         }
-            
+
         // dispose();
 
     }//GEN-LAST:event_btnagregarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
         Login login = new Login();
         login.setVisible(true);
         dispose();
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -706,15 +706,15 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTabbedPane Pan_usuario;
-    private javax.swing.JButton btn_add;
+    public static javax.swing.JTabbedPane Pan_usuario;
+    public static javax.swing.JButton btn_add;
     private javax.swing.JButton btn_open_add;
     private javax.swing.JButton btnagregar;
     private javax.swing.JToggleButton btneditar;
     private static javax.swing.JComboBox<String> cb_cat;
     private static javax.swing.JComboBox<String> cb_estados;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
+    public static javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -734,6 +734,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JLabel lbl_nombre;
     private static javax.swing.JTable tabla_listado;
     private static javax.swing.JTable tbl_categorias;
-    private static javax.swing.JTable tbl_users;
+    public static javax.swing.JTable tbl_users;
     // End of variables declaration//GEN-END:variables
 }
