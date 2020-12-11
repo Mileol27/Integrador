@@ -37,9 +37,7 @@ import org.bson.types.ObjectId;
 public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
     public static ArrayList<Articulo> listado_articulos = new ArrayList<Articulo>();
-    ;
     public static ArrayList<Categoria> listado_categoria = new ArrayList<Categoria>();
-    ;
     public static ArrayList<Usuario> listado_users = new ArrayList<Usuario>();
   
 
@@ -221,6 +219,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         btneditar.setBackground(new java.awt.Color(255, 255, 255));
         btneditar.setForeground(new java.awt.Color(255, 255, 255));
+        btneditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/editar.png"))); // NOI18N
         btneditar.setBorder(null);
         btneditar.setContentAreaFilled(false);
         btneditar.addActionListener(new java.awt.event.ActionListener() {
@@ -243,7 +242,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(391, 391, 391)
                         .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -336,7 +335,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cb_estados, 0, 140, Short.MAX_VALUE)
                             .addComponent(cb_cat, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(137, 700, Short.MAX_VALUE))))
+                        .addGap(137, 707, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,7 +398,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 621, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(371, Short.MAX_VALUE))
+                .addContainerGap(378, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -459,7 +458,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 989, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(19, 19, 19))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -479,7 +478,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Pan_usuario)
+            .addComponent(Pan_usuario, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -529,7 +528,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 JButton boton = (JButton) value;
                 EditArticulo ea = new EditArticulo();
                 ea.setVisible(true);
-                ea.llenar(descripcion, marca, modelo, num_ser, observaciones);
+               // ea.llenar(descripcion, marca, modelo, num_ser, observaciones);
             }
         }
     }//GEN-LAST:event_tabla_listadoMouseClicked
@@ -576,26 +575,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private void tbl_usersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_usersMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_tbl_usersMouseClicked
-        String descripcion = tabla_listado.getValueAt(row, 1).toString();
-      //  Object id = (Object) tabla_listado.getValueAt(row, 0);
-        ObjectId id = (ObjectId) tabla_listado.getValueAt(row, 0);
-        String marca = tabla_listado.getValueAt(row, 2).toString();
-        String modelo = tabla_listado.getValueAt(row, 3).toString();
-        String num_ser = tabla_listado.getValueAt(row, 4).toString();
-        Object estado = tabla_listado.getValueAt(row, 5);
-        String observaciones = tabla_listado.getValueAt(row, 8).toString();
-
-        if (row < tabla_listado.getRowCount() && row >= 0 && column < tabla_listado.getColumnCount() && column >= 0) {
-            Object value = tabla_listado.getValueAt(row, column);
-            if (value instanceof JButton) {
-                ((JButton) value).doClick();
-                JButton boton = (JButton) value;
-                EditArticulo ea = new EditArticulo();
-                ea.setVisible(true);
-                ea.llenar(id,descripcion, marca, modelo, num_ser, observaciones, estado);
-            }
-        }
-    }//GEN-LAST:event_tabla_listadoMouseClicked
 
     /**
      * @param args the command line arguments
