@@ -1,6 +1,7 @@
 package clases;
 
 import Interfaces.ISerrializable;
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 
 import com.mongodb.client.MongoCollection;
@@ -21,8 +22,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
+import org.bson.conversions.Bson;
 
 public class Articulo implements ISerrializable {
 
@@ -34,7 +35,7 @@ public class Articulo implements ISerrializable {
     private String modelo;
     private String num_serie;
     private Categoria categoria;
-    private Date f_modiciacion;
+    private Date modificado_el;
     private String observaciones;
     private Estado estado;
 
@@ -70,14 +71,13 @@ public class Articulo implements ISerrializable {
         } else {
             this.categoria = new Categoria((Document) ((List) ob.get("categoria_obj")).get(0));
         }
-        this.f_modiciacion = ob.getDate("f_modiciacion");
+        this.modificado_el = ob.getDate("modificado_el");
         this.observaciones = ob.getString("observaciones");
         if (ob.get("estado_obj") == null) {
             this.estado = new Estado(ob.getObjectId("estado"));
         } else {
             this.estado = new Estado((Document) ((List) ob.get("estado_obj")).get(0));
         }
-
     }
 
     public static int contar_total() {
@@ -102,8 +102,6 @@ public class Articulo implements ISerrializable {
         MongoCollection<Document> col = documento.getCollection("articulos");
         Document doc = new Document();
         doc.put("descripcion", descripcion);
-        doc.put("creado_el", new Date());
-        doc.put("creado_por", Conn.user_logged.getId());
         doc.put("marca", marca);
         doc.put("modelo", modelo);
         doc.put("num_serie", num_serie);
@@ -111,26 +109,18 @@ public class Articulo implements ISerrializable {
         doc.put("f_modiciacion", new Date());
         doc.put("observaciones", observaciones);
         doc.put("estado", estado.getId());
-        col.insertOne(doc);
+        doc.put("modificado_el", new Date());
+        if (_id == null) {
+            doc.put("creado_el", new Date());
+            doc.put("creado_por", Conn.user_logged.getId());
+            col.insertOne(doc);
+        } else {
+            col.updateOne(new BasicDBObject("_id", _id), new BasicDBObject("$set", doc));
+        }
     }
 
-    public void ediArti(ObjectId id, String descripcion, String marca, String modelo, String num_serie, Categoria categoria, Date f_modiciacion, String observaciones, Estado estado) {
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase documento = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = documento.getCollection("articulos");
-
-        Document found = (Document) col.find(new Document("_id", id)).first();
-        if (found != null) {
-            System.out.println("se encontró articulo");
-            //      Bson updatedvalue = new Document("descripcion", descripcion).append("marca", marca).append("modelo", modelo).append("num_serie", num_serie).append("categoria", categoria).append("f_modiciacion", f_modiciacion).append("observaciones", observaciones).append("estado", estado);
-            Bson updatedvalue = new Document("descripcion", descripcion).append("marca", marca).append("modelo", modelo).append("num_serie", num_serie).append("f_modiciacion", f_modiciacion).append("observaciones", observaciones).append("categoria", categoria.getId()).append("estado", estado.getId());
-            Bson updateoperation = new Document("$set", updatedvalue);
-            col.updateOne(found, updateoperation);
-            System.out.println("se actualizó UwU");
-
-        } else {
-            System.out.println("no hay naaa");
-        }
+    public void setId(ObjectId _id) {
+        this._id = _id;
     }
 
     public ObjectId getId() {
@@ -193,12 +183,12 @@ public class Articulo implements ISerrializable {
         this.categoria = categoria;
     }
 
-    public Date getF_modiciacion() {
-        return f_modiciacion;
+    public Date getModificado_el() {
+        return modificado_el;
     }
 
-    public void setF_modiciacion(Date f_modiciacion) {
-        this.f_modiciacion = f_modiciacion;
+    public void setModificado_el(Date modificado_el) {
+        this.modificado_el = modificado_el;
     }
 
     public String getObservaciones() {

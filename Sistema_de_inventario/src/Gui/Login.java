@@ -19,7 +19,7 @@ public class Login extends javax.swing.JFrame {
         
         initComponents();
         setLocationRelativeTo(null);
-      Usuario.Admin_Adduser();
+        System.out.println("USUARIOS: " + Conn.listar_users());
         
     }
  
@@ -36,7 +36,7 @@ public class Login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtpass = new javax.swing.JPasswordField();
-        jLabel12 = new javax.swing.JLabel();
+        lbl_block = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,12 +80,11 @@ public class Login extends javax.swing.JFrame {
         txtpass.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         txtpass.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel12.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel12.setText("Crear nuevo usuario");
-        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
+        lbl_block.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        lbl_block.setForeground(new java.awt.Color(242, 12, 12));
+        lbl_block.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel12MouseClicked(evt);
+                lbl_blockMouseClicked(evt);
             }
         });
 
@@ -99,10 +98,6 @@ public class Login extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
                 .addComponent(btn_limpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(68, 68, 68))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel12)
-                .addGap(169, 169, 169))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -113,7 +108,8 @@ public class Login extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtpass, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
-                            .addComponent(txtuser)))
+                            .addComponent(txtuser)
+                            .addComponent(lbl_block, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(117, 117, 117)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -129,8 +125,8 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtuser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(lbl_block, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtpass, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -175,19 +171,16 @@ public class Login extends javax.swing.JFrame {
             interfaz.setVisible(true);
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "Datos Incorrectos");
+            lbl_block.setText("Datos incorrectos o usuario bloqueado");
             //mostrar error
-        }
+            }
+           
         
     }//GEN-LAST:event_btn_ingresarActionPerformed
 
-    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
+    private void lbl_blockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_blockMouseClicked
 
-        NuevoUsuario nu = new NuevoUsuario();
-        nu.setVisible(true);
-        dispose();
-
-    }//GEN-LAST:event_jLabel12MouseClicked
+    }//GEN-LAST:event_lbl_blockMouseClicked
 
     private void btn_limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_limpiarActionPerformed
         
@@ -232,11 +225,11 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton btn_ingresar;
     private javax.swing.JButton btn_limpiar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JLabel lbl_block;
     private javax.swing.JPasswordField txtpass;
     private javax.swing.JTextField txtuser;
     // End of variables declaration//GEN-END:variables
