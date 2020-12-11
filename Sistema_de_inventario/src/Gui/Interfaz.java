@@ -8,7 +8,7 @@ package Gui;
 import clases.Articulo;
 import clases.Categoria;
 import clases.Estado;
-import clases.Render;
+import Tools.Render;
 import clases.Usuario;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
