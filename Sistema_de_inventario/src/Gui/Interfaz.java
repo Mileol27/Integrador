@@ -88,6 +88,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }
 
     public static void actualizar_categorias() {
+        tbl_categorias.setDefaultRenderer(Object.class, new Render());
+        JButton btn_editar = new JButton("Editar");
         listado_categoria = Conn.listar_categorias();
         DefaultTableModel model_cat = (DefaultTableModel) tbl_categorias.getModel();
         model_cat.setRowCount(0);
@@ -97,9 +99,11 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getId(),
                 a.getNombre(),
                 a.getCreado_el(),
-                a.getCreado_por().getUsername()
+                a.getCreado_por().getUsername(),
+                btn_editar
             });
         });
+        tbl_categorias.setRowHeight(30);
     }
 
     public static void actualizar_users() {
@@ -223,26 +227,32 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         tbl_categorias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Fecha", "Usuario"
+                "ID", "Nombre", "Fecha", "Usuario", "opciones"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tbl_categorias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_categoriasMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tbl_categorias);
         if (tbl_categorias.getColumnModel().getColumnCount() > 0) {
             tbl_categorias.getColumnModel().getColumn(2).setResizable(false);
+            tbl_categorias.getColumnModel().getColumn(4).setResizable(false);
         }
 
         btn_editar_cat.setBackground(new java.awt.Color(255, 255, 255));
@@ -797,6 +807,28 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private void btn_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salirActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btn_salirActionPerformed
+
+    private void tbl_categoriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_categoriasMouseClicked
+           int column = tbl_categorias.getColumnModel().getColumnIndexAtX(evt.getX());
+        int row = evt.getY() / tbl_categorias.getRowHeight();
+
+        ObjectId id = (ObjectId) tbl_categorias.getValueAt(row, 0);
+        String nombre = tbl_categorias.getValueAt(row, 1).toString();
+
+        if (row < tbl_categorias.getRowCount() && row >= 0 && column < tbl_categorias.getColumnCount() && column >= 0) {
+            Object value = tbl_categorias.getValueAt(row, column);
+            if (value instanceof JButton) {
+                ((JButton) value).doClick();
+                JButton boton = (JButton) value;                
+            AddCategoria categoria = new AddCategoria();
+            categoria.txtcat.setText(nombre);
+            categoria.lbl_titulo.setText("MODIFICAR CATEGORIA");
+            categoria.id = id;
+            categoria.setVisible(true);
+                //view_edit.llenar(id, nombre, apellido, user, password);
+            }
+        }
+    }//GEN-LAST:event_tbl_categoriasMouseClicked
 
     /**
      * @param args the command line arguments
