@@ -26,6 +26,7 @@ import conn.Conn;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -72,6 +73,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         }
 
     }
+
+    
+    
 
     public static void actualizar_cmbo_categorias() {
         ArrayList<Categoria> categorias = Conn.listar_categorias();
@@ -284,7 +288,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                         .addComponent(btn_editar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1001, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1023, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
@@ -296,13 +300,14 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_editar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_editar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(246, 246, 246)
@@ -757,6 +762,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
     private void btn_eliminar_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar_catActionPerformed
         int row = tbl_categorias.getSelectedRow();
+          
         if (row != -1) {
             ObjectId id = (ObjectId) tbl_categorias.getValueAt(row, 0);
             Categoria cat = new Categoria(id);
@@ -764,9 +770,14 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             if (articulos_total > 0) {
                 JOptionPane.showMessageDialog(null, "No se pudo eliminar, articulos asociados");
             } else {
+                int dialogButton = JOptionPane.YES_NO_OPTION;   
+                int dialogResult = JOptionPane.showConfirmDialog(this, "¿Esta Seguro de eliminar la categoria?", "Alerta", dialogButton);
+                if(dialogResult == 0) {
                 cat.eliminar();
                 actualizar_categorias();
                 actualizar_cmbo_categorias();
+                }
+               
             }
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione una categoria para eliminar");
