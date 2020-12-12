@@ -37,9 +37,9 @@ import org.bson.types.ObjectId;
 public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
     public static ArrayList<Articulo> listado_articulos = new ArrayList<Articulo>();
-    ;
+
     public static ArrayList<Categoria> listado_categoria = new ArrayList<Categoria>();
-    ;
+
     public static ArrayList<Usuario> listado_users = new ArrayList<Usuario>();
 
     public Interfaz() {
@@ -62,15 +62,15 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         cb_estados.setModel(model_estados);
 
         actualizar_articulos();
-        autenticar_vista();
-
-    }
-
-    public static void autenticar_vista() {
-        if (Conn.user_logged.isEs_admin() != true) {
-            tbl_users.setVisible(false);
-            btn_add.setVisible(false);
+        
+        // Ocultar los tabs de amdin y botones eliminar a usuarios no admin
+        if (!Conn.user_logged.isAdmin()) {
+            pan_usuario.remove(3);
+            btn_eliminar_cat.setVisible(false);
+            btn_eliminar_user.setVisible(false);
+            btn_eliminar_articulo.setVisible(false);
         }
+
     }
 
     public static void actualizar_cmbo_categorias() {
@@ -115,7 +115,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getUsername(),
                 a.getPassword(),
                 a.isActivo(),
-                a.isEs_admin(),
+                a.isAdmin(),
                 btn_editar
             });
         });
@@ -123,19 +123,18 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }
 
     public static void actualizar_articulos() {
-        tabla_listado.setDefaultRenderer(Object.class, new Render());
+        tbl_listado.setDefaultRenderer(Object.class, new Render());
         JButton btn_editar = new JButton("Editar");
-        JButton btn_eliminar = new JButton("Eliminar");
 
         Categoria cat = (Categoria) cb_cat.getSelectedItem();
         cat = cat.getId() == null ? null : cat;
         Estado st = (Estado) cb_estados.getSelectedItem();
         st = st.getId() == null ? null : st;
         listado_articulos = Conn.listar_articulos(cat, st);
-        DefaultTableModel model = (DefaultTableModel) tabla_listado.getModel();
+        DefaultTableModel model = (DefaultTableModel) tbl_listado.getModel();
         model.setRowCount(0);
 
-        tabla_listado.setDefaultEditor(Object.class, null);
+        tbl_listado.setDefaultEditor(Object.class, null);
 
         Interfaz.listado_articulos.forEach(a -> {
             model.addRow(new Object[]{
@@ -152,7 +151,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             });
         });
 
-        tabla_listado.setRowHeight(30);
+        tbl_listado.setRowHeight(30);
     }
 
     /**
@@ -165,20 +164,23 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
-        Pan_usuario = new javax.swing.JTabbedPane();
+        pan_usuario = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         btnagregar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbl_categorias = new javax.swing.JTable();
-        btneditar = new javax.swing.JToggleButton();
+        btn_editar_cat = new javax.swing.JToggleButton();
+        jButton3 = new javax.swing.JButton();
+        btn_eliminar_cat = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         cb_cat = new javax.swing.JComboBox<>();
         cb_estados = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tabla_listado = new javax.swing.JTable();
+        tbl_listado = new javax.swing.JTable();
         btn_open_add = new javax.swing.JButton();
+        btn_eliminar_articulo = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -192,13 +194,17 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         btn_add = new javax.swing.JButton();
         lbl_nombre = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btn_eliminar_user = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        btn_cerrar_sesion = new javax.swing.JMenuItem();
+        btn_salir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        Pan_usuario.setBackground(new java.awt.Color(255, 255, 255));
+        pan_usuario.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -235,13 +241,33 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             tbl_categorias.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        btneditar.setBackground(new java.awt.Color(255, 255, 255));
-        btneditar.setForeground(new java.awt.Color(255, 255, 255));
-        btneditar.setBorder(null);
-        btneditar.setContentAreaFilled(false);
-        btneditar.addActionListener(new java.awt.event.ActionListener() {
+        btn_editar_cat.setBackground(new java.awt.Color(255, 255, 255));
+        btn_editar_cat.setForeground(new java.awt.Color(255, 255, 255));
+        btn_editar_cat.setBorder(null);
+        btn_editar_cat.setContentAreaFilled(false);
+        btn_editar_cat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btneditarActionPerformed(evt);
+                btn_editar_catActionPerformed(evt);
+            }
+        });
+
+        jButton3.setBackground(new java.awt.Color(165, 19, 19));
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("Cerrar Session");
+        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        btn_eliminar_cat.setBackground(new java.awt.Color(165, 19, 19));
+        btn_eliminar_cat.setForeground(new java.awt.Color(255, 255, 255));
+        btn_eliminar_cat.setText("Eliminar");
+        btn_eliminar_cat.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btn_eliminar_cat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminar_catActionPerformed(evt);
             }
         });
 
@@ -250,30 +276,41 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 788, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_editar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btneditar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(391, 391, 391)
-                        .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(129, Short.MAX_VALUE))
+                        .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1001, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addGap(449, 449, 449)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(450, Short.MAX_VALUE)))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btneditar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addGap(17, 17, 17)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_editar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(28, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addGap(246, 246, 246)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(264, Short.MAX_VALUE)))
         );
 
-        Pan_usuario.addTab("Categorías", jPanel4);
+        pan_usuario.addTab("Categorías", jPanel4);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -300,7 +337,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             }
         });
 
-        tabla_listado.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_listado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -316,12 +353,12 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 return canEdit [columnIndex];
             }
         });
-        tabla_listado.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbl_listado.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabla_listadoMouseClicked(evt);
+                tbl_listadoMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tabla_listado);
+        jScrollPane2.setViewportView(tbl_listado);
 
         btn_open_add.setText("Agregar artículo");
         btn_open_add.addActionListener(new java.awt.event.ActionListener() {
@@ -330,20 +367,27 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             }
         });
 
+        btn_eliminar_articulo.setBackground(new java.awt.Color(165, 19, 19));
+        btn_eliminar_articulo.setForeground(new java.awt.Color(255, 255, 255));
+        btn_eliminar_articulo.setText("Eliminar");
+        btn_eliminar_articulo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminar_articuloActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(484, Short.MAX_VALUE)
                 .addComponent(btn_open_add, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(401, 401, 401))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addContainerGap())
+                    .addComponent(jScrollPane2)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -352,27 +396,32 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cb_estados, 0, 140, Short.MAX_VALUE)
                             .addComponent(cb_cat, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(137, 708, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_eliminar_articulo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cb_cat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cb_estados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cb_cat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cb_estados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btn_eliminar_articulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_open_add)
                 .addContainerGap())
         );
 
-        Pan_usuario.addTab("Listado", jPanel2);
+        pan_usuario.addTab("Listado", jPanel2);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -402,36 +451,35 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(211, 211, 211)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 621, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(381, Short.MAX_VALUE))
+                .addGap(19, 19, 19)
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 329, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(44, 44, 44)
+                .addComponent(jLabel5)
+                .addGap(48, 48, 48)
+                .addComponent(jLabel6)
+                .addGap(56, 56, 56)
+                .addComponent(jLabel7)
+                .addGap(281, 281, 281))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
+                    .addComponent(jLabel7)
                     .addComponent(jLabel6)
-                    .addComponent(jLabel7))
-                .addContainerGap(280, Short.MAX_VALUE))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel4))
+                .addContainerGap())
         );
 
-        Pan_usuario.addTab("Resumen general", jPanel1);
+        pan_usuario.addTab("Resumen general", jPanel1);
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -472,13 +520,13 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Persona Logueada : ");
 
-        jButton1.setBackground(new java.awt.Color(165, 19, 19));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Cerrar Session");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_eliminar_user.setBackground(new java.awt.Color(165, 19, 19));
+        btn_eliminar_user.setForeground(new java.awt.Color(255, 255, 255));
+        btn_eliminar_user.setText("Eliminar");
+        btn_eliminar_user.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btn_eliminar_user.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_eliminar_userActionPerformed(evt);
             }
         });
 
@@ -490,20 +538,19 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 997, Short.MAX_VALUE))
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1001, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(413, 413, 413)
                         .addComponent(btn_add)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbl_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_eliminar_user, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -513,26 +560,48 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(lbl_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_eliminar_user, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                 .addGap(30, 30, 30)
                 .addComponent(btn_add)
                 .addGap(38, 38, 38))
         );
 
-        Pan_usuario.addTab("Users", jPanel5);
+        pan_usuario.addTab("Users", jPanel5);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Pan_usuario)
+            .addComponent(pan_usuario)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Pan_usuario)
+            .addComponent(pan_usuario)
         );
+
+        jMenu1.setText("Archivo");
+
+        btn_cerrar_sesion.setText("Cerrar Sesión");
+        btn_cerrar_sesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cerrar_sesionActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btn_cerrar_sesion);
+
+        btn_salir.setText("Salir");
+        btn_salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_salirActionPerformed(evt);
+            }
+        });
+        jMenu1.add(btn_salir);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -551,7 +620,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
-        if (Conn.user_logged.isEs_admin() == true) {
+        if (Conn.user_logged.isAdmin() == true) {
             NuevoUsuario nu = new NuevoUsuario();
             nu.setVisible(true);
         } else {
@@ -602,20 +671,20 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         // dispose();
     }//GEN-LAST:event_btn_open_addActionPerformed
 
-    private void tabla_listadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_listadoMouseClicked
-        int column = tabla_listado.getColumnModel().getColumnIndexAtX(evt.getX());
-        int row = evt.getY() / tabla_listado.getRowHeight();
+    private void tbl_listadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_listadoMouseClicked
+        int column = tbl_listado.getColumnModel().getColumnIndexAtX(evt.getX());
+        int row = evt.getY() / tbl_listado.getRowHeight();
 
-        ObjectId id = (ObjectId) tabla_listado.getValueAt(row, 0);
-        String descripcion = tabla_listado.getValueAt(row, 1).toString();
-        String marca = tabla_listado.getValueAt(row, 2).toString();
-        String modelo = tabla_listado.getValueAt(row, 3).toString();
-        String num_ser = tabla_listado.getValueAt(row, 4).toString();
-        String estado = tabla_listado.getValueAt(row, 5).toString();
-        String observaciones = tabla_listado.getValueAt(row, 8).toString();
+        ObjectId id = (ObjectId) tbl_listado.getValueAt(row, 0);
+        String descripcion = tbl_listado.getValueAt(row, 1).toString();
+        String marca = tbl_listado.getValueAt(row, 2).toString();
+        String modelo = tbl_listado.getValueAt(row, 3).toString();
+        String num_ser = tbl_listado.getValueAt(row, 4).toString();
+        String estado = tbl_listado.getValueAt(row, 5).toString();
+        String observaciones = tbl_listado.getValueAt(row, 8).toString();
 
-        if (row < tabla_listado.getRowCount() && row >= 0 && column < tabla_listado.getColumnCount() && column >= 0) {
-            Object value = tabla_listado.getValueAt(row, column);
+        if (row < tbl_listado.getRowCount() && row >= 0 && column < tbl_listado.getColumnCount() && column >= 0) {
+            Object value = tbl_listado.getValueAt(row, column);
             if (value instanceof JButton) {
                 ((JButton) value).doClick();
                 JButton boton = (JButton) value;
@@ -625,7 +694,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 view_edit.llenar(id, descripcion, marca, modelo, num_ser, observaciones, estado);
             }
         }
-    }//GEN-LAST:event_tabla_listadoMouseClicked
+    }//GEN-LAST:event_tbl_listadoMouseClicked
 
     private void cb_estadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_estadosActionPerformed
 
@@ -641,7 +710,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
     }//GEN-LAST:event_cb_catItemStateChanged
 
-    private void btneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarActionPerformed
+    private void btn_editar_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editar_catActionPerformed
 
         int row = tbl_categorias.getSelectedRow();
         if (row != -1) {
@@ -655,10 +724,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione una categoria para editar");
         }
-    }//GEN-LAST:event_btneditarActionPerformed
+    }//GEN-LAST:event_btn_editar_catActionPerformed
 
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
-        if (Conn.user_logged.isEs_admin() == true) {
+        if (Conn.user_logged.isAdmin() == true) {
             AddCategoria categori = new AddCategoria();
             categori.setVisible(true);
         } else {
@@ -669,13 +738,54 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
     }//GEN-LAST:event_btnagregarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btn_eliminar_articuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar_articuloActionPerformed
+        // Agregar confirmacion de eliminación
+        int row = tbl_listado.getSelectedRow();
+        if (row != -1) {
+            ObjectId id = (ObjectId) tbl_listado.getValueAt(row, 0);
+            Articulo art = new Articulo(id);
+            art.eliminar();
+            actualizar_articulos();
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un artículo para eliminar");
+        }
+    }//GEN-LAST:event_btn_eliminar_articuloActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btn_eliminar_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar_catActionPerformed
+        int row = tbl_categorias.getSelectedRow();
+        if (row != -1) {
+            ObjectId id = (ObjectId) tbl_categorias.getValueAt(row, 0);
+            Categoria cat = new Categoria(id);
+            int articulos_total = Conn.listar_articulos(cat, null).size();
+            if (articulos_total > 0) {
+                JOptionPane.showMessageDialog(null, "No se pudo eliminar, articulos asociados");
+            } else {
+                cat.eliminar();
+                actualizar_categorias();
+                actualizar_cmbo_categorias();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione una categoria para eliminar");
+        }
+    }//GEN-LAST:event_btn_eliminar_catActionPerformed
+
+    private void btn_eliminar_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar_userActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_eliminar_userActionPerformed
+
+    private void btn_cerrar_sesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrar_sesionActionPerformed
         Login login = new Login();
         login.setVisible(true);
         dispose();
+    }//GEN-LAST:event_btn_cerrar_sesionActionPerformed
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btn_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btn_salirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -706,14 +816,18 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JTabbedPane Pan_usuario;
     public static javax.swing.JButton btn_add;
+    private javax.swing.JMenuItem btn_cerrar_sesion;
+    private javax.swing.JToggleButton btn_editar_cat;
+    private javax.swing.JButton btn_eliminar_articulo;
+    private javax.swing.JButton btn_eliminar_cat;
+    private javax.swing.JButton btn_eliminar_user;
     private javax.swing.JButton btn_open_add;
+    private javax.swing.JMenuItem btn_salir;
     private javax.swing.JButton btnagregar;
-    private javax.swing.JToggleButton btneditar;
     private static javax.swing.JComboBox<String> cb_cat;
     private static javax.swing.JComboBox<String> cb_estados;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     public static javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -721,6 +835,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -732,8 +848,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JScrollPane jScrollPane6;
     private static javax.swing.JTable jTable1;
     private javax.swing.JLabel lbl_nombre;
-    private static javax.swing.JTable tabla_listado;
+    public static javax.swing.JTabbedPane pan_usuario;
     private static javax.swing.JTable tbl_categorias;
+    private static javax.swing.JTable tbl_listado;
     public static javax.swing.JTable tbl_users;
     // End of variables declaration//GEN-END:variables
 }

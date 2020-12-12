@@ -212,11 +212,11 @@ public class NuevoUsuario extends javax.swing.JFrame {
         
         if(cmbad.getSelectedIndex() == 0){
                 usuario.setActivo(true);
-                usuario.setEs_admin(true);
+                usuario.setAdmin(true);
         }
         if(cmbad.getSelectedIndex() == 1){
                 usuario.setActivo(true);
-                usuario.setEs_admin(false);
+                usuario.setAdmin(false);
         }
         if (id != null) {
             usuario.setId(id);
