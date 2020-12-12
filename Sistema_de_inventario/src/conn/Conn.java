@@ -115,7 +115,7 @@ public class Conn {
         if (col.countDocuments() == 0) {
             Usuario admin = new Usuario("admin", "admin", "admin", "admin",new Date());
             admin.setActivo(true);
-            admin.setEs_admin(true);
+            admin.setAdmin(true);
             admin.guardar();
         }
         FindIterable categorias_in_bd = col.find();
@@ -125,6 +125,12 @@ public class Conn {
             usuario.add(new Usuario((Document) it.next()));
         }
         return usuario;
+    }
+    
+    public static MongoCollection<Document> getCollection(String col) {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase documento = mongoClient.getDatabase("inventario");
+        return documento.getCollection(col);
     }
    
 }
