@@ -16,8 +16,9 @@ import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
  
     public Login() {
-        
+       
         initComponents();
+         
         setLocationRelativeTo(null);
         System.out.println("USUARIOS: " + Conn.listar_users());
         
@@ -168,6 +169,9 @@ public class Login extends javax.swing.JFrame {
         Log = Log.autenticar();
         if (Log != null) {
             Interfaz interfaz = new Interfaz();
+             
+            
+            
             interfaz.setVisible(true);
             dispose();
         } else {
