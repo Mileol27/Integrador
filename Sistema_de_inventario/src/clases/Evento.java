@@ -9,7 +9,7 @@ import org.bson.types.ObjectId;
 public class Evento implements ISerrializable{
     
     private ObjectId _id;
-    private Date creado_el;
+    private Date creado_el = new Date();
     private Usuario creado_por;
     private Articulo articulo;
 

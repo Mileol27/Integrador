@@ -3,6 +3,7 @@ package clases;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import conn.Conn;
+import java.util.Date;
 import org.bson.Document;
 
 public class EvCreacion extends Evento{

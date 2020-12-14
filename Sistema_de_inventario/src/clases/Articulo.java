@@ -107,7 +107,7 @@ public class Articulo implements ISerrializable {
 
     @Override
     public void guardar() {
-        guardar("---");
+        guardar("Cambio en los datos");
     }
     
     public void guardar(String detalle) {
@@ -134,6 +134,7 @@ public class Articulo implements ISerrializable {
             ev.guardar();
             col.updateOne(new BasicDBObject("_id", _id), new BasicDBObject("$set", doc));
         }
+        
     }
 
     public void setId(ObjectId _id) {
