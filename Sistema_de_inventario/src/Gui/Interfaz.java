@@ -177,7 +177,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         btnagregar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbl_categorias = new javax.swing.JTable();
-        btn_editar_cat = new javax.swing.JToggleButton();
         jButton3 = new javax.swing.JButton();
         btn_eliminar_cat = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -255,16 +254,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             tbl_categorias.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        btn_editar_cat.setBackground(new java.awt.Color(255, 255, 255));
-        btn_editar_cat.setForeground(new java.awt.Color(255, 255, 255));
-        btn_editar_cat.setBorder(null);
-        btn_editar_cat.setContentAreaFilled(false);
-        btn_editar_cat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_editar_catActionPerformed(evt);
-            }
-        });
-
         jButton3.setBackground(new java.awt.Color(165, 19, 19));
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Cerrar Session");
@@ -295,8 +284,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_editar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1023, Short.MAX_VALUE))
                 .addContainerGap())
@@ -310,11 +297,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_editar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(32, Short.MAX_VALUE))
@@ -725,22 +710,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
     }//GEN-LAST:event_cb_catItemStateChanged
 
-    private void btn_editar_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editar_catActionPerformed
-
-        int row = tbl_categorias.getSelectedRow();
-        if (row != -1) {
-            String nombre = (String) tbl_categorias.getValueAt(row, 1);
-            ObjectId id = (ObjectId) tbl_categorias.getValueAt(row, 0);
-            AddCategoria categoria = new AddCategoria();
-            categoria.txtcat.setText(nombre);
-            categoria.lbl_titulo.setText("MODIFICAR CATEGORIA");
-            categoria.id = id;
-            categoria.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "Seleccione una categoria para editar");
-        }
-    }//GEN-LAST:event_btn_editar_catActionPerformed
-
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
         if (Conn.user_logged.isAdmin() == true) {
             AddCategoria categori = new AddCategoria();
@@ -861,7 +830,6 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btn_add;
     private javax.swing.JMenuItem btn_cerrar_sesion;
-    private javax.swing.JToggleButton btn_editar_cat;
     private javax.swing.JButton btn_eliminar_articulo;
     private javax.swing.JButton btn_eliminar_cat;
     private javax.swing.JButton btn_eliminar_user;

@@ -8,6 +8,10 @@ package conn;
 import clases.Articulo;
 import clases.Categoria;
 import clases.Estado;
+import clases.EvActualizacion;
+import clases.EvCreacion;
+import clases.EvEliminacion;
+import clases.Evento;
 import clases.Usuario;
 import com.mongodb.MongoClient;
 import com.mongodb.client.AggregateIterable;
@@ -131,6 +135,26 @@ public class Conn {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase documento = mongoClient.getDatabase("inventario");
         return documento.getCollection(col);
+    }
+    
+    public static ArrayList<Evento> get_log(Date filtro) {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase database = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = database.getCollection("eventos");
+        // Filtrar por mes y año....
+        FindIterable categorias_in_bd = col.find();
+        ArrayList<Evento> eventos = new ArrayList<>();
+        Iterator it = categorias_in_bd.iterator();
+        while (it.hasNext()) {
+            Document ob = (Document) it.next();
+            String tipo = ob.getString("tipo");
+            switch(tipo) {
+                case "C" : eventos.add(new EvCreacion(ob)); break;
+                case "D" : eventos.add(new EvEliminacion(ob)); break;
+                case "U" : eventos.add(new EvActualizacion(ob)); break;
+            }
+        }
+        return eventos;
     }
    
 }

@@ -101,11 +101,16 @@ public class Articulo implements ISerrializable {
         MongoCollection<Document> col = Conn.getCollection("articulos");
         col.deleteOne(new BasicDBObject("_id", _id));
         EvEliminacion ev = new EvEliminacion(this);
+        ev.setMotivo(motivo);
         ev.guardar();
     }
 
     @Override
     public void guardar() {
+        guardar("---");
+    }
+    
+    public void guardar(String detalle) {
         MongoCollection<Document> col = Conn.getCollection("articulos");
         Document doc = new Document();
         doc.put("descripcion", descripcion);
@@ -125,6 +130,7 @@ public class Articulo implements ISerrializable {
             ev.guardar();
         } else {
             EvActualizacion ev = new EvActualizacion(this);
+            ev.setDetalle(detalle);
             ev.guardar();
             col.updateOne(new BasicDBObject("_id", _id), new BasicDBObject("$set", doc));
         }

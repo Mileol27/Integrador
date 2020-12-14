@@ -11,6 +11,10 @@ public class EvCreacion extends Evento{
         super(articulo);
     }
     
+    public EvCreacion(Document ob) {
+        super(ob);
+    }
+    
     @Override
     public void guardar() {
         MongoCollection<Document> col = Conn.getCollection("eventos");

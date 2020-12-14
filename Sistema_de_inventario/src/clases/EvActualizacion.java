@@ -13,6 +13,11 @@ public class EvActualizacion extends Evento{
         super(articulo);
     }
     
+    public EvActualizacion(Document ob) {
+        super(ob);
+        this.detalle = ob.getString("detalle");
+    }
+    
     @Override
     public void guardar() {
         MongoCollection<Document> col = Conn.getCollection("eventos");
