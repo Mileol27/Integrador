@@ -47,7 +47,7 @@ public class Categoria implements ISerrializable{
         if (ob.get("creado_por_obj") == null) {
             this.creado_por = new Usuario(ob.getObjectId("creado_por"));
         } else {
-            this.creado_por = new Usuario((Document) ((List) ob.get("creado_por_obj")).get(0));
+        this.creado_por = new Usuario((Document) ((List) ob.get("creado_por_obj")).get(0));
         }
         
     }

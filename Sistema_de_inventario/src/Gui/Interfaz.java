@@ -40,7 +40,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     public static ArrayList<Articulo> listado_articulos = new ArrayList<Articulo>();
 
     public static ArrayList<Categoria> listado_categoria = new ArrayList<Categoria>();
-
+    
+    public static ArrayList<Estado> listado_estados = new ArrayList<Estado>();
+    
     public static ArrayList<Usuario> listado_users = new ArrayList<Usuario>();
 
     public Interfaz() {
@@ -48,10 +50,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         initComponents();
         setLocationRelativeTo(null);
         lbl_nombre.setText(Conn.user_logged.getNombre());
-        actualizar_categorias();
-
+        actualizar_cmbo_estados();
+        actualizar_estados();
+        actualizar_categorias();  
         actualizar_users();
-
         actualizar_cmbo_categorias();
 
         ArrayList<Estado> estados = Conn.listar_estados();
@@ -66,7 +68,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         
         // Ocultar los tabs de amdin y botones eliminar a usuarios no admin
         if (!Conn.user_logged.isAdmin()) {
-            pan_usuario.remove(3);
+            pan_usuario.remove(4);
+            pan_usuario.remove(2);
             btn_eliminar_cat.setVisible(false);
             btn_eliminar_user.setVisible(false);
             btn_eliminar_articulo.setVisible(false);
@@ -85,6 +88,15 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             model_cats.addElement(categoria);
         });
         cb_cat.setModel(model_cats);
+    }
+    public static void actualizar_cmbo_estados() {
+        ArrayList<Estado> estados = Conn.listar_estados();
+        DefaultComboBoxModel model_estado = new DefaultComboBoxModel();
+        model_estado.addElement(new Estado("Todos"));
+        estados.forEach(categoria -> {
+            model_estado.addElement(categoria);
+        });
+        cb_estados.setModel(model_estado);
     }
 
     public static void actualizar_categorias() {
@@ -105,11 +117,27 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         });
         tbl_categorias.setRowHeight(30);
     }
+        public static void actualizar_estados() {
+        tbl_estados.setDefaultRenderer(Object.class, new Render());
+        JButton btn_editar = new JButton("Editar");
+        listado_estados= Conn.listar_estados();
+        DefaultTableModel model_estado = (DefaultTableModel) tbl_estados.getModel();
+        model_estado.setRowCount(0);
+        System.out.println();
+        Interfaz.listado_estados.forEach(a -> {
+            model_estado.addRow(new Object[]{
+                a.getId(),
+                a.getNombre(),
+                a.getDescripcion(),
+                btn_editar
+            });
+        });
+        tbl_estados.setRowHeight(30);
+    }
 
     public static void actualizar_users() {
         tbl_users.setDefaultRenderer(Object.class, new Render());
         JButton btn_editar = new JButton("Editar");
-        JButton btn_eliminar = new JButton("Eliminar");
         listado_users = Conn.listar_users();
         DefaultTableModel model_user = (DefaultTableModel) tbl_users.getModel();
         model_user.setRowCount(0);
@@ -122,8 +150,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getApellido(),
                 a.getUsername(),
                 a.getPassword(),
-                a.isActivo(),
-                a.isAdmin(),
+                a.isActivo()==true?"SI":"NO",
+                a.isAdmin()==true?"SI":"NO",
                 btn_editar
             });
         });
@@ -177,8 +205,16 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         btnagregar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbl_categorias = new javax.swing.JTable();
+        btn_editar_cat = new javax.swing.JToggleButton();
         jButton3 = new javax.swing.JButton();
         btn_eliminar_cat = new javax.swing.JButton();
+        jpanelestados = new javax.swing.JPanel();
+        btnagregar1 = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbl_estados = new javax.swing.JTable();
+        btn_editar_cat1 = new javax.swing.JToggleButton();
+        jButton4 = new javax.swing.JButton();
+        btn_eliminar_cat1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -254,6 +290,16 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             tbl_categorias.getColumnModel().getColumn(4).setResizable(false);
         }
 
+        btn_editar_cat.setBackground(new java.awt.Color(255, 255, 255));
+        btn_editar_cat.setForeground(new java.awt.Color(255, 255, 255));
+        btn_editar_cat.setBorder(null);
+        btn_editar_cat.setContentAreaFilled(false);
+        btn_editar_cat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_editar_catActionPerformed(evt);
+            }
+        });
+
         jButton3.setBackground(new java.awt.Color(165, 19, 19));
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Cerrar Session");
@@ -284,6 +330,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_editar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1023, Short.MAX_VALUE))
                 .addContainerGap())
@@ -297,9 +345,11 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_editar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(32, Short.MAX_VALUE))
@@ -311,6 +361,126 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         );
 
         pan_usuario.addTab("Categorías", jPanel4);
+
+        jpanelestados.setBackground(new java.awt.Color(255, 255, 255));
+
+        btnagregar1.setBackground(new java.awt.Color(0, 204, 102));
+        btnagregar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnagregar1.setText("agregar estado");
+        btnagregar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnagregar1ActionPerformed(evt);
+            }
+        });
+
+        tbl_estados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "Nombre", "Descripción", "opciones"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_estados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_estadosMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tbl_estados);
+        if (tbl_estados.getColumnModel().getColumnCount() > 0) {
+            tbl_estados.getColumnModel().getColumn(2).setResizable(false);
+            tbl_estados.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        btn_editar_cat1.setBackground(new java.awt.Color(255, 255, 255));
+        btn_editar_cat1.setForeground(new java.awt.Color(255, 255, 255));
+        btn_editar_cat1.setBorder(null);
+        btn_editar_cat1.setContentAreaFilled(false);
+        btn_editar_cat1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_editar_cat1ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setBackground(new java.awt.Color(165, 19, 19));
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setText("Cerrar Session");
+        jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        btn_eliminar_cat1.setBackground(new java.awt.Color(165, 19, 19));
+        btn_eliminar_cat1.setForeground(new java.awt.Color(255, 255, 255));
+        btn_eliminar_cat1.setText("Eliminar");
+        btn_eliminar_cat1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btn_eliminar_cat1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminar_cat1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jpanelestadosLayout = new javax.swing.GroupLayout(jpanelestados);
+        jpanelestados.setLayout(jpanelestadosLayout);
+        jpanelestadosLayout.setHorizontalGroup(
+            jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpanelestadosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanelestadosLayout.createSequentialGroup()
+                        .addComponent(btnagregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_editar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_eliminar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1023, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpanelestadosLayout.createSequentialGroup()
+                    .addGap(449, 449, 449)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(472, Short.MAX_VALUE)))
+        );
+        jpanelestadosLayout.setVerticalGroup(
+            jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpanelestadosLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_editar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnagregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_eliminar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
+            .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpanelestadosLayout.createSequentialGroup()
+                    .addGap(246, 246, 246)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(268, Short.MAX_VALUE)))
+        );
+
+        pan_usuario.addTab("Estados", jpanelestados);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -641,7 +811,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         String apellido = tbl_users.getValueAt(row, 2).toString();
         String user = tbl_users.getValueAt(row, 3).toString();
         String password = tbl_users.getValueAt(row, 4).toString();
-
+        String activo= tbl_users.getValueAt(row, 5).toString();
+        String admin= tbl_users.getValueAt(row, 6).toString();
+        
         if (row < tbl_users.getRowCount() && row >= 0 && column < tbl_users.getColumnCount() && column >= 0) {
             Object value = tbl_users.getValueAt(row, column);
             if (value instanceof JButton) {
@@ -650,7 +822,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 NuevoUsuario view_edit = new NuevoUsuario();
                 view_edit.lbl_usuario.setText("Editar Usuario");
                 view_edit.setVisible(true);
-                view_edit.llenar(id, nombre, apellido, user, password);
+                view_edit.llenar(id, nombre, apellido, user, password,admin,activo);
             }
         }
 
@@ -710,6 +882,22 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
     }//GEN-LAST:event_cb_catItemStateChanged
 
+    private void btn_editar_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editar_catActionPerformed
+
+        int row = tbl_categorias.getSelectedRow();
+        if (row != -1) {
+            String nombre = (String) tbl_categorias.getValueAt(row, 1);
+            ObjectId id = (ObjectId) tbl_categorias.getValueAt(row, 0);
+            AddCategoria categoria = new AddCategoria();
+            categoria.txtcat.setText(nombre);
+            categoria.lbl_titulo.setText("MODIFICAR CATEGORIA");
+            categoria.id = id;
+            categoria.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione una categoria para editar");
+        }
+    }//GEN-LAST:event_btn_editar_catActionPerformed
+
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
         if (Conn.user_logged.isAdmin() == true) {
             AddCategoria categori = new AddCategoria();
@@ -728,8 +916,12 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         if (row != -1) {
             ObjectId id = (ObjectId) tbl_listado.getValueAt(row, 0);
             Articulo art = new Articulo(id);
+            int dialogButton = JOptionPane.YES_NO_OPTION;   
+            int dialogResult = JOptionPane.showConfirmDialog(this, "¿Esta Seguro de eliminar el Articulo?", "Alerta", dialogButton);
+            if(dialogResult == 0) {
             art.eliminar();
-            actualizar_articulos();
+            actualizar_articulos();}
+           
         } else {
             JOptionPane.showMessageDialog(null, "Seleccione un artículo para eliminar");
         }
@@ -759,12 +951,30 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione una categoria para eliminar");
+            JOptionPane.showMessageDialog(null, "Seleccione un usuario para eliminar");
         }
     }//GEN-LAST:event_btn_eliminar_catActionPerformed
 
     private void btn_eliminar_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar_userActionPerformed
-        // TODO add your handling code here:
+      int row = tbl_users.getSelectedRow();
+          
+        if (row != -1) {
+            ObjectId id = (ObjectId) tbl_users.getValueAt(row, 0);
+            Usuario usuario= new Usuario(id);
+            int articulos_total = Conn.cantidad_articulos_user(usuario).size();
+            if (articulos_total > 0) {
+                JOptionPane.showMessageDialog(null, "No se pudo eliminar, articulos asociados");
+            } else {
+                int dialogButton = JOptionPane.YES_NO_OPTION;   
+                int dialogResult = JOptionPane.showConfirmDialog(this, "¿Esta Seguro de eliminar el Usuario?", "Alerta", dialogButton);
+                if(dialogResult == 0) {
+                usuario.eliminar();
+                actualizar_users();
+                }     
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un estado para eliminar");
+        }     
     }//GEN-LAST:event_btn_eliminar_userActionPerformed
 
     private void btn_cerrar_sesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrar_sesionActionPerformed
@@ -778,7 +988,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_btn_salirActionPerformed
 
     private void tbl_categoriasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_categoriasMouseClicked
-           int column = tbl_categorias.getColumnModel().getColumnIndexAtX(evt.getX());
+        int column = tbl_categorias.getColumnModel().getColumnIndexAtX(evt.getX());
         int row = evt.getY() / tbl_categorias.getRowHeight();
 
         ObjectId id = (ObjectId) tbl_categorias.getValueAt(row, 0);
@@ -798,6 +1008,68 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             }
         }
     }//GEN-LAST:event_tbl_categoriasMouseClicked
+
+    private void btnagregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregar1ActionPerformed
+   if (Conn.user_logged.isAdmin() == true) {
+            AddEstado estado = new AddEstado();
+            estado.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Usted no es administrador");
+        }         
+    }//GEN-LAST:event_btnagregar1ActionPerformed
+
+    private void tbl_estadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_estadosMouseClicked
+        int column = tbl_estados.getColumnModel().getColumnIndexAtX(evt.getX());
+        int row = evt.getY() / tbl_estados.getRowHeight();
+        ObjectId id = (ObjectId) tbl_estados.getValueAt(row, 0);
+        String nombre = tbl_estados.getValueAt(row, 1).toString();
+       String descripcion = tbl_estados.getValueAt(row, 2).toString();
+        if (row < tbl_estados.getRowCount() && row >= 0 && column < tbl_estados.getColumnCount() && column >= 0) {
+            Object value = tbl_estados.getValueAt(row, column);
+            if (value instanceof JButton) {
+                ((JButton) value).doClick();
+                JButton boton = (JButton) value;                
+            AddEstado estado = new AddEstado();
+            estado.txtestado.setText(nombre);
+            estado.txtdescripcion.setText(descripcion);
+            estado.lbl_titulo.setText("MODIFICAR ESTADO");
+            estado.id = id;
+            estado.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_tbl_estadosMouseClicked
+
+    private void btn_editar_cat1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editar_cat1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_editar_cat1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void btn_eliminar_cat1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminar_cat1ActionPerformed
+         int row = tbl_estados.getSelectedRow();
+          
+        if (row != -1) {
+            ObjectId id = (ObjectId) tbl_estados.getValueAt(row, 0);
+            Estado estado= new Estado(id);
+            int articulos_total = Conn.listar_articulos(null,estado).size();
+            if (articulos_total > 0) {
+                JOptionPane.showMessageDialog(null, "No se pudo eliminar, articulos asociados");
+            } else {
+                int dialogButton = JOptionPane.YES_NO_OPTION;   
+                int dialogResult = JOptionPane.showConfirmDialog(this, "¿Esta Seguro de eliminar el Estado?", "Alerta", dialogButton);
+                if(dialogResult == 0) {
+                estado.eliminar();
+                actualizar_estados();
+                actualizar_cmbo_estados();
+                }
+               
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un estado para eliminar");
+        }
+    }//GEN-LAST:event_btn_eliminar_cat1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -830,15 +1102,20 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JButton btn_add;
     private javax.swing.JMenuItem btn_cerrar_sesion;
+    private javax.swing.JToggleButton btn_editar_cat;
+    private javax.swing.JToggleButton btn_editar_cat1;
     private javax.swing.JButton btn_eliminar_articulo;
     private javax.swing.JButton btn_eliminar_cat;
+    private javax.swing.JButton btn_eliminar_cat1;
     private javax.swing.JButton btn_eliminar_user;
     private javax.swing.JButton btn_open_add;
     private javax.swing.JMenuItem btn_salir;
     private javax.swing.JButton btnagregar;
+    private javax.swing.JButton btnagregar1;
     private static javax.swing.JComboBox<String> cb_cat;
     private static javax.swing.JComboBox<String> cb_estados;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     public static javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -856,11 +1133,14 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane6;
     private static javax.swing.JTable jTable1;
+    private javax.swing.JPanel jpanelestados;
     private javax.swing.JLabel lbl_nombre;
     public static javax.swing.JTabbedPane pan_usuario;
     private static javax.swing.JTable tbl_categorias;
+    private static javax.swing.JTable tbl_estados;
     private static javax.swing.JTable tbl_listado;
     public static javax.swing.JTable tbl_users;
     // End of variables declaration//GEN-END:variables
