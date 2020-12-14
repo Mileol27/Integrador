@@ -126,6 +126,8 @@ public class Articulo implements ISerrializable {
             doc.put("creado_el", new Date());
             doc.put("creado_por", Conn.user_logged.getId());
             col.insertOne(doc);
+            ObjectId id = (ObjectId)doc.get( "_id" );
+            _id = id;
             EvCreacion ev = new EvCreacion(this);
             ev.guardar();
         } else {
@@ -136,7 +138,8 @@ public class Articulo implements ISerrializable {
         }
         
     }
-
+    
+ 
     public void setId(ObjectId _id) {
         this._id = _id;
     }

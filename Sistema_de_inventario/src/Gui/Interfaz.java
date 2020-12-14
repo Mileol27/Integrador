@@ -91,9 +91,11 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         if (!Conn.user_logged.isAdmin()) {
             pan_usuario.remove(4);
             pan_usuario.remove(2);
+            
             btn_eliminar_cat.setVisible(false);
             btn_eliminar_user.setVisible(false);
             btn_eliminar_articulo.setVisible(false);
+            btn_eliminar_cat1.setVisible(false);
         }
 
     }
