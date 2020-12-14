@@ -13,9 +13,12 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gt;
 import java.util.ArrayList;
 import org.bson.Document;
 import java.util.Iterator;
@@ -70,6 +73,19 @@ public class Conn {
             estados.add(new Estado((Document) it.next()));
         }
         return estados;
+    }
+    
+    public static ArrayList<Articulo> cantidad_articulos_user(Usuario usuario) {
+      MongoClient mongoClient = new MongoClient();
+        MongoDatabase database = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = database.getCollection("articulos");
+        FindIterable<Document> iterable=(FindIterable<Document>) col.find(eq("creado_por", usuario.getId()));
+        MongoCursor<Document> cursor = iterable.iterator();
+        ArrayList<Articulo> articulos = new ArrayList<>();
+        while (cursor.hasNext()) {
+         articulos.add(new Articulo((Document) cursor.next()));
+       }
+        return articulos;
     }
     
     public static ArrayList<Articulo> listar_articulos(Categoria cat, Estado st) {

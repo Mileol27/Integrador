@@ -6,6 +6,7 @@
 package Gui;
 
 import clases.Usuario;
+import conn.Conn;
 import java.util.Date;
 import org.bson.types.ObjectId;
 
@@ -25,15 +26,32 @@ public class NuevoUsuario extends javax.swing.JFrame {
         
     }
     
-     public void llenar(ObjectId id,String nombre,String apellido, String user, String password){
+     public void llenar(ObjectId id,String nombre,String apellido, String user, String password,String admin,String activo){
+         ObjectId idlogin=Conn.user_logged.getId();
+        if(id.equals(idlogin)){
+        cmbad.enable(false);
+        cbactivo.enable(false);
         
-        
+        }else{
+            cmbad.enable(true);
+        cbactivo.enable(true);
+        }
         txtnombre.setText(nombre);
         txtapellido.setText(apellido);
         txtuser.setText(user);
         txtpass.setText(password);
         this.id = id;
-        cbactivo.enable();
+        
+        if(admin.equals("SI")){
+         cmbad.setSelectedIndex(0);
+        }else{
+        cmbad.setSelectedIndex(1);
+        }
+        if(activo.equals("SI")){
+        cbactivo.setSelectedIndex(0);
+        }else{
+        cbactivo.setSelectedIndex(1);
+        }
     }   
  
 
@@ -58,7 +76,7 @@ public class NuevoUsuario extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         lbl_usuario = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
@@ -210,20 +228,23 @@ public class NuevoUsuario extends javax.swing.JFrame {
         
         Usuario usuario = new Usuario(txtnombre.getText(), txtapellido.getText(),txtuser.getText(), txtpass.getText(),new Date());
         
-        if(cmbad.getSelectedIndex() == 0){
-                usuario.setActivo(true);
-                usuario.setAdmin(true);
+        if(cmbad.getSelectedIndex()== 0){
+            usuario.setAdmin(true);
+        }else{
+           usuario.setAdmin(false);
         }
-        if(cmbad.getSelectedIndex() == 1){
-                usuario.setActivo(true);
-                usuario.setAdmin(false);
+        if(cbactivo.getSelectedIndex() == 0){
+          usuario.setActivo(true);
+        }else{
+          usuario.setActivo(false);
         }
         if (id != null) {
             usuario.setId(id);
         }
         usuario.guardar();
-        dispose();
         Interfaz.actualizar_users();
+        dispose();
+        
          
     }//GEN-LAST:event_btnguardarActionPerformed
 

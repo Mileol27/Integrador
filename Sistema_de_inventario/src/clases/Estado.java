@@ -1,6 +1,7 @@
 package clases;
 
 import Interfaces.ISerrializable;
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -14,6 +15,12 @@ public class Estado implements ISerrializable{
     private ObjectId _id;
     private String nombre;
     private String descripcion;
+
+   
+
+    public void setId(ObjectId _id) {
+        this._id = _id;
+    }
     
     public Estado(ObjectId _id) {
         this._id = _id;
@@ -23,7 +30,9 @@ public class Estado implements ISerrializable{
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
-
+     public Estado(String nombre) {
+        this.nombre = nombre;
+    }
     public Estado(Document ob) {
         this._id = ob.getObjectId("_id");
         this.nombre = ob.getString("nombre");
@@ -35,7 +44,8 @@ public class Estado implements ISerrializable{
     }
     
     public void eliminar(){
-        
+    MongoCollection<Document> col = Conn.getCollection("estados");
+    col.deleteOne(new BasicDBObject("_id", _id));    
     }
     
     @Override
@@ -45,8 +55,14 @@ public class Estado implements ISerrializable{
         MongoCollection<Document> col = documento.getCollection("estados");
         Document doc = new Document();
         doc.put("nombre", nombre);
-        doc.put("descripción", descripcion);
+        doc.put("descripcion", descripcion);
+         if (_id == null) {
+        doc.put("nombre", nombre);
+        doc.put("descripcion", descripcion);
         col.insertOne(doc);
+        } else {
+        col.updateOne(new BasicDBObject("_id", _id), new BasicDBObject("$set", doc));
+        }
     }
     
     public ObjectId getId() {
