@@ -951,7 +951,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un usuario para eliminar");
+            JOptionPane.showMessageDialog(null, "Seleccione una categoria para eliminar");
         }
     }//GEN-LAST:event_btn_eliminar_catActionPerformed
 
@@ -973,7 +973,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 }     
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Seleccione un estado para eliminar");
+            JOptionPane.showMessageDialog(null, "Seleccione un usuario para eliminar");
         }     
     }//GEN-LAST:event_btn_eliminar_userActionPerformed
 
