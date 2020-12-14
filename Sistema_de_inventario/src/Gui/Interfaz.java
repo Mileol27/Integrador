@@ -180,6 +180,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 a.getModelo(),
                 a.getNum_serie(),
                 a.getEstado().getNombre(),
+                a.getCategoria().getNombre(),
                 a.getCreado_el().toString(),
                 a.getModificado_el().toString(),
                 a.getObservaciones(),
@@ -268,7 +269,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 {null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Fecha", "Usuario", "opciones"
+                "ID", "Nombre", "Fecha de creación", "Usuario", "opciones"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -512,11 +513,11 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
             },
             new String [] {
-                "ID", "Descripción", "Marca", "Modelo", "# de serie", "Estado", "F.Registro", "F.Mod", "Observaciones", "Opciones"
+                "ID", "Descripción", "Marca", "Modelo", "# de serie", "Estado", "Categorias", "F.Registro", "F.Mod", "Observaciones", "Opciones"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
