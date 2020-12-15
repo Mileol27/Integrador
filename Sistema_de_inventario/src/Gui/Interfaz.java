@@ -326,9 +326,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         Object[] ob = new Object[width];
         ob[0] = "====================";
         ob[1] = "TOTAL: ";
-        for (int i = 2; i < width; i++) {
-            ob[i] = totales[i];
-        }
+        System.arraycopy(totales, 2, ob, 2, width - 2);
         model.addRow(ob);
 
 
