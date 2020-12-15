@@ -1,65 +1,69 @@
 package clases;
 
 import Interfaces.ISerrializable;
+import conn.Conn;
 import java.util.Date;
+import org.bson.Document;
+import org.bson.types.ObjectId;
 
 public class Evento implements ISerrializable{
-
-    private Date creado_el;
+    
+    private ObjectId _id;
+    private Date creado_el = new Date();
     private Usuario creado_por;
     private Articulo articulo;
 
     //Constructor
-    public Evento(Date creado_el, Usuario creado_por, Articulo articulo) {
-        this.creado_el = creado_el;
-        this.creado_por = creado_por;
+    public Evento(Articulo articulo) {
+        this.creado_por = Conn.user_logged;
         this.articulo = articulo;
+    }
+    
+    public Evento(Document ob) {
+        this._id = ob.getObjectId("_id");
+        this.creado_el = ob.getDate("creado_el");
+        this.creado_por = new Usuario(ob.getObjectId("creado_por"));  // TODO: Hacer la consulta que traigan nombres...
+        this.articulo = new Articulo(ob.getObjectId("articulo"));
     }
 
     //Metodos
-    public void eliminar() {
-    }
+    @Override
+    public void eliminar() { }
 
+    @Override
     public void guardar() {
-
+        System.out.println("Can't save here");
     }
 
-    // Encapculación
+    public ObjectId getId() {
+        return _id;
+    }
+
+    public void setId(ObjectId _id) {
+        this._id = _id;
+    }
+
+    
     public Date getCreado_el() {
         return creado_el;
     }
 
-    /**
-     * @param creado_el the creado_el to set
-     */
     public void setCreado_el(Date creado_el) {
         this.creado_el = creado_el;
     }
 
-    /**
-     * @return the creado_por
-     */
     public Usuario getCreado_por() {
         return creado_por;
     }
 
-    /**
-     * @param creado_por the creado_por to set
-     */
     public void setCreado_por(Usuario creado_por) {
         this.creado_por = creado_por;
     }
 
-    /**
-     * @return the Articulo
-     */
     public Articulo getArticulo() {
         return articulo;
     }
 
-    /**
-     * @param articulo the Articulo to set
-     */
     public void setArticulo(Articulo articulo) {
         this.articulo = articulo;
     }

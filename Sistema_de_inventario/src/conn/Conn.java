@@ -8,14 +8,21 @@ package conn;
 import clases.Articulo;
 import clases.Categoria;
 import clases.Estado;
+import clases.EvActualizacion;
+import clases.EvCreacion;
+import clases.EvEliminacion;
+import clases.Evento;
 import clases.Usuario;
 import com.mongodb.MongoClient;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gt;
 import java.util.ArrayList;
 import org.bson.Document;
 import java.util.Iterator;
@@ -72,6 +79,19 @@ public class Conn {
         return estados;
     }
     
+    public static ArrayList<Articulo> cantidad_articulos_user(Usuario usuario) {
+      MongoClient mongoClient = new MongoClient();
+        MongoDatabase database = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = database.getCollection("articulos");
+        FindIterable<Document> iterable=(FindIterable<Document>) col.find(eq("creado_por", usuario.getId()));
+        MongoCursor<Document> cursor = iterable.iterator();
+        ArrayList<Articulo> articulos = new ArrayList<>();
+        while (cursor.hasNext()) {
+         articulos.add(new Articulo((Document) cursor.next()));
+       }
+        return articulos;
+    }
+    
     public static ArrayList<Articulo> listar_articulos(Categoria cat, Estado st) {
         MongoClient mongoClient = new MongoClient();
         MongoDatabase database = mongoClient.getDatabase("inventario");
@@ -115,7 +135,7 @@ public class Conn {
         if (col.countDocuments() == 0) {
             Usuario admin = new Usuario("admin", "admin", "admin", "admin",new Date());
             admin.setActivo(true);
-            admin.setEs_admin(true);
+            admin.setAdmin(true);
             admin.guardar();
         }
         FindIterable categorias_in_bd = col.find();
@@ -125,6 +145,32 @@ public class Conn {
             usuario.add(new Usuario((Document) it.next()));
         }
         return usuario;
+    }
+    
+    public static MongoCollection<Document> getCollection(String col) {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase documento = mongoClient.getDatabase("inventario");
+        return documento.getCollection(col);
+    }
+    
+    public static ArrayList<Evento> get_log(Date filtro) {
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase database = mongoClient.getDatabase("inventario");
+        MongoCollection<Document> col = database.getCollection("eventos");
+        // Filtrar por mes y año....
+        FindIterable categorias_in_bd = col.find();
+        ArrayList<Evento> eventos = new ArrayList<>();
+        Iterator it = categorias_in_bd.iterator();
+        while (it.hasNext()) {
+            Document ob = (Document) it.next();
+            String tipo = ob.getString("tipo");
+            switch(tipo) {
+                case "C" : eventos.add(new EvCreacion(ob)); break;
+                case "D" : eventos.add(new EvEliminacion(ob)); break;
+                case "U" : eventos.add(new EvActualizacion(ob)); break;
+            }
+        }
+        return eventos;
     }
    
 }

@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -16,8 +16,9 @@ import javax.swing.JOptionPane;
 public class Login extends javax.swing.JFrame {
  
     public Login() {
-        
+       
         initComponents();
+         
         setLocationRelativeTo(null);
         System.out.println("USUARIOS: " + Conn.listar_users());
         
@@ -168,6 +169,9 @@ public class Login extends javax.swing.JFrame {
         Log = Log.autenticar();
         if (Log != null) {
             Interfaz interfaz = new Interfaz();
+             
+            
+            
             interfaz.setVisible(true);
             dispose();
         } else {

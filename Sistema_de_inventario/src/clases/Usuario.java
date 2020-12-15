@@ -28,7 +28,7 @@ public class Usuario implements ISerrializable{
     private String username;
     private String password;
     private Date f_registro;
-    private boolean es_admin;
+    private boolean admin;
     private boolean activo;
 
     //Constructores
@@ -71,25 +71,26 @@ public class Usuario implements ISerrializable{
         this.username = ob.getString("username");
         this.password = ob.getString("password");
         this.f_registro = ob.getDate("f_registro");
-        this.es_admin = ob.getBoolean("es_admin", es_admin);
+        this.admin = ob.getBoolean("es_admin", admin);
         this.activo = ob.getBoolean("activo", activo);
     }
 
+    @Override
     public void eliminar() {
+        MongoCollection<Document> col = Conn.getCollection("users");
+        col.deleteOne(new BasicDBObject("_id", _id));
     }
 
     @Override
     public void guardar() {
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase documento = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = documento.getCollection("users");
+        MongoCollection<Document> col = Conn.getCollection("users");
         Document doc = new Document();
         doc.put("nombre", nombre);
         doc.put("apellido", apellido);
         doc.put("username", username);
         doc.put("password", password);
         doc.put("f_registro", f_registro);
-        doc.put("es_admin", es_admin);
+        doc.put("es_admin", admin);
         doc.put("activo", activo);
         if (_id == null) {
             col.insertOne(doc);
@@ -139,12 +140,12 @@ public class Usuario implements ISerrializable{
         return password;
     }
     
-    public boolean isEs_admin() {
-        return es_admin;
+    public boolean isAdmin() {
+        return admin;
     }
 
-    public void setEs_admin(boolean es_admin) {
-        this.es_admin = es_admin;
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
     public boolean isActivo() {
@@ -177,26 +178,6 @@ public class Usuario implements ISerrializable{
         } else {
             return null;
         }
-    }
-    
-   /* public void AddUser(String nombre,String apellido,String username, String password){
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase documento = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = documento.getCollection("users");
-        FindIterable users_in_db = col.find(new Document("es_admin", true));
-        Document o_db = (Document) users_in_db.first();
-        
-        Document doc = new Document();
-        if(o_db != null){
-            doc.put("nombre", nombre);
-            doc.put("apellido", apellido);
-            doc.put("username", username);
-            doc.put("password", password);
-            col.insertOne(doc);
-        }else{
-            JOptionPane.showMessageDialog(null, "Usted no es un administrador");
-        }
-    }/*/
-    
+    }    
 }
 

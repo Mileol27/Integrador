@@ -47,7 +47,7 @@ public class Categoria implements ISerrializable{
         if (ob.get("creado_por_obj") == null) {
             this.creado_por = new Usuario(ob.getObjectId("creado_por"));
         } else {
-            this.creado_por = new Usuario((Document) ((List) ob.get("creado_por_obj")).get(0));
+        this.creado_por = new Usuario((Document) ((List) ob.get("creado_por_obj")).get(0));
         }
         
     }
@@ -61,14 +61,15 @@ public class Categoria implements ISerrializable{
         return 0;
     }
 
+    @Override
     public void eliminar() {
+        MongoCollection<Document> col = Conn.getCollection("categorias");
+        col.deleteOne(new BasicDBObject("_id", _id));
     }
 
     @Override
     public void guardar() {
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase documento = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = documento.getCollection("categorias");
+        MongoCollection<Document> col = Conn.getCollection("categorias");
         Document doc = new Document();
         doc.put("nombre", nombre);
         doc.put("modificado_el", new Date());
@@ -112,24 +113,6 @@ public class Categoria implements ISerrializable{
     public void setCreado_por(Usuario creado_por) {
         this.creado_por = creado_por;
     }
-    
-    
-    /* public void Refresh(){
-        
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase database = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = database.getCollection("categorias");
-        FindIterable users_in_db = col.find();
-        Document o_db = (Document) users_in_db.first();
-
-        if (users_in_db.iterator().hasNext()) {
-            Categoria u_db = new Categoria(o_db);
-            u_db.getNombre();
-            u_db.getCreado_el();
-            u_db.getCreado_por();
-        }
-
-    } */
     
     @Override
     public String toString() {

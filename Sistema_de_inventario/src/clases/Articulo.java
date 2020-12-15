@@ -92,14 +92,26 @@ public class Articulo implements ISerrializable {
         return 0;
     }
 
+    @Override
     public void eliminar() {
+        eliminar("---");
+    }
+    
+    public void eliminar(String motivo) {
+        MongoCollection<Document> col = Conn.getCollection("articulos");
+        col.deleteOne(new BasicDBObject("_id", _id));
+        EvEliminacion ev = new EvEliminacion(this);
+        ev.setMotivo(motivo);
+        ev.guardar();
     }
 
     @Override
     public void guardar() {
-        MongoClient mongoClient = new MongoClient();
-        MongoDatabase documento = mongoClient.getDatabase("inventario");
-        MongoCollection<Document> col = documento.getCollection("articulos");
+        guardar("Cambio en los datos");
+    }
+    
+    public void guardar(String detalle) {
+        MongoCollection<Document> col = Conn.getCollection("articulos");
         Document doc = new Document();
         doc.put("descripcion", descripcion);
         doc.put("marca", marca);
@@ -114,11 +126,20 @@ public class Articulo implements ISerrializable {
             doc.put("creado_el", new Date());
             doc.put("creado_por", Conn.user_logged.getId());
             col.insertOne(doc);
+            ObjectId id = (ObjectId)doc.get( "_id" );
+            _id = id;
+            EvCreacion ev = new EvCreacion(this);
+            ev.guardar();
         } else {
+            EvActualizacion ev = new EvActualizacion(this);
+            ev.setDetalle(detalle);
+            ev.guardar();
             col.updateOne(new BasicDBObject("_id", _id), new BasicDBObject("$set", doc));
         }
+        
     }
-
+    
+ 
     public void setId(ObjectId _id) {
         this._id = _id;
     }
