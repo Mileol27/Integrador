@@ -36,21 +36,28 @@ import java.util.Date;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.ListModel;
 import javax.swing.Timer;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.DefaultTableModel;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import Tools.CbItem;
 
 /**
  *
@@ -68,18 +75,13 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
     public static ArrayList<Evento> listado_logs = new ArrayList<Evento>();
 
+    public static ArrayList<Document> listado_eventos = new ArrayList<Document>();
+
     public Interfaz() {
 
         initComponents();
         setLocationRelativeTo(null);
         lbl_nombre.setText(Conn.user_logged.getNombre());
-        actualizar_cmbo_estados();
-        actualizar_estados();
-        actualizar_categorias();
-        actualizar_users();
-        actualizar_cmbo_categorias();
-        actualizar_logs();
-
         ArrayList<Estado> estados = Conn.listar_estados();
         DefaultComboBoxModel model_estados = new DefaultComboBoxModel();
         model_estados.addElement(new Estado("Todos", ""));
@@ -88,23 +90,62 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         });
         cb_estados.setModel(model_estados);
 
-        actualizar_articulos();
+        
 
         // Ocultar los tabs de amdin y botones eliminar a usuarios no admin
         if (!Conn.user_logged.isAdmin()) {
+            pan_usuario.remove(5);
             pan_usuario.remove(4);
-            pan_usuario.remove(2);
+            pan_usuario.remove(1);
             
             btn_eliminar_cat.setVisible(false);
             btn_eliminar_user.setVisible(false);
             btn_eliminar_articulo.setVisible(false);
             btn_eliminar_cat1.setVisible(false);
         }
+        
+        DefaultComboBoxModel model_meses = new DefaultComboBoxModel();
+        
+        model_meses.addElement(new CbItem("0", "Enero"));
+        model_meses.addElement(new CbItem("1", "Febrero"));
+        model_meses.addElement(new CbItem("2", "Marzo"));
+        model_meses.addElement(new CbItem("3", "Abril"));
+        model_meses.addElement(new CbItem("4", "Mayo"));
+        model_meses.addElement(new CbItem("5", "Junio"));
+        model_meses.addElement(new CbItem("6", "Julio"));
+        model_meses.addElement(new CbItem("7", "Agosto"));
+        model_meses.addElement(new CbItem("8", "Septiembre"));
+        model_meses.addElement(new CbItem("9", "Octubre"));
+        model_meses.addElement(new CbItem("10", "Noviembre"));
+        model_meses.addElement(new CbItem("11", "Diciembre"));
+        
+        cb_log_month.setModel(model_meses);
+        
+        GregorianCalendar date = new GregorianCalendar();
+        
+        int mes_actual = date.get(Calendar.MONTH);
+        cb_log_month.setSelectedIndex(mes_actual);
+        
+        // DefaultComboBoxModel model_years = new DefaultComboBoxModel();
+        int actual_year = date.get(Calendar.YEAR);
+        
+        for (int i = actual_year; i > actual_year - 10; i--) {
+            cb_log_year.addItem(i + "");
+        }
+        
+        actualizar_cmbo_estados();
+        actualizar_estados();
+        actualizar_categorias();
+        actualizar_users();
+        actualizar_cmbo_categorias();
+        actualizar_articulos();
+        actualizar_logs();
+        actualizar_resumen();
 
     }
 
     public static void actualizar_cmbo_categorias() {
-        ArrayList<Categoria> categorias = Conn.listar_categorias();
+        ArrayList<Categoria> categorias = Conn.listar_categorias(null);
         DefaultComboBoxModel model_cats = new DefaultComboBoxModel();
         model_cats.addElement(new Categoria("Todos"));
         categorias.forEach(categoria -> {
@@ -126,7 +167,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     public static void actualizar_categorias() {
         tabla_categorias.setDefaultRenderer(Object.class, new Render());
         JButton btn_editar = new JButton("Editar");
-        listado_categoria = Conn.listar_categorias();
+        listado_categoria = Conn.listar_categorias(null);
         DefaultTableModel model_cat = (DefaultTableModel) tabla_categorias.getModel();
         model_cat.setRowCount(0);
         System.out.println();
@@ -192,7 +233,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         cat = cat.getId() == null ? null : cat;
         Estado st = (Estado) cb_estados.getSelectedItem();
         st = st.getId() == null ? null : st;
-        listado_articulos = Conn.listar_articulos(cat, st);
+        listado_articulos = Conn.listar_articulos(null, cat, st);
         DefaultTableModel model = (DefaultTableModel) tabla_listado.getModel();
         model.setRowCount(0);
 
@@ -218,66 +259,13 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }
 
     public static void actualizar_logs() {
-        Date f = new Date();
-        tabla_logs.setDefaultEditor(Object.class, null);
-        int m = combo_mes.getSelectedIndex();
-        String mes = "";
-        switch (m) {
-            case 0:
-                Month mon = LocalDate.now().getMonth();
-                mes = mon.getDisplayName(TextStyle.FULL, new Locale("en", "En"));
-                break;
-            case 1:
-                mes = "January";
-                break;
-            case 2:
-                mes = "February";
-                break;
-            case 3:
-                mes = "March";
-                break;
-            case 4:
-                mes = "April";
-                break;
-            case 5:
-                mes = "May";
-                break;
-            case 6:
-                mes = "June";
-                break;
-            case 7:
-                mes = "July";
-                break;
-            case 8:
-                mes = "August";
-                break;
-            case 9:
-                mes = "September";
-                break;
-            case 10:
-                mes = "October";
-                break;
-            case 11:
-                mes = "November";
-                break;
-            case 12:
-                mes = "December";
-                break;
+        int year = Integer.parseInt(cb_log_year.getSelectedItem().toString());
+        int mes = Integer.parseInt(((CbItem) cb_log_month.getSelectedItem()).getKey());
+        
+        GregorianCalendar date = new GregorianCalendar(year, mes, 1);
 
-        }
+        listado_logs = Conn.get_log(date);
 
-        String str_date = "11-" + mes + "-2020";
-        DateFormat formatter;
-        Date fecha = null;
-        formatter = new SimpleDateFormat("dd-MMM-yyyy");
-        try {
-            fecha = formatter.parse(str_date);
-        } catch (ParseException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.println("MES :" + mes);
-
-        listado_logs = Conn.get_log(fecha);
         DefaultTableModel model = (DefaultTableModel) tabla_logs.getModel();
         model.setRowCount(0);
 
@@ -304,6 +292,45 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 info
             });
         });
+
+    }
+    
+    public static void actualizar_resumen() {
+               
+        listado_estados = Conn.listar_estados();
+        listado_eventos = Conn.get_detalle_resumen_general();
+
+        DefaultTableModel model = (DefaultTableModel) tabla_resumen.getModel();
+        model.setRowCount(0);
+        model.setColumnCount(0);
+        model.addColumn("ID");
+        model.addColumn("Nombre");
+
+        Interfaz.listado_estados.forEach(e -> {
+            model.addColumn(e.getNombre());
+        });
+        
+        int width = 2 + listado_estados.size();
+        Integer[] totales = new Integer[width];
+        
+        listado_eventos.forEach(ev -> {
+            Object[] ob = new Object[width];
+            ob[0] = ev.getObjectId("_id");
+            ob[1] = ev.getString("nombre");
+            for (int i = 2; i < width; i++) {
+                ob[i] = ev.get(listado_estados.get(i - 2).getNombre(), 0);
+                totales[i] = (totales[i] != null ? totales[i] : 0) + (Integer) ob[i];
+            }
+            model.addRow(ob);
+        });
+        Object[] ob = new Object[width];
+        ob[0] = "====================";
+        ob[1] = "TOTAL: ";
+        for (int i = 2; i < width; i++) {
+            ob[i] = totales[i];
+        }
+        model.addRow(ob);
+
 
     }
 
@@ -344,10 +371,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla_resumen = new javax.swing.JTable();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        btn_actualizar_resumen = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         tbl_users = new javax.swing.JTable();
@@ -358,8 +382,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         jPanel6 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tabla_logs = new javax.swing.JTable();
-        combo_mes = new javax.swing.JComboBox<>();
+        cb_log_month = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        cb_log_year = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         btn_cerrar_sesion = new javax.swing.JMenuItem();
@@ -596,14 +621,13 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanelestadosLayout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_editar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnagregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btn_eliminar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_editar_cat1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_eliminar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnagregar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
             .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpanelestadosLayout.createSequentialGroup()
                     .addGap(246, 246, 246)
@@ -646,7 +670,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
             },
             new String [] {
-                "ID", "Descripción", "Marca", "Modelo", "# de serie", "Estado", "Categorias", "F.Registro", "F.Mod", "Observaciones", "Opciones"
+                "ID", "Descripción", "Marca", "Modelo", "# de serie", "Estado", "Categoria", "F.Registro", "F.Mod", "Observaciones", "Opciones"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -738,56 +762,49 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         tabla_resumen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Registrados", "Extraviados", "Malogrados", "Total", "Opciones"
+                "ID", "Nombre", "Registrados", "Extraviados", "Malogrados", "Funcionales"
             }
         ));
         tabla_resumen.setSelectionBackground(new java.awt.Color(51, 51, 51));
         jScrollPane1.setViewportView(tabla_resumen);
 
-        jLabel4.setText(" # Registrados ");
-
-        jLabel5.setText(" # Extraviados ");
-
-        jLabel6.setText(" # Malogrados ");
-
-        jLabel7.setText(" # Suma total");
+        btn_actualizar_resumen.setBackground(new java.awt.Color(30, 124, 57));
+        btn_actualizar_resumen.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btn_actualizar_resumen.setForeground(new java.awt.Color(255, 255, 255));
+        btn_actualizar_resumen.setText("ACTUALIZAR");
+        btn_actualizar_resumen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_actualizar_resumenActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 329, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(44, 44, 44)
-                .addComponent(jLabel5)
-                .addGap(48, 48, 48)
-                .addComponent(jLabel6)
-                .addGap(56, 56, 56)
-                .addComponent(jLabel7)
-                .addGap(281, 281, 281))
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btn_actualizar_resumen)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1074, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addComponent(btn_actualizar_resumen, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -913,15 +930,20 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         });
         jScrollPane5.setViewportView(tabla_logs);
 
-        combo_mes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona ", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
-        combo_mes.addActionListener(new java.awt.event.ActionListener() {
+        cb_log_month.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_mesActionPerformed(evt);
+                cb_log_monthActionPerformed(evt);
             }
         });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Seleccione Mes");
+
+        cb_log_year.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cb_log_yearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -931,8 +953,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 .addGap(21, 21, 21)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(combo_mes, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(781, Short.MAX_VALUE))
+                .addComponent(cb_log_month, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cb_log_year, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(736, Short.MAX_VALUE))
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
                     .addGap(14, 14, 14)
@@ -944,9 +968,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(combo_mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addContainerGap(507, Short.MAX_VALUE))
+                    .addComponent(cb_log_month, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(cb_log_year, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(518, Short.MAX_VALUE))
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
                     .addGap(89, 89, 89)
@@ -993,9 +1018,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1116,12 +1139,12 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_btn_editar_catActionPerformed
 
     private void btnagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnagregarActionPerformed
-        if (Conn.user_logged.isAdmin() == true) {
+        //if (Conn.user_logged.isAdmin() == true) {
             AddCategoria categori = new AddCategoria();
             categori.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "Usted no es administrador");
-        }
+        //} else {
+        //    JOptionPane.showMessageDialog(null, "Usted no es administrador");
+        //}
 
         // dispose();
 
@@ -1156,7 +1179,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         if (row != -1) {
             ObjectId id = (ObjectId) tabla_categorias.getValueAt(row, 0);
             Categoria cat = new Categoria(id);
-            int articulos_total = Conn.listar_articulos(cat, null).size();
+            int articulos_total = Conn.listar_articulos(null, cat, null).size();
             if (articulos_total > 0) {
                 JOptionPane.showMessageDialog(null, "No se pudo eliminar, articulos asociados");
             } else {
@@ -1180,9 +1203,11 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         if (row != -1) {
             ObjectId id = (ObjectId) tbl_users.getValueAt(row, 0);
             Usuario usuario = new Usuario(id);
-            int articulos_total = Conn.cantidad_articulos_user(usuario).size();
-            if (articulos_total > 0) {
-                JOptionPane.showMessageDialog(null, "No se pudo eliminar, articulos asociados");
+            int articulos_total = Conn.listar_articulos(usuario, null, null).size();
+            int categorias_total = Conn.listar_categorias(usuario).size();
+            int suma_objetos = articulos_total + categorias_total;
+            if (suma_objetos > 0) {
+                JOptionPane.showMessageDialog(null, "No se pudo eliminar, contenido asociado");
             } else {
                 int dialogButton = JOptionPane.YES_NO_OPTION;
                 int dialogResult = JOptionPane.showConfirmDialog(this, "¿Esta Seguro de eliminar el Usuario?", "Alerta", dialogButton);
@@ -1272,7 +1297,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         if (row != -1) {
             ObjectId id = (ObjectId) tabla_estados.getValueAt(row, 0);
             Estado estado = new Estado(id);
-            int articulos_total = Conn.listar_articulos(null, estado).size();
+            int articulos_total = Conn.listar_articulos(null, null, estado).size();
             if (articulos_total > 0) {
                 JOptionPane.showMessageDialog(null, "No se pudo eliminar, articulos asociados");
             } else {
@@ -1290,9 +1315,21 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         }
     }//GEN-LAST:event_btn_eliminar_cat1ActionPerformed
 
-    private void combo_mesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_mesActionPerformed
-        actualizar_logs();
-    }//GEN-LAST:event_combo_mesActionPerformed
+    private void cb_log_monthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_log_monthActionPerformed
+        if (cb_log_year.getSelectedItem() != null && cb_log_month.getSelectedItem() != null) {
+            actualizar_logs();
+        }
+    }//GEN-LAST:event_cb_log_monthActionPerformed
+
+    private void cb_log_yearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cb_log_yearActionPerformed
+        if (cb_log_year.getSelectedItem() != null && cb_log_month.getSelectedItem() != null) {
+            actualizar_logs();
+        }
+    }//GEN-LAST:event_cb_log_yearActionPerformed
+
+    private void btn_actualizar_resumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_actualizar_resumenActionPerformed
+        actualizar_resumen();
+    }//GEN-LAST:event_btn_actualizar_resumenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1323,6 +1360,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_actualizar_resumen;
     public static javax.swing.JButton btn_add;
     private javax.swing.JMenuItem btn_cerrar_sesion;
     private javax.swing.JToggleButton btn_editar_cat;
@@ -1337,15 +1375,12 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btnagregar1;
     private static javax.swing.JComboBox<String> cb_cat;
     private static javax.swing.JComboBox<String> cb_estados;
-    private static javax.swing.JComboBox<String> combo_mes;
+    private static javax.swing.JComboBox<String> cb_log_month;
+    private static javax.swing.JComboBox<String> cb_log_year;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     public static javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;

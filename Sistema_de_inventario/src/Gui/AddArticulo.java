@@ -30,7 +30,7 @@ public class AddArticulo extends javax.swing.JFrame {
     public AddArticulo() {
 
         ArrayList<Estado> estados = Conn.listar_estados();
-        ArrayList<Categoria> categorias = Conn.listar_categorias();
+        ArrayList<Categoria> categorias = Conn.listar_categorias(null);
 
         initComponents();
         setLocationRelativeTo(null);
