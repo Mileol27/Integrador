@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import conn.Conn;
+import java.awt.Color;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,6 +46,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.DefaultTableModel;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -162,6 +165,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         JButton btn_editar = new JButton("Editar");
         listado_users = Conn.listar_users();
         DefaultTableModel model_user = (DefaultTableModel) tbl_users.getModel();
+
         model_user.setRowCount(0);
         tbl_users.setDefaultEditor(Object.class, null);
         System.out.println();
@@ -365,19 +369,21 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
-        pan_usuario.setBackground(new java.awt.Color(255, 255, 255));
+        pan_usuario.setBackground(new java.awt.Color(30, 124, 57));
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setBackground(new java.awt.Color(51, 51, 51));
 
-        btnagregar.setBackground(new java.awt.Color(0, 204, 102));
-        btnagregar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnagregar.setText("agregar categoria");
+        btnagregar.setBackground(new java.awt.Color(30, 124, 57));
+        btnagregar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnagregar.setForeground(new java.awt.Color(255, 255, 255));
+        btnagregar.setText("AGREGAR CATEGORIA");
         btnagregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnagregarActionPerformed(evt);
             }
         });
 
+        tabla_categorias.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         tabla_categorias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -397,6 +403,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 return canEdit [columnIndex];
             }
         });
+        tabla_categorias.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tabla_categorias.setSelectionForeground(new java.awt.Color(230, 230, 230));
         tabla_categorias.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabla_categoriasMouseClicked(evt);
@@ -429,8 +437,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         });
 
         btn_eliminar_cat.setBackground(new java.awt.Color(165, 19, 19));
+        btn_eliminar_cat.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         btn_eliminar_cat.setForeground(new java.awt.Color(255, 255, 255));
-        btn_eliminar_cat.setText("Eliminar");
+        btn_eliminar_cat.setText("ELIMINAR");
         btn_eliminar_cat.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btn_eliminar_cat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -445,13 +454,13 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_editar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1023, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1074, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
@@ -465,12 +474,11 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 .addGap(17, 17, 17)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_editar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btn_eliminar_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnagregar, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(246, 246, 246)
@@ -480,17 +488,19 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         pan_usuario.addTab("Categorías", jPanel4);
 
-        jpanelestados.setBackground(new java.awt.Color(255, 255, 255));
+        jpanelestados.setBackground(new java.awt.Color(51, 51, 51));
 
         btnagregar1.setBackground(new java.awt.Color(0, 204, 102));
-        btnagregar1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnagregar1.setText("agregar estado");
+        btnagregar1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnagregar1.setForeground(new java.awt.Color(255, 255, 255));
+        btnagregar1.setText("AGREGAR ESTADO");
         btnagregar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnagregar1ActionPerformed(evt);
             }
         });
 
+        tabla_estados.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         tabla_estados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -517,6 +527,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 return canEdit [columnIndex];
             }
         });
+        tabla_estados.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tabla_estados.setSelectionForeground(new java.awt.Color(230, 230, 230));
         tabla_estados.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabla_estadosMouseClicked(evt);
@@ -549,8 +561,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         });
 
         btn_eliminar_cat1.setBackground(new java.awt.Color(165, 19, 19));
+        btn_eliminar_cat1.setFont(new java.awt.Font("Arial", 1, 13)); // NOI18N
         btn_eliminar_cat1.setForeground(new java.awt.Color(255, 255, 255));
-        btn_eliminar_cat1.setText("Eliminar");
+        btn_eliminar_cat1.setText("ELIMINAR");
         btn_eliminar_cat1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btn_eliminar_cat1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -565,13 +578,13 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             .addGroup(jpanelestadosLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanelestadosLayout.createSequentialGroup()
+                    .addGroup(jpanelestadosLayout.createSequentialGroup()
                         .addComponent(btnagregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_editar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_eliminar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1023, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_eliminar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1074, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpanelestadosLayout.createSequentialGroup()
@@ -590,7 +603,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                         .addComponent(btn_eliminar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
             .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpanelestadosLayout.createSequentialGroup()
                     .addGap(246, 246, 246)
@@ -600,10 +613,12 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         pan_usuario.addTab("Estados", jpanelestados);
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBackground(new java.awt.Color(51, 51, 51));
 
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Listar por Categorias");
 
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Listar por Estado");
 
         cb_cat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", " " }));
@@ -625,6 +640,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
             }
         });
 
+        tabla_listado.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
         tabla_listado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -641,6 +657,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 return canEdit [columnIndex];
             }
         });
+        tabla_listado.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tabla_listado.setSelectionForeground(new java.awt.Color(230, 230, 230));
         tabla_listado.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabla_listadoMouseClicked(evt);
@@ -648,7 +666,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         });
         jScrollPane2.setViewportView(tabla_listado);
 
-        btn_open_add.setText("Agregar artículo");
+        btn_open_add.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btn_open_add.setText("AGREGAR ARTICULO");
         btn_open_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_open_addActionPerformed(evt);
@@ -657,7 +676,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         btn_eliminar_articulo.setBackground(new java.awt.Color(165, 19, 19));
         btn_eliminar_articulo.setForeground(new java.awt.Color(255, 255, 255));
-        btn_eliminar_articulo.setText("Eliminar");
+        btn_eliminar_articulo.setText("ELIMINAR");
         btn_eliminar_articulo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_eliminar_articuloActionPerformed(evt);
@@ -668,14 +687,12 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(506, Short.MAX_VALUE)
-                .addComponent(btn_open_add, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(401, 401, 401))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1074, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -684,16 +701,20 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cb_estados, 0, 140, Short.MAX_VALUE)
                             .addComponent(cb_cat, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 598, Short.MAX_VALUE)
-                        .addComponent(btn_eliminar_articulo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_eliminar_articulo, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(468, 468, 468)
+                .addComponent(btn_open_add)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cb_cat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -701,17 +722,19 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cb_estados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(btn_eliminar_articulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(btn_eliminar_articulo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(btn_open_add)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_open_add, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pan_usuario.addTab("Listado", jPanel2);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
         tabla_resumen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -724,6 +747,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 "ID", "Nombre", "Registrados", "Extraviados", "Malogrados", "Total", "Opciones"
             }
         ));
+        tabla_resumen.setSelectionBackground(new java.awt.Color(51, 51, 51));
         jScrollPane1.setViewportView(tabla_resumen);
 
         jLabel4.setText(" # Registrados ");
@@ -769,8 +793,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         pan_usuario.addTab("Resumen general", jPanel1);
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setBackground(new java.awt.Color(51, 51, 51));
 
+        tbl_users.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        tbl_users.setForeground(new java.awt.Color(43, 43, 43));
         tbl_users.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -787,6 +813,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                 return canEdit [columnIndex];
             }
         });
+        tbl_users.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        tbl_users.setSelectionForeground(new java.awt.Color(230, 230, 230));
         tbl_users.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_usersMouseClicked(evt);
@@ -794,7 +822,11 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         });
         jScrollPane6.setViewportView(tbl_users);
 
-        btn_add.setText("Agregar Usuario");
+        btn_add.setBackground(new java.awt.Color(30, 124, 57));
+        btn_add.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btn_add.setForeground(new java.awt.Color(255, 255, 255));
+        btn_add.setText("AGREGAR USUARIO");
+        btn_add.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btn_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_addActionPerformed(evt);
@@ -803,14 +835,17 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         lbl_nombre.setBackground(new java.awt.Color(153, 51, 255));
         lbl_nombre.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbl_nombre.setForeground(new java.awt.Color(255, 255, 255));
         lbl_nombre.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Persona Logueada : ");
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("PERSONA LOGUEADA :");
 
         btn_eliminar_user.setBackground(new java.awt.Color(165, 19, 19));
+        btn_eliminar_user.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         btn_eliminar_user.setForeground(new java.awt.Color(255, 255, 255));
-        btn_eliminar_user.setText("Eliminar");
+        btn_eliminar_user.setText("ELIMINAR");
         btn_eliminar_user.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btn_eliminar_user.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -823,22 +858,21 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1074, Short.MAX_VALUE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1001, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(413, 413, 413)
-                        .addComponent(btn_add)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbl_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_eliminar_user, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(445, 445, 445)
+                .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -850,10 +884,10 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
                     .addComponent(btn_eliminar_user, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
-                .addGap(30, 30, 30)
-                .addComponent(btn_add)
-                .addGap(38, 38, 38))
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_add, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
         );
 
         pan_usuario.addTab("Users", jPanel5);
