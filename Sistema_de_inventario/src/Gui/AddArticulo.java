@@ -30,7 +30,7 @@ public class AddArticulo extends javax.swing.JFrame {
     public AddArticulo() {
 
         ArrayList<Estado> estados = Conn.listar_estados();
-        ArrayList<Categoria> categorias = Conn.listar_categorias();
+        ArrayList<Categoria> categorias = Conn.listar_categorias(null);
 
         initComponents();
         setLocationRelativeTo(null);
@@ -48,7 +48,7 @@ public class AddArticulo extends javax.swing.JFrame {
         combo_categorias.setModel(model_cats);
     }
     
-    public void llenar(ObjectId id, String descripcion, String marca, String modelo, String num_ser, String observaciones, Object estado) {
+    public void llenar(ObjectId id, String descripcion, String marca, String modelo, String num_ser, String observaciones, Object estado, Object categoria) {
         txt_descripcion.setText(descripcion);
         txt_marca.setText(marca);
         txt_modelo.setText(modelo);
@@ -56,11 +56,18 @@ public class AddArticulo extends javax.swing.JFrame {
         txt_obs.setText(observaciones);
         this.id = id;
         String esta = estado.toString();
+        String cate = categoria.toString();
 
         System.out.println(combo_estados.getItemCount());
         for (int i = 0; i < combo_estados.getItemCount(); i++) {
             combo_estados.setSelectedIndex(i);
             if (combo_estados.getSelectedItem().toString().equals(esta)) {
+                break;
+            }
+        }
+        for (int i = 0; i < combo_categorias.getItemCount(); i++) {
+            combo_categorias.setSelectedIndex(i);
+            if (combo_categorias.getSelectedItem().toString().equals(cate)) {
                 break;
             }
         }
@@ -269,7 +276,9 @@ public class AddArticulo extends javax.swing.JFrame {
         }
         
         articulo.guardar();
+        
         Interfaz.actualizar_articulos();
+        Interfaz.actualizar_logs();
         
         dispose();
 

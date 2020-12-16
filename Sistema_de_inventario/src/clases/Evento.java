@@ -3,12 +3,13 @@ package clases;
 import Interfaces.ISerrializable;
 import conn.Conn;
 import java.util.Date;
+import org.bson.Document;
 import org.bson.types.ObjectId;
 
 public class Evento implements ISerrializable{
     
     private ObjectId _id;
-    private Date creado_el;
+    private Date creado_el = new Date();
     private Usuario creado_por;
     private Articulo articulo;
 
@@ -16,6 +17,13 @@ public class Evento implements ISerrializable{
     public Evento(Articulo articulo) {
         this.creado_por = Conn.user_logged;
         this.articulo = articulo;
+    }
+    
+    public Evento(Document ob) {
+        this._id = ob.getObjectId("_id");
+        this.creado_el = ob.getDate("creado_el");
+        this.creado_por = new Usuario(ob.getObjectId("creado_por"));  // TODO: Hacer la consulta que traigan nombres...
+        this.articulo = new Articulo(ob.getObjectId("articulo"));
     }
 
     //Metodos

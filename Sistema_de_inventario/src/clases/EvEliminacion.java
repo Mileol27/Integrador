@@ -13,6 +13,11 @@ public class EvEliminacion extends Evento {
         super(articulo);
     }
     
+    public EvEliminacion(Document ob) {
+        super(ob);
+        this.motivo = ob.getString("motivo");
+    }
+    
     @Override
     public void guardar() {
         MongoCollection<Document> col = Conn.getCollection("eventos");
