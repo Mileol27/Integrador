@@ -484,7 +484,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         jpanelestados.setBackground(new java.awt.Color(51, 51, 51));
 
-        btnagregar1.setBackground(new java.awt.Color(0, 204, 102));
+        btnagregar1.setBackground(new java.awt.Color(30, 124, 57));
         btnagregar1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         btnagregar1.setForeground(new java.awt.Color(255, 255, 255));
         btnagregar1.setText("AGREGAR ESTADO");
@@ -577,7 +577,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_editar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_eliminar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btn_eliminar_cat1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1074, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -596,7 +596,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
                     .addComponent(btnagregar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
             .addGroup(jpanelestadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpanelestadosLayout.createSequentialGroup()
                     .addGap(246, 246, 246)
@@ -659,7 +659,9 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         });
         jScrollPane2.setViewportView(tabla_listado);
 
+        btn_open_add.setBackground(new java.awt.Color(30, 124, 57));
         btn_open_add.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btn_open_add.setForeground(new java.awt.Color(255, 255, 255));
         btn_open_add.setText("AGREGAR ARTICULO");
         btn_open_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -878,6 +880,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         pan_usuario.addTab("Users", jPanel5);
 
+        jPanel6.setBackground(new java.awt.Color(51, 51, 51));
+
         tabla_logs.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -906,6 +910,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Seleccione Mes");
 
         cb_log_year.addActionListener(new java.awt.event.ActionListener() {
