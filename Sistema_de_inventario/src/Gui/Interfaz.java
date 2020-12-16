@@ -690,6 +690,7 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
 
         btn_open_add.setBackground(new java.awt.Color(30, 124, 57));
         btn_open_add.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btn_open_add.setForeground(new java.awt.Color(255, 255, 255));
         btn_open_add.setText("AGREGAR ARTICULO");
         btn_open_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
