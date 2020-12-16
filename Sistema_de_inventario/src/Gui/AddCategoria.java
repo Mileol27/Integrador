@@ -5,7 +5,6 @@
  */
 package Gui;
 import clases.Categoria;
-import clases.Usuario;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import org.bson.types.ObjectId;

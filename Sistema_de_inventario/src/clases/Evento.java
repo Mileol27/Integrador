@@ -1,12 +1,12 @@
 package clases;
 
-import Interfaces.ISerrializable;
 import conn.Conn;
 import java.util.Date;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import Interfaces.IBdMethods;
 
-public class Evento implements ISerrializable{
+public class Evento implements IBdMethods{
     
     private ObjectId _id;
     private Date creado_el = new Date();

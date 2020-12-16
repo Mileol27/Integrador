@@ -5,18 +5,13 @@
  */
 package Interfaces;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
-
 /**
  *
  * @author Jhonatan
  * @param <T>
  */
 
-public interface ISerrializable<T> {
+public interface IBdMethods<T> {
 
     public void guardar ();
     public void eliminar();

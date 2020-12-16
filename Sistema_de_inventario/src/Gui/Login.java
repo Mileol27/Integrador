@@ -5,12 +5,8 @@
  */
 package Gui;
 
-import clases.Categoria;
 import clases.Usuario;
 import conn.Conn;
-import java.util.HashSet;
-import java.util.Set;
-import javax.swing.JOptionPane;
 
  
 public class Login extends javax.swing.JFrame {

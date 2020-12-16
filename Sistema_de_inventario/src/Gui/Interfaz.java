@@ -14,46 +14,18 @@ import clases.EvCreacion;
 import clases.EvEliminacion;
 import clases.Evento;
 import clases.Usuario;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import static com.mongodb.client.model.Filters.eq;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import conn.Conn;
-import java.awt.Color;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.TextStyle;
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.ListModel;
-import javax.swing.Timer;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.DefaultTableModel;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -305,7 +277,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         model.setColumnCount(0);
         model.addColumn("ID");
         model.addColumn("Nombre");
-
+        
+        // Ingresar los estados existentes como columnas
         Interfaz.listado_estados.forEach(e -> {
             model.addColumn(e.getNombre());
         });
@@ -326,10 +299,8 @@ public class Interfaz extends javax.swing.JFrame implements ActionListener {
         Object[] ob = new Object[width];
         ob[0] = "====================";
         ob[1] = "TOTAL: ";
-        System.arraycopy(totales, 2, ob, 2, width - 2);
+        System.arraycopy(totales, 2, ob, 2, listado_estados.size());
         model.addRow(ob);
-
-
     }
 
     /**
