@@ -1,16 +1,15 @@
 package clases;
 
-import Interfaces.ISerrializable;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import conn.Conn;
-import java.util.Date;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import Interfaces.IBdMethods;
 
-public class Estado implements ISerrializable{
+public class Estado implements IBdMethods{
 
     private ObjectId _id;
     private String nombre;

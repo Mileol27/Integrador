@@ -1,24 +1,15 @@
 package clases;
 
-import Interfaces.ISerrializable;
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
 import java.util.Date;
-import java.util.Iterator;
 import org.bson.Document;
 import conn.Conn;
-import java.util.ArrayList;
 import java.util.List;
 import org.bson.types.ObjectId;
+import Interfaces.IBdMethods;
 
-public class Categoria implements ISerrializable{
+public class Categoria implements IBdMethods{
 
     private ObjectId _id;
     private String nombre;
@@ -73,11 +64,11 @@ public class Categoria implements ISerrializable{
         Document doc = new Document();
         doc.put("nombre", nombre);
         doc.put("modificado_el", new Date());
-        if (_id == null) {
+        if (_id == null) { // Crear
             doc.put("creado_el", new Date());
             doc.put("creado_por", Conn.user_logged.getId());
             col.insertOne(doc);
-        } else {
+        } else {  // Actualizar
             col.updateOne(new BasicDBObject("_id", _id), new BasicDBObject("$set", doc));
         }
     }

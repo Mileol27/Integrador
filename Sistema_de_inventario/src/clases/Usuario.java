@@ -2,7 +2,6 @@ package clases;
 
 import Gui.Interfaz;
 import static Gui.Interfaz.jLabel1;
-import Interfaces.ISerrializable;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -19,8 +18,9 @@ import javax.swing.JOptionPane;
 import org.bson.Document;
 import org.bson.codecs.Decoder;
 import org.bson.types.ObjectId;
+import Interfaces.IBdMethods;
 
-public class Usuario implements ISerrializable{
+public class Usuario implements IBdMethods{
 
     private ObjectId _id;
     private String nombre;

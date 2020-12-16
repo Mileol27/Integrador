@@ -4,9 +4,7 @@
  * and open the template in the editor.
  */
 package Gui;
-import clases.Categoria;
 import clases.Estado;
-import clases.Usuario;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import org.bson.types.ObjectId;

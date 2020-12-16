@@ -52,7 +52,7 @@ public class Conn {
             filtros = Filters.and(filtros, new Document("creado_por", user.getId()));
         }
         List aggregate = Arrays.asList(
-            new Document(
+            new Document(  // Equivalente al join en SQL
                 "$lookup", new Document("from", "users")
                         .append("localField", "creado_por")
                         .append("foreignField", "_id")
@@ -208,11 +208,10 @@ public class Conn {
         AggregateIterable ag =  col.aggregate(aggregate);
         
         Iterator it = ag.iterator();
-        System.out.println("========== DETALLE RESUMEN ==========");
         while (it.hasNext()) {
             Document ob = (Document) it.next();
             docs.add(ob);
-            System.out.println(ob.toJson());
+            // System.out.println(ob.toJson());
         }
         return docs;
     }

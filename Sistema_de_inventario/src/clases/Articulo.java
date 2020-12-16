@@ -1,31 +1,15 @@
 package clases;
 
-import Interfaces.ISerrializable;
 import com.mongodb.BasicDBObject;
-import com.mongodb.MongoClient;
-
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-
-import java.util.Date;
-import org.bson.Document;
-import org.bson.types.ObjectId;
-
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.MongoDatabase;
-import static com.mongodb.client.model.Filters.eq;
 import java.util.Date;
 import conn.Conn;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.bson.Document;
 import org.bson.types.ObjectId;
-import org.bson.conversions.Bson;
+import Interfaces.IBdMethods;
 
-public class Articulo implements ISerrializable {
+public class Articulo implements IBdMethods {
 
     private ObjectId _id;
     private String descripcion;
